@@ -17,16 +17,10 @@ export async function createUser(formData: FormData) {
     await connectDB();
 
     const nama = String(formData.get("nama") || "").trim();
-    const username = String(
-      formData.get("username") || ""
-    ).trim();
-    const password = String(
-      formData.get("password") || ""
-    );
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "");
     const email = String(formData.get("email") || "").trim();
-    const role = String(
-      formData.get("role") || ""
-    ) as UserRole;
+    const role = String(formData.get("role") || "") as UserRole;
 
     if (!nama || !username || !password || !role) {
       return {
@@ -35,9 +29,7 @@ export async function createUser(formData: FormData) {
       };
     }
 
-    const existingUser = await User.findOne({
-      username,
-    });
+    const existingUser = await User.findOne({ username });
 
     if (existingUser) {
       return {
@@ -46,10 +38,7 @@ export async function createUser(formData: FormData) {
       };
     }
 
-    const hashedPassword = await bcrypt.hash(
-      password,
-      10
-    );
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await User.create({
       nama,
@@ -82,16 +71,10 @@ export async function updateUser(formData: FormData) {
 
     const id = String(formData.get("id") || "");
     const nama = String(formData.get("nama") || "").trim();
-    const username = String(
-      formData.get("username") || ""
-    ).trim();
-    const password = String(
-      formData.get("password") || ""
-    );
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "");
     const email = String(formData.get("email") || "").trim();
-    const role = String(
-      formData.get("role") || ""
-    ) as UserRole;
+    const role = String(formData.get("role") || "") as UserRole;
 
     if (!id || !nama || !username || !role) {
       return {
@@ -126,18 +109,13 @@ export async function updateUser(formData: FormData) {
     };
 
     if (password) {
-      updateData.password = await bcrypt.hash(
-        password,
-        10
-      );
+      updateData.password = await bcrypt.hash(password, 10);
     }
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
       updateData,
-      {
-        new: true,
-      }
+      { new: true }
     );
 
     if (!updatedUser) {
