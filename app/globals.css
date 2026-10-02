@@ -667,6 +667,7 @@ textarea {
 .kurikulum-sidebar-bottom,
 .kepsek-sidebar-bottom {
   margin-top: auto;
+  margin-bottom: 72px;
   padding-top: 20px;
   border-top: 1px solid #edf0f4;
 }
@@ -2322,5 +2323,201 @@ textarea {
   .management-card,
   .user-form-card {
     padding: 15px;
+  }
+}
+
+/* =========================================
+   IKON & VARIASI FORM (BIRU EDU CLASS)
+   ========================================= */
+
+/* Ikon dasar */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* --- Ikon di tombol aksi tabel --- */
+.edit-button,
+.delete-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.edit-button .icon,
+.delete-button .icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* --- Tombol tambah dengan ikon --- */
+.add-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-button .icon {
+  width: 17px;
+  height: 17px;
+}
+
+/* --- Tombol simpan --- */
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* --- Judul form: ikon bulat biru --- */
+.form-header {
+  gap: 16px;
+}
+
+.form-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.form-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eaf2ff;
+  color: #1261d6;
+}
+
+.form-icon .icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* --- Kartu ringkasan pada halaman manajemen --- */
+.management-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 19px;
+  background: #ffffff;
+  border: 1px solid #e4eaf2;
+  border-radius: 11px;
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eaf2ff;
+  color: #1261d6;
+}
+
+.stat-icon .icon {
+  width: 21px;
+  height: 21px;
+}
+
+.stat-card span {
+  display: block;
+  margin-bottom: 3px;
+  color: #7b8797;
+  font-size: 12px;
+}
+
+.stat-card strong {
+  display: block;
+  color: #172033;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* --- Dashboard admin: kartu dengan ikon --- */
+.admin-dashboard .dashboard-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-dashboard .dashboard-card .dashboard-card-body {
+  min-width: 0;
+}
+
+.admin-dashboard .dashboard-card span {
+  margin-bottom: 4px;
+}
+
+/* --- Dashboard admin: panel pintasan --- */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px 18px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.quick-link:hover {
+  border-color: #bcd5f7;
+  background: #f7fbff;
+}
+
+.quick-link div {
+  min-width: 0;
+}
+
+.quick-link strong {
+  display: block;
+  color: #172033;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.quick-link small {
+  display: block;
+  margin-top: 2px;
+  color: #7b8797;
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .management-stats,
+  .quick-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .management-stats,
+  .quick-links {
+    grid-template-columns: 1fr;
   }
 }

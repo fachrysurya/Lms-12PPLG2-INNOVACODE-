@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import Icon from "../../components/Icon";
+
 import {
   createUser,
   updateUser,
@@ -81,7 +84,10 @@ export default function ManajemenUserPage() {
   ) {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    // Simpan referensi form dulu. Setelah `await`, event.currentTarget
+    // bisa menjadi null sehingga .reset() melempar error.
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
     const result = editingUser
       ? await updateUser(formData)
@@ -92,7 +98,7 @@ export default function ManajemenUserPage() {
     if (result.success) {
       setShowForm(false);
       setEditingUser(null);
-      event.currentTarget.reset();
+      form.reset();
 
       await loadUsers();
     }
@@ -136,8 +142,55 @@ export default function ManajemenUserPage() {
           className="add-button"
           onClick={openCreateForm}
         >
-          + Tambah User
+          <Icon name="plus" />
+          Tambah User
         </button>
+      </div>
+
+      <div className="management-stats">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="users" />
+          </div>
+
+          <div>
+            <span>Total User</span>
+            <strong>{users.length}</strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="user" />
+          </div>
+
+          <div>
+            <span>User Aktif</span>
+            <strong>
+              {
+                users.filter((item) => item.aktif)
+                  .length
+              }
+            </strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="book" />
+          </div>
+
+          <div>
+            <span>Jumlah Role</span>
+            <strong>
+              {
+                new Set(
+                  users.map((item) => item.role)
+                ).size
+              }
+            </strong>
+          </div>
+        </div>
       </div>
 
       {message && (
@@ -149,18 +202,24 @@ export default function ManajemenUserPage() {
       {showForm && (
         <div className="user-form-card">
           <div className="form-header">
-            <div>
-              <h2>
-                {editingUser
-                  ? "Edit User"
-                  : "Tambah User"}
-              </h2>
+            <div className="form-title">
+              <div className="form-icon">
+                <Icon name="user" />
+              </div>
 
-              <p>
-                {editingUser
-                  ? "Perbarui data akun user."
-                  : "Tambahkan akun user baru."}
-              </p>
+              <div>
+                <h2>
+                  {editingUser
+                    ? "Edit User"
+                    : "Tambah User"}
+                </h2>
+
+                <p>
+                  {editingUser
+                    ? "Perbarui data akun user."
+                    : "Tambahkan akun user baru."}
+                </p>
+              </div>
             </div>
 
             <button
@@ -279,6 +338,7 @@ export default function ManajemenUserPage() {
                 type="submit"
                 className="save-button"
               >
+                <Icon name="edit" />
                 {editingUser
                   ? "Simpan Perubahan"
                   : "Simpan User"}
@@ -364,6 +424,7 @@ export default function ManajemenUserPage() {
                             openEditForm(user)
                           }
                         >
+                          <Icon name="edit" />
                           Edit
                         </button>
 
@@ -374,6 +435,7 @@ export default function ManajemenUserPage() {
                             handleDelete(user._id)
                           }
                         >
+                          <Icon name="trash" />
                           Hapus
                         </button>
                       </div>

@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+import Icon from "../../components/Icon";
+
 import {
   createKelas,
   updateKelas,
@@ -80,9 +83,10 @@ export default function ManajemenKelasPage() {
   ) {
     event.preventDefault();
 
-    const formData = new FormData(
-      event.currentTarget
-    );
+    // Simpan referensi form dulu. Setelah `await`, event.currentTarget
+    // bisa menjadi null sehingga .reset() melempar error.
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
     const result = editingKelas
       ? await updateKelas(formData)
@@ -94,7 +98,7 @@ export default function ManajemenKelasPage() {
       setShowForm(false);
       setEditingKelas(null);
 
-      event.currentTarget.reset();
+      form.reset();
 
       await loadKelas();
     }
@@ -140,8 +144,55 @@ export default function ManajemenKelasPage() {
           className="add-button"
           onClick={openCreateForm}
         >
-          + Tambah Kelas
+          <Icon name="plus" />
+          Tambah Kelas
         </button>
+      </div>
+
+      <div className="management-stats">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="kelas" />
+          </div>
+
+          <div>
+            <span>Total Kelas</span>
+            <strong>{kelas.length}</strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="user" />
+          </div>
+
+          <div>
+            <span>Kelas Aktif</span>
+            <strong>
+              {
+                kelas.filter((item) => item.aktif)
+                  .length
+              }
+            </strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="book" />
+          </div>
+
+          <div>
+            <span>Jurusan</span>
+            <strong>
+              {
+                new Set(
+                  kelas.map((item) => item.jurusan)
+                ).size
+              }
+            </strong>
+          </div>
+        </div>
       </div>
 
       {message && (
@@ -153,18 +204,24 @@ export default function ManajemenKelasPage() {
       {showForm && (
         <div className="user-form-card">
           <div className="form-header">
-            <div>
-              <h2>
-                {editingKelas
-                  ? "Edit Kelas"
-                  : "Tambah Kelas"}
-              </h2>
+            <div className="form-title">
+              <div className="form-icon">
+                <Icon name="kelas" />
+              </div>
 
-              <p>
-                {editingKelas
-                  ? "Perbarui data kelas."
-                  : "Tambahkan data kelas baru."}
-              </p>
+              <div>
+                <h2>
+                  {editingKelas
+                    ? "Edit Kelas"
+                    : "Tambah Kelas"}
+                </h2>
+
+                <p>
+                  {editingKelas
+                    ? "Perbarui data kelas."
+                    : "Tambahkan data kelas baru."}
+                </p>
+              </div>
             </div>
 
             <button
@@ -277,6 +334,7 @@ export default function ManajemenKelasPage() {
                 type="submit"
                 className="save-button"
               >
+                <Icon name="edit" />
                 {editingKelas
                   ? "Simpan Perubahan"
                   : "Simpan Kelas"}
@@ -366,6 +424,7 @@ export default function ManajemenKelasPage() {
                             openEditForm(item)
                           }
                         >
+                          <Icon name="edit" />
                           Edit
                         </button>
 
@@ -378,6 +437,7 @@ export default function ManajemenKelasPage() {
                             )
                           }
                         >
+                          <Icon name="trash" />
                           Hapus
                         </button>
                       </div>

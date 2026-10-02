@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import Icon from "../../components/Icon";
+
 import {
   createGuru,
   updateGuru,
@@ -82,9 +84,10 @@ export default function DataGuruPage() {
   ) {
     event.preventDefault();
 
-    const formData = new FormData(
-      event.currentTarget
-    );
+    // Simpan referensi form dulu. Setelah `await`, event.currentTarget
+    // bisa menjadi null sehingga .reset() melempar error.
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
     const result = editingGuru
       ? await updateGuru(formData)
@@ -96,7 +99,7 @@ export default function DataGuruPage() {
       setShowForm(false);
       setEditingGuru(null);
 
-      event.currentTarget.reset();
+      form.reset();
 
       await loadGuru();
     }
@@ -141,8 +144,57 @@ export default function DataGuruPage() {
           className="add-button"
           onClick={openCreateForm}
         >
-          + Tambah Guru
+          <Icon name="plus" />
+          Tambah Guru
         </button>
+      </div>
+
+      <div className="management-stats">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="guru" />
+          </div>
+
+          <div>
+            <span>Total Guru</span>
+            <strong>{guru.length}</strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="user" />
+          </div>
+
+          <div>
+            <span>Guru Aktif</span>
+            <strong>
+              {
+                guru.filter((item) => item.aktif)
+                  .length
+              }
+            </strong>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">
+            <Icon name="book" />
+          </div>
+
+          <div>
+            <span>Mata Pelajaran</span>
+            <strong>
+              {
+                new Set(
+                  guru.map(
+                    (item) => item.mataPelajaran
+                  )
+                ).size
+              }
+            </strong>
+          </div>
+        </div>
       </div>
 
       {message && (
@@ -154,18 +206,24 @@ export default function DataGuruPage() {
       {showForm && (
         <div className="user-form-card">
           <div className="form-header">
-            <div>
-              <h2>
-                {editingGuru
-                  ? "Edit Data Guru"
-                  : "Tambah Guru"}
-              </h2>
+            <div className="form-title">
+              <div className="form-icon">
+                <Icon name="guru" />
+              </div>
 
-              <p>
-                {editingGuru
-                  ? "Perbarui data guru."
-                  : "Tambahkan data guru baru."}
-              </p>
+              <div>
+                <h2>
+                  {editingGuru
+                    ? "Edit Data Guru"
+                    : "Tambah Guru"}
+                </h2>
+
+                <p>
+                  {editingGuru
+                    ? "Perbarui data guru."
+                    : "Tambahkan data guru baru."}
+                </p>
+              </div>
             </div>
 
             <button
@@ -278,6 +336,7 @@ export default function DataGuruPage() {
                 type="submit"
                 className="save-button"
               >
+                <Icon name="edit" />
                 {editingGuru
                   ? "Simpan Perubahan"
                   : "Simpan Guru"}
@@ -364,6 +423,7 @@ export default function DataGuruPage() {
                             openEditForm(item)
                           }
                         >
+                          <Icon name="edit" />
                           Edit
                         </button>
 
@@ -374,6 +434,7 @@ export default function DataGuruPage() {
                             handleDelete(item._id)
                           }
                         >
+                          <Icon name="trash" />
                           Hapus
                         </button>
                       </div>
