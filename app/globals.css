@@ -2521,3 +2521,174 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================
+   LAPORAN & DOWNLOAD DATA
+   ========================================= */
+
+/* Textarea pada form laporan */
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  padding: 11px 12px;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  background: white;
+  color: #172033;
+  resize: vertical;
+}
+
+.form-group textarea:focus {
+  border-color: #1261d6;
+  box-shadow: 0 0 0 2px rgba(18, 97, 214, 0.08);
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+/* Tombol "Lihat" pada tabel laporan */
+.edit-button.view-button {
+  background: #eaf2ff;
+  color: #1261d6;
+}
+
+/* Kartu download */
+.download-card-head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.download-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: #eaf2ff;
+  color: #1261d6;
+}
+
+.download-icon .icon {
+  width: 21px;
+  height: 21px;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.download-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Pesan status download */
+.download-note {
+  margin-top: 20px;
+  padding: 13px 16px;
+  border-radius: 9px;
+  background: #eaf2ff;
+  color: #1261d6;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Tombol di dalam modal laporan */
+.report-modal-footer button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}/* =========================================
+   PROFILE (SEMUA ROLE)
+   ========================================= */
+
+.profile-page-top {
+  position: relative;
+}
+
+.profile-role-badge {
+  margin-left: auto;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 7px;
+  background: #eaf2ff;
+  color: #1261d6;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.profile-field small {
+  display: block;
+  margin-top: 6px;
+  color: #98a2b3;
+  font-size: 11px;
+}
+
+.profile-field input:disabled {
+  background: #f6f8fb;
+  color: #7a8798;
+  cursor: not-allowed;
+}
+
+/* Tombol aksi */
+.profile-edit-button,
+.profile-save-button,
+.profile-cancel-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.profile-edit-button:disabled,
+.profile-save-button:disabled,
+.profile-cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Pesan hasil simpan */
+.profile-message {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 25px;
+  padding: 13px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.profile-message .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.profile-message-success {
+  background: #e8f6ee;
+  color: #16803c;
+}
+
+.profile-message-error {
+  background: #fff1f0;
+  color: #d92d20;
+}
+
+@media (max-width: 650px) {
+  .profile-page-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-role-badge {
+    margin-left: 0;
+  }
+}

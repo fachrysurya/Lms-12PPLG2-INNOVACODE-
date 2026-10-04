@@ -12,7 +12,11 @@ export type IconName =
   | "edit"
   | "trash"
   | "plus"
-  | "tugas";
+  | "tugas"
+  | "eye"
+  | "download"
+  | "check"
+  | "alert";
 
 const paths: Record<IconName, React.ReactNode> = {
   user: (
@@ -81,6 +85,35 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M9 8.5h6" />
       <path d="M9 12h6" />
       <path d="M9 15.5h3.5" />
+    </>
+  ),
+
+  eye: (
+    <>
+      <path d="M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6z" />
+      <circle cx="12" cy="12" r="2.6" />
+    </>
+  ),
+
+  download: (
+    <>
+      <path d="M12 3.5v11" />
+      <path d="m7.5 10.5 4.5 4.5 4.5-4.5" />
+      <path d="M4.5 19.5h15" />
+    </>
+  ),
+
+  check: (
+    <>
+      <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </>
+  ),
+
+  alert: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.8v4.7" />
+      <path d="M12 16.1h.01" />
     </>
   ),
 };

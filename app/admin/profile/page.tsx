@@ -1,44 +1,14 @@
-export default function AdminProfilePage() {
-  return (
-    <div className="management-page">
-      <div className="management-header">
-        <div>
-          <h2>Profile Administrator</h2>
-          <p>Kelola informasi akun administrator.</p>
-        </div>
-      </div>
+import ProfileForm from "../../components/ProfileForm";
+import { getProfile } from "../../actions/profile";
 
-      <div className="profile-card">
-        <div className="profile-avatar">
-          A
-        </div>
+export const dynamic = "force-dynamic";
 
-        <div className="profile-info">
-          <div className="profile-row">
-            <span>Nama</span>
-            <strong>Administrator</strong>
-          </div>
+export default async function AdminProfilePage() {
+  const profil = await getProfile();
 
-          <div className="profile-row">
-            <span>Username</span>
-            <strong>admin</strong>
-          </div>
+  if (!profil) {
+    return null;
+  }
 
-          <div className="profile-row">
-            <span>Email</span>
-            <strong>admin@educlass.com</strong>
-          </div>
-
-          <div className="profile-row">
-            <span>Role</span>
-            <strong>Administrator</strong>
-          </div>
-        </div>
-
-        <button className="edit-profile-button">
-          Edit Profile
-        </button>
-      </div>
-    </div>
-  );
+  return <ProfileForm profil={profil} />;
 }
