@@ -13,10 +13,17 @@ export type IconName =
   | "trash"
   | "plus"
   | "tugas"
+  | "asesmen"
   | "eye"
   | "download"
   | "check"
-  | "alert";
+  | "alert"
+  | "play"
+  | "link"
+  | "file"
+  | "upload"
+  | "search"
+  | "close";
 
 const paths: Record<IconName, React.ReactNode> = {
   user: (
@@ -88,6 +95,14 @@ const paths: Record<IconName, React.ReactNode> = {
     </>
   ),
 
+  asesmen: (
+    <>
+      <path d="M8.5 4.2H7c-.8 0-1.5.7-1.5 1.5v13.1c0 .8.7 1.5 1.5 1.5h10c.8 0 1.5-.7 1.5-1.5V5.7c0-.8-.7-1.5-1.5-1.5h-1.5" />
+      <rect x="8.5" y="2.8" width="7" height="3" rx="1" />
+      <path d="m9 12.6 1.9 1.9 4-4" />
+    </>
+  ),
+
   eye: (
     <>
       <path d="M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6z" />
@@ -114,6 +129,49 @@ const paths: Record<IconName, React.ReactNode> = {
       <circle cx="12" cy="12" r="8.5" />
       <path d="M12 7.8v4.7" />
       <path d="M12 16.1h.01" />
+    </>
+  ),
+
+  play: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M10.2 8.6 15.5 12l-5.3 3.4z" />
+    </>
+  ),
+
+  link: (
+    <>
+      <path d="M10 13.5a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1.2 1.2" />
+      <path d="M14 10.5a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1.2-1.2" />
+    </>
+  ),
+
+  file: (
+    <>
+      <path d="M13.5 3.5H7.5c-.8 0-1.5.7-1.5 1.5v14c0 .8.7 1.5 1.5 1.5h9c.8 0 1.5-.7 1.5-1.5V8z" />
+      <path d="M13.5 3.5V8h4.5" />
+    </>
+  ),
+
+  upload: (
+    <>
+      <path d="M12 16.5v-11" />
+      <path d="m7.5 9.5 4.5-4.5 4.5 4.5" />
+      <path d="M4.5 19.5h15" />
+    </>
+  ),
+
+  search: (
+    <>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4 4" />
+    </>
+  ),
+
+  close: (
+    <>
+      <path d="m6.5 6.5 11 11" />
+      <path d="m17.5 6.5-11 11" />
     </>
   ),
 };

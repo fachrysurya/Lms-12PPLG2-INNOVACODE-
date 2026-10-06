@@ -2691,4 +2691,750 @@ textarea {
   .profile-role-badge {
     margin-left: 0;
   }
+}/* =========================================
+   GURU — DASHBOARD INTERAKTIF
+   ========================================= */
+
+.guru-dashboard .guru-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.guru-dashboard .guru-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #bcd5f7;
+  box-shadow: 0 8px 22px rgba(18, 97, 214, 0.1);
+}
+
+.guru-dashboard .guru-stat-card .dashboard-card-body {
+  min-width: 0;
+}
+
+.guru-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.guru-panel {
+  padding: 20px 22px;
+  border: 1px solid #e4eaf2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.guru-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.guru-panel-head h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.guru-panel-head span {
+  color: #7b8797;
+  font-size: 12px;
+}
+
+.guru-panel-empty {
+  margin: 0;
+  padding: 18px 0;
+  color: #7b8797;
+  font-size: 13px;
+}
+
+.guru-aktivitas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guru-aktivitas li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.guru-aktivitas li:last-child {
+  border-bottom: none;
+}
+
+.guru-aktivitas li div {
+  min-width: 0;
+}
+
+.guru-aktivitas strong {
+  display: block;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guru-aktivitas small {
+  color: #7b8797;
+  font-size: 11px;
+}
+
+.guru-tag {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.guru-tag-materi {
+  background: #e8f0ff;
+  color: #1261d6;
+}
+
+.guru-tag-tugas {
+  background: #fdf1e2;
+  color: #b9770e;
+}
+
+.guru-tag-asesmen {
+  background: #e9f7ef;
+  color: #1e8e5a;
+}
+
+.guru-ringkasan {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.guru-ringkasan > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: #f6f9fd;
+}
+
+.guru-ringkasan span {
+  color: #56627a;
+  font-size: 13px;
+}
+
+.guru-ringkasan strong {
+  color: #172033;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.guru-panel-aksi {
+  display: grid;
+  gap: 10px;
+}
+
+/* =========================================
+   GURU — TOOLBAR, BADGE, KARTU, MODAL
+   ========================================= */
+
+.guru-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.guru-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.guru-search .icon {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: #98a4b6;
+  pointer-events: none;
+}
+
+.guru-search input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #e0e6ef;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 13px;
+  outline: none;
+}
+
+.guru-search input:focus {
+  border-color: #8fb8f0;
+  box-shadow: 0 0 0 3px rgba(18, 97, 214, 0.1);
+}
+
+.guru-toolbar select {
+  padding: 10px 12px;
+  border: 1px solid #e0e6ef;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 13px;
+  outline: none;
+}
+
+.guru-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.guru-badge-pdf {
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.guru-badge-youtube {
+  background: #fdeaea;
+  color: #d32f2f;
+}
+
+.guru-badge-teks {
+  background: #e8f0ff;
+  color: #1261d6;
+}
+
+.guru-badge-link {
+  background: #e9f7ef;
+  color: #1e8e5a;
+}
+
+.guru-badge-esai {
+  background: #f0ecfd;
+  color: #6c3fd1;
+}
+
+.guru-badge-pg {
+  background: #e8f0ff;
+  color: #1261d6;
+}
+
+.guru-badge-isian {
+  background: #e9f7ef;
+  color: #1e8e5a;
+}
+
+/* Tombol lihat */
+.view-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid #cfe0f7;
+  border-radius: 7px;
+  background: #f3f8ff;
+  color: #1261d6;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.view-button:hover {
+  background: #e5f0ff;
+}
+
+/* Grid kartu tugas */
+.guru-kartu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.guru-kartu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #e4eaf2;
+  border-radius: 12px;
+  background: #ffffff;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.guru-kartu:hover {
+  border-color: #bcd5f7;
+  box-shadow: 0 8px 22px rgba(18, 97, 214, 0.08);
+}
+
+.guru-kartu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.guru-kartu h3 {
+  margin: 0;
+  color: #172033;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.guru-kartu p {
+  margin: 0;
+  color: #6b7689;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.guru-kartu-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.guru-kartu-meta span {
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: #f3f6fb;
+  color: #56627a;
+  font-size: 11px;
+}
+
+.guru-kartu-aksi {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.guru-status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.guru-status-aktif {
+  background: #e9f7ef;
+  color: #1e8e5a;
+}
+
+.guru-status-mendesak {
+  background: #fdf1e2;
+  color: #b9770e;
+}
+
+.guru-status-selesai {
+  background: #f0f2f6;
+  color: #7b8797;
+}
+
+.guru-status-netral {
+  background: #eef2f7;
+  color: #7b8797;
+}
+
+/* Modal */
+.guru-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.guru-modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
+}
+
+.guru-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.guru-modal-head h2 {
+  margin: 0 0 4px;
+  color: #172033;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.guru-modal-head small {
+  color: #7b8797;
+  font-size: 12px;
+}
+
+.guru-modal-body {
+  padding: 20px 22px;
+  overflow-y: auto;
+}
+
+.guru-modal-body p {
+  margin: 0 0 14px;
+  color: #56627a;
+  font-size: 13px;
+}
+
+.materi-video,
+.materi-pdf {
+  width: 100%;
+  height: 420px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #f6f9fd;
+}
+
+.materi-teks {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f6f9fd;
+  color: #172033;
+  font-size: 13.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* =========================================
+   GURU — FORM: TIPE, UPLOAD, SOAL PG & ESAI
+   ========================================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.tipe-pilihan {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tipe-pilihan button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border: 1px solid #e0e6ef;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #56627a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.tipe-pilihan button:hover {
+  border-color: #bcd5f7;
+}
+
+.tipe-pilihan button.tipe-aktif {
+  border-color: #1261d6;
+  background: #eaf2ff;
+  color: #1261d6;
+  font-weight: 600;
+}
+
+.upload-drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px;
+  border: 1.5px dashed #b9c6d8;
+  border-radius: 10px;
+  background: #f8fafd;
+  color: #56627a;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.upload-drop:hover {
+  border-color: #1261d6;
+  background: #f2f8ff;
+}
+
+.upload-info {
+  display: block;
+  margin-top: 8px;
+  color: #1e8e5a;
+  font-size: 12px;
+}
+
+.soal-list {
+  display: grid;
+  gap: 12px;
+}
+
+.soal-item {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fafcfe;
+}
+
+.soal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.soal-head span {
+  color: #1261d6;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.soal-hapus {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 7px;
+  border: none;
+  border-radius: 6px;
+  background: #fdeaea;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+.soal-hapus .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.soal-item textarea,
+.soal-item input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #e0e6ef;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.soal-item textarea:focus,
+.soal-item input:focus {
+  border-color: #8fb8f0;
+  box-shadow: 0 0 0 3px rgba(18, 97, 214, 0.1);
+}
+
+.soal-tambah {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 9px 14px;
+  border: 1px dashed #b9c6d8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #1261d6;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.soal-tambah:hover {
+  border-color: #1261d6;
+  background: #f2f8ff;
+}
+
+/* Opsi jawaban soal pilihan ganda */
+.opsi-list {
+  display: grid;
+  gap: 8px;
+}
+
+.opsi-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.opsi-pilih {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.opsi-pilih input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1261d6;
+  cursor: pointer;
+}
+
+.opsi-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #eaf2ff;
+  color: #1261d6;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.opsi-item > input[type="text"] {
+  flex: 1;
+}
+
+.opsi-hapus {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 7px;
+  background: #fdeaea;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+.opsi-hapus .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.opsi-tambah {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  padding: 7px 12px;
+  border: 1px dashed #b9c6d8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1261d6;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.opsi-tambah:hover {
+  border-color: #1261d6;
+  background: #f2f8ff;
+}
+
+.opsi-hint {
+  color: #6b7689;
+  font-size: 12px;
+}
+
+/* Preview soal di modal */
+.soal-preview {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.soal-preview h4 {
+  margin: 0;
+  color: #172033;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.soal-preview-item {
+  padding: 12px 14px;
+  border-left: 3px solid #1261d6;
+  border-radius: 0 8px 8px 0;
+  background: #f6f9fd;
+}
+
+.soal-preview-item strong {
+  display: block;
+  color: #172033;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.soal-preview-item small {
+  display: block;
+  margin-top: 6px;
+  color: #1e8e5a;
+  font-size: 12px;
+}
+
+.soal-preview-opsi {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #56627a;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.soal-preview-opsi .opsi-benar {
+  color: #1e8e5a;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .guru-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .guru-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

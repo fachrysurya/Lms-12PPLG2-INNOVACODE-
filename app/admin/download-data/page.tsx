@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Icon from "../../components/Icon";
+import { buatPDF } from "../../../lib/pdf";
 
 type BarisData = Record<string, unknown>;
 
@@ -133,23 +134,6 @@ function ambilNilai(
   return String(nilai);
 }
 
-function buatCSV(kolom: Kolom[], baris: BarisData[]) {
-  const kepala = kolom.map((k) => k.label);
-
-  const isi = baris.map((item) =>
-    kolom.map((k) => {
-      const nilai = ambilNilai(item, k.key);
-
-      // Bungkus dengan kutip ganda agar koma/newline aman
-      return `"${nilai.replaceAll('"', '""')}"`;
-    })
-  );
-
-  return [kepala, ...isi]
-    .map((baris) => baris.join(";"))
-    .join("\r\n");
-}
-
 export default function DownloadDataPage() {
   const [catatan, setCatatan] = useState("");
   const [sedangProses, setSedangProses] =
@@ -216,12 +200,7 @@ export default function DownloadDataPage() {
         return;
       }
 
-      const csv = buatCSV(item.kolom, baris);
-
-      // BOM agar Excel membaca karakter dengan benar
-      const blob = new Blob(["\uFEFF" + csv], {
-        type: "text/csv;charset=utf-8",
-      });
+      const blob = buatPDF(item.nama, item.kolom, baris);
 
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -229,7 +208,7 @@ export default function DownloadDataPage() {
       link.href = url;
       link.download = `${item.id}-${new Date()
         .toISOString()
-        .slice(0, 10)}.csv`;
+        .slice(0, 10)}.pdf`;
 
       document.body.appendChild(link);
       link.click();
@@ -255,8 +234,7 @@ export default function DownloadDataPage() {
           <h1>Download Data</h1>
 
           <p>
-            Unduh data sistem dalam format CSV yang
-            bisa dibuka di Excel.
+            Unduh data sistem dalam format PDF.
           </p>
         </div>
       </div>
@@ -294,7 +272,7 @@ export default function DownloadDataPage() {
 
               {sedangProses === item.id
                 ? "Menyiapkan..."
-                : "Download CSV"}
+                : "Download PDF"}
             </button>
           </div>
         ))}

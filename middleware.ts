@@ -31,6 +31,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Route API tidak boleh di-redirect ke halaman login,
+  // karena client mengharapkan respons JSON, bukan HTML.
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
   const sessionCookie = request.cookies.get(SESSION_COOKIE);
 
   // Belum login

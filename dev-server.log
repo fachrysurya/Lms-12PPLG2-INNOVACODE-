@@ -1,0 +1,235 @@
+npm notice run educlass@0.1.0 dev
+npm notice run next dev
+▲ Next.js 16.3.5 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.7:3000
+- Environments: .env.local
+✓ Ready in 8.4s
+✓ Running next.config.ts took 1781ms
+○ Compiling middleware ...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET /login 200 in 11.2s (next.js: 7.3s, proxy.ts: 1752ms, application-code: 2.1s)
+✓ Finished filesystem cache database compaction in 15.8s
+ GET /login 200 in 1117ms (next.js: 555ms, proxy.ts: 82ms, application-code: 480ms)
+ GET /guru/dashboard 200 in 13.7s (next.js: 5.8s, proxy.ts: 2.1s, application-code: 5.9s)
+ GET /guru/dashboard 200 in 12.4s (next.js: 5.1s, proxy.ts: 10ms, application-code: 7.3s)
+ GET /guru/dashboard 200 in 2.1s (next.js: 1596ms, proxy.ts: 55ms, application-code: 436ms)
+○ Compiling /api/guru/materi ...
+ GET /api/guru/asesmen 200 in 46s (next.js: 44s, proxy.ts: 472ms, application-code: 2.2s)
+ GET /api/guru/tugas 200 in 46s (next.js: 45s, proxy.ts: 345ms, application-code: 750ms)
+ GET /api/guru/materi 200 in 46s (next.js: 44s, proxy.ts: 326ms, application-code: 2.3s)
+ GET /api/guru/materi 200 in 46s (next.js: 24.6s, proxy.ts: 221ms, application-code: 21.6s)
+ GET /api/guru/asesmen 200 in 46s (next.js: 43s, proxy.ts: 289ms, application-code: 2.9s)
+ GET /api/guru/tugas 200 in 46s (next.js: 45s, proxy.ts: 252ms, application-code: 1276ms)
+ GET /login 200 in 1089ms (next.js: 311ms, proxy.ts: 16ms, application-code: 762ms)
+ GET /login 200 in 2.1s (next.js: 75ms, proxy.ts: 289ms, application-code: 1740ms)
+ GET /guru/dashboard 200 in 1562ms (next.js: 544ms, proxy.ts: 183ms, application-code: 835ms)
+ GET /guru/dashboard 200 in 531ms (next.js: 64ms, proxy.ts: 13ms, application-code: 455ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/materi 200 in 1705ms (next.js: 551ms, proxy.ts: 11ms, application-code: 1142ms)
+ GET /api/guru/materi 200 in 5.4s (next.js: 589ms, proxy.ts: 1049ms, application-code: 3.8s)
+ GET /api/guru/tugas 200 in 5.5s (next.js: 1630ms, proxy.ts: 1129ms, application-code: 2.8s)
+ GET /api/guru/tugas 200 in 5.5s (next.js: 2.7s, proxy.ts: 1048ms, application-code: 1748ms)
+ GET /api/guru/asesmen 200 in 5.7s (next.js: 3.5s, proxy.ts: 1101ms, application-code: 1106ms)
+ GET /api/guru/asesmen 200 in 5.8s (next.js: 3.9s, proxy.ts: 1071ms, application-code: 830ms)
+ GET /guru/dashboard 200 in 2.2s (next.js: 434ms, proxy.ts: 501ms, application-code: 1235ms)
+ GET /api/guru/materi 200 in 1391ms (next.js: 229ms, proxy.ts: 158ms, application-code: 1004ms)
+ GET /api/guru/tugas 200 in 1483ms (next.js: 478ms, proxy.ts: 171ms, application-code: 835ms)
+ GET /api/guru/asesmen 200 in 1512ms (next.js: 501ms, proxy.ts: 182ms, application-code: 828ms)
+ GET /api/guru/materi 200 in 1529ms (next.js: 853ms, proxy.ts: 180ms, application-code: 496ms)
+ GET /api/guru/tugas 200 in 1550ms (next.js: 1047ms, proxy.ts: 135ms, application-code: 368ms)
+ GET /api/guru/asesmen 200 in 2.0s (next.js: 1336ms, proxy.ts: 104ms, application-code: 583ms)
+ GET /guru/materi 200 in 5.9s (next.js: 4.2s, proxy.ts: 103ms, application-code: 1672ms)
+ GET /api/guru/materi 200 in 5.9s (next.js: 4.0s, proxy.ts: 86ms, application-code: 1856ms)
+ GET /api/guru/materi 200 in 5.9s (next.js: 5.7s, proxy.ts: 71ms, application-code: 170ms)
+ GET /login 200 in 1239ms (next.js: 336ms, proxy.ts: 10ms, application-code: 894ms)
+ GET /login 200 in 1601ms (next.js: 150ms, proxy.ts: 50ms, application-code: 1402ms)
+ GET /login?redirect=%2Fguru%2Fdashboard 200 in 1410ms (next.js: 114ms, proxy.ts: 210ms, application-code: 1086ms)
+ GET /login?redirect=%2Fguru%2Fmateri 200 in 1022ms (next.js: 35ms, proxy.ts: 17ms, application-code: 970ms)
+ GET /login?redirect=%2Fguru%2Fmateri 200 in 829ms (next.js: 269ms, proxy.ts: 9ms, application-code: 551ms)
+ GET /login 200 in 984ms (next.js: 21ms, proxy.ts: 19ms, application-code: 944ms)
+ GET /login 200 in 4.5s (next.js: 594ms, proxy.ts: 20ms, application-code: 3.9s)
+ GET /guru/dashboard 200 in 1366ms (next.js: 335ms, proxy.ts: 52ms, application-code: 979ms)
+✓ Finished writing to filesystem cache in 12.3s
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /guru/dashboard 200 in 4.3s (next.js: 530ms, proxy.ts: 17ms, application-code: 3.7s)
+ GET /api/guru/materi 200 in 2.5s (next.js: 320ms, proxy.ts: 87ms, application-code: 2.0s)
+ GET /guru/dashboard 200 in 7.1s (next.js: 34ms, proxy.ts: 31ms, application-code: 7.1s)
+ GET /api/guru/materi 200 in 1469ms (next.js: 297ms, proxy.ts: 144ms, application-code: 1028ms)
+ GET /api/guru/tugas 200 in 1485ms (next.js: 544ms, proxy.ts: 138ms, application-code: 803ms)
+ GET /api/guru/asesmen 200 in 1542ms (next.js: 667ms, proxy.ts: 139ms, application-code: 736ms)
+ GET /api/guru/materi 200 in 1604ms (next.js: 907ms, proxy.ts: 137ms, application-code: 560ms)
+ GET /api/guru/tugas 200 in 1611ms (next.js: 1133ms, proxy.ts: 143ms, application-code: 335ms)
+ GET /api/guru/asesmen 200 in 1302ms (next.js: 255ms, proxy.ts: 1004ms, application-code: 43ms)
+ GET /guru/materi 200 in 2.1s (next.js: 591ms, proxy.ts: 59ms, application-code: 1493ms)
+ GET /api/guru/materi 200 in 1617ms (next.js: 138ms, proxy.ts: 538ms, application-code: 941ms)
+ GET /api/guru/materi 200 in 1644ms (next.js: 885ms, proxy.ts: 543ms, application-code: 216ms)
+ POST /guru/materi 200 in 2.5s (next.js: 35ms, proxy.ts: 46ms, application-code: 2.4s)
+  └─ ƒ createMateri({}) in 318ms app/guru/materi/actions.ts
+ GET /api/guru/materi 200 in 710ms (next.js: 23ms, proxy.ts: 134ms, application-code: 553ms)
+ GET /login 200 in 1491ms (next.js: 265ms, proxy.ts: 7ms, application-code: 1219ms)
+ GET /login 200 in 1405ms (next.js: 42ms, proxy.ts: 34ms, application-code: 1329ms)
+ GET /login?username=guru&password=guru123 200 in 1512ms (next.js: 346ms, proxy.ts: 43ms, application-code: 1123ms)
+ GET /login 200 in 1412ms (next.js: 585ms, proxy.ts: 13ms, application-code: 813ms)
+ GET /login 200 in 2.3s (next.js: 21ms, proxy.ts: 22ms, application-code: 2.2s)
+ GET /login 200 in 1559ms (next.js: 30ms, proxy.ts: 24ms, application-code: 1505ms)
+ GET /login 200 in 3.1s (next.js: 450ms, proxy.ts: 21ms, application-code: 2.6s)
+ GET /guru/dashboard 200 in 2.5s (next.js: 895ms, proxy.ts: 8ms, application-code: 1644ms)
+ GET /guru/dashboard 200 in 1301ms (next.js: 469ms, proxy.ts: 44ms, application-code: 788ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/tugas 200 in 4.2s (next.js: 2.1s, proxy.ts: 378ms, application-code: 1795ms)
+ GET /api/guru/asesmen 200 in 4.2s (next.js: 3.3s, proxy.ts: 374ms, application-code: 593ms)
+ GET /api/guru/materi 200 in 4.2s (next.js: 867ms, proxy.ts: 374ms, application-code: 3.0s)
+ GET /login 200 in 1892ms (next.js: 519ms, proxy.ts: 425ms, application-code: 948ms)
+ GET /login 200 in 1409ms (next.js: 340ms, proxy.ts: 26ms, application-code: 1044ms)
+ GET /guru/dashboard 200 in 1206ms (next.js: 206ms, proxy.ts: 25ms, application-code: 976ms)
+ GET /guru/dashboard 200 in 1303ms (next.js: 750ms, proxy.ts: 34ms, application-code: 518ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/materi 200 in 677ms (next.js: 455ms, proxy.ts: 62ms, application-code: 160ms)
+ GET /api/guru/tugas 200 in 2.4s (next.js: 446ms, proxy.ts: 242ms, application-code: 1671ms)
+ GET /api/guru/materi 200 in 2.4s (next.js: 668ms, proxy.ts: 275ms, application-code: 1436ms)
+ GET /api/guru/tugas 200 in 2.5s (next.js: 899ms, proxy.ts: 284ms, application-code: 1269ms)
+ GET /api/guru/asesmen 200 in 2.9s (next.js: 1550ms, proxy.ts: 252ms, application-code: 1135ms)
+ GET /api/guru/asesmen 200 in 3.1s (next.js: 1794ms, proxy.ts: 1019ms, application-code: 308ms)
+ GET /guru/dashboard 200 in 3.5s (next.js: 1040ms, proxy.ts: 65ms, application-code: 2.4s)
+ GET /api/guru/materi 200 in 2.2s (next.js: 169ms, proxy.ts: 242ms, application-code: 1810ms)
+ GET /api/guru/asesmen 200 in 2.3s (next.js: 938ms, proxy.ts: 231ms, application-code: 1161ms)
+ GET /api/guru/tugas 200 in 2.3s (next.js: 1845ms, proxy.ts: 241ms, application-code: 263ms)
+ GET /api/guru/materi 200 in 3.1s (next.js: 302ms, proxy.ts: 1630ms, application-code: 1151ms)
+ GET /api/guru/tugas 200 in 3.1s (next.js: 973ms, proxy.ts: 1635ms, application-code: 504ms)
+ GET /api/guru/asesmen 200 in 3.2s (next.js: 1157ms, proxy.ts: 1633ms, application-code: 365ms)
+ GET /guru/materi 200 in 1719ms (next.js: 151ms, proxy.ts: 25ms, application-code: 1543ms)
+ GET /api/guru/materi 200 in 471ms (next.js: 97ms, proxy.ts: 21ms, application-code: 352ms)
+ GET /api/guru/materi 200 in 921ms (next.js: 272ms, proxy.ts: 29ms, application-code: 619ms)
+ POST /guru/materi 200 in 1960ms (next.js: 702ms, proxy.ts: 236ms, application-code: 1022ms)
+  └─ ƒ createMateri({}) in 258ms app/guru/materi/actions.ts
+ GET /api/guru/materi 200 in 278ms (next.js: 237ms, proxy.ts: 13ms, application-code: 28ms)
+ POST /guru/materi 200 in 1721ms (next.js: 503ms, proxy.ts: 11ms, application-code: 1207ms)
+  └─ ƒ createMateri({}) in 50ms app/guru/materi/actions.ts
+ GET /api/guru/materi 200 in 1030ms (next.js: 551ms, proxy.ts: 35ms, application-code: 444ms)
+ GET /login 200 in 2.6s (next.js: 266ms, proxy.ts: 19ms, application-code: 2.4s)
+ GET /login 200 in 4.4s (next.js: 1005ms, proxy.ts: 26ms, application-code: 3.4s)
+ GET /guru/dashboard 200 in 628ms (next.js: 48ms, proxy.ts: 85ms, application-code: 494ms)
+ GET /guru/dashboard 200 in 669ms (next.js: 40ms, proxy.ts: 9ms, application-code: 620ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/tugas 200 in 1126ms (next.js: 261ms, proxy.ts: 474ms, application-code: 391ms)
+ GET /api/guru/materi 200 in 1128ms (next.js: 286ms, proxy.ts: 468ms, application-code: 374ms)
+ GET /api/guru/asesmen 200 in 1506ms (next.js: 464ms, proxy.ts: 472ms, application-code: 570ms)
+ GET /api/guru/tugas 200 in 3.2s (next.js: 1044ms, proxy.ts: 12ms, application-code: 2.2s)
+ GET /api/guru/materi 200 in 3.8s (next.js: 2.5s, proxy.ts: 477ms, application-code: 824ms)
+ GET /api/guru/asesmen 200 in 4.2s (next.js: 1876ms, proxy.ts: 1954ms, application-code: 411ms)
+○ Compiling /guru/tugas ...
+ GET /guru/tugas 200 in 37.9s (next.js: 33.1s, proxy.ts: 839ms, application-code: 4.0s)
+ GET /api/guru/tugas 200 in 1432ms (next.js: 326ms, proxy.ts: 32ms, application-code: 1073ms)
+ GET /api/guru/tugas 200 in 1425ms (next.js: 921ms, proxy.ts: 24ms, application-code: 479ms)
+ GET /login 200 in 2.5s (next.js: 1226ms, proxy.ts: 17ms, application-code: 1261ms)
+ GET /login 200 in 2.6s (next.js: 788ms, proxy.ts: 12ms, application-code: 1780ms)
+ GET /guru/dashboard 200 in 1982ms (next.js: 755ms, proxy.ts: 146ms, application-code: 1081ms)
+ GET /guru/dashboard 200 in 2.3s (next.js: 471ms, proxy.ts: 59ms, application-code: 1805ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/materi 200 in 2.7s (next.js: 438ms, proxy.ts: 327ms, application-code: 1907ms)
+ GET /api/guru/materi 200 in 2.6s (next.js: 581ms, proxy.ts: 232ms, application-code: 1778ms)
+ GET /api/guru/asesmen 200 in 2.5s (next.js: 674ms, proxy.ts: 165ms, application-code: 1685ms)
+ GET /api/guru/tugas 200 in 2.5s (next.js: 1929ms, proxy.ts: 164ms, application-code: 454ms)
+ GET /api/guru/tugas 200 in 3.1s (next.js: 2.6s, proxy.ts: 300ms, application-code: 147ms)
+ GET /api/guru/asesmen 200 in 2.9s (next.js: 882ms, proxy.ts: 1722ms, application-code: 247ms)
+ GET /guru/tugas 200 in 3.8s (next.js: 1233ms, proxy.ts: 472ms, application-code: 2.1s)
+ GET /api/guru/tugas 200 in 332ms (next.js: 131ms, proxy.ts: 34ms, application-code: 168ms)
+ GET /api/guru/tugas 200 in 1003ms (next.js: 400ms, proxy.ts: 107ms, application-code: 496ms)
+ POST /guru/tugas 200 in 1476ms (next.js: 192ms, proxy.ts: 59ms, application-code: 1225ms)
+  └─ ƒ createTugas({}) in 956ms app/guru/tugas/actions.ts
+ GET /api/guru/tugas 200 in 744ms (next.js: 361ms, proxy.ts: 91ms, application-code: 292ms)
+○ Compiling /guru/asesmen ...
+ GET /guru/asesmen 200 in 41s (next.js: 38.6s, proxy.ts: 14ms, application-code: 2.6s)
+ GET /api/guru/asesmen 200 in 2.4s (next.js: 161ms, proxy.ts: 60ms, application-code: 2.2s)
+✓ Finished writing to filesystem cache in 11.1s
+ GET /api/guru/asesmen 200 in 2.4s (next.js: 462ms, proxy.ts: 60ms, application-code: 1878ms)
+ POST /guru/asesmen 200 in 2.3s (next.js: 897ms, proxy.ts: 284ms, application-code: 1104ms)
+  └─ ƒ createAsesmen({}) in 280ms app/guru/asesmen/actions.ts
+ GET /api/guru/asesmen 200 in 395ms (next.js: 316ms, proxy.ts: 14ms, application-code: 65ms)
+ GET /login 200 in 1388ms (next.js: 39ms, proxy.ts: 9ms, application-code: 1339ms)
+ GET /login 200 in 2.7s (next.js: 865ms, proxy.ts: 29ms, application-code: 1778ms)
+ GET /guru/dashboard 200 in 1611ms (next.js: 159ms, proxy.ts: 11ms, application-code: 1441ms)
+ GET /guru/dashboard 200 in 1545ms (next.js: 217ms, proxy.ts: 201ms, application-code: 1127ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/tugas 200 in 3.5s (next.js: 436ms, proxy.ts: 20ms, application-code: 3.0s)
+ GET /api/guru/tugas 200 in 4.1s (next.js: 2.3s, proxy.ts: 233ms, application-code: 1592ms)
+ GET /api/guru/asesmen 200 in 3.8s (next.js: 2.1s, proxy.ts: 20ms, application-code: 1666ms)
+ GET /api/guru/asesmen 200 in 4.5s (next.js: 2.6s, proxy.ts: 283ms, application-code: 1632ms)
+ GET /api/guru/materi 200 in 4.6s (next.js: 2.8s, proxy.ts: 302ms, application-code: 1495ms)
+ GET /api/guru/materi 200 in 5.0s (next.js: 3.5s, proxy.ts: 54ms, application-code: 1452ms)
+ GET /guru/asesmen 200 in 2.6s (next.js: 45ms, proxy.ts: 466ms, application-code: 2.1s)
+ GET /api/guru/asesmen 200 in 1070ms (next.js: 131ms, proxy.ts: 203ms, application-code: 737ms)
+ GET /api/guru/asesmen 200 in 1611ms (next.js: 747ms, proxy.ts: 277ms, application-code: 588ms)
+✓ Finished filesystem cache database compaction in 60s
+✓ Finished writing to filesystem cache in 10.7s
+ GET /login?redirect=%2Fguru%2Fasesmen 200 in 6.8s (next.js: 4.7s, proxy.ts: 223ms, application-code: 1841ms)
+ GET /login 200 in 2.3s (next.js: 719ms, proxy.ts: 64ms, application-code: 1480ms)
+ GET /guru/dashboard 200 in 3.0s (next.js: 936ms, proxy.ts: 32ms, application-code: 2.0s)
+ GET /guru/dashboard 200 in 1910ms (next.js: 888ms, proxy.ts: 61ms, application-code: 961ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /api/guru/tugas 200 in 6.2s (next.js: 1885ms, proxy.ts: 176ms, application-code: 4.1s)
+ GET /api/guru/tugas 200 in 6.0s (next.js: 3.3s, proxy.ts: 83ms, application-code: 2.6s)
+ GET /api/guru/materi 200 in 6.2s (next.js: 4.4s, proxy.ts: 68ms, application-code: 1779ms)
+ GET /api/guru/materi 200 in 6.2s (next.js: 4.5s, proxy.ts: 185ms, application-code: 1568ms)
+ GET /api/guru/asesmen 200 in 6.8s (next.js: 5.8s, proxy.ts: 183ms, application-code: 804ms)
+ GET /guru/tugas 200 in 8.6s (next.js: 5.2s, proxy.ts: 41ms, application-code: 3.3s)
+ GET /api/guru/asesmen 200 in 4.6s (next.js: 2.7s, proxy.ts: 918ms, application-code: 974ms)
+ GET /api/guru/tugas 200 in 813ms (next.js: 251ms, proxy.ts: 44ms, application-code: 518ms)
+ GET /api/guru/tugas 200 in 861ms (next.js: 565ms, proxy.ts: 34ms, application-code: 262ms)
+ POST /guru/tugas 200 in 2.2s (next.js: 108ms, proxy.ts: 56ms, application-code: 2.0s)
+  └─ ƒ createTugas({}) in 295ms app/guru/tugas/actions.ts
+ GET /api/guru/tugas 200 in 1865ms (next.js: 823ms, proxy.ts: 98ms, application-code: 944ms)
+ GET /guru/asesmen 200 in 3.7s (next.js: 1609ms, proxy.ts: 27ms, application-code: 2.1s)
+ GET /api/guru/asesmen 200 in 3.6s (next.js: 514ms, proxy.ts: 10ms, application-code: 3.1s)
+ GET /api/guru/asesmen 200 in 3.7s (next.js: 3.0s, proxy.ts: 10ms, application-code: 716ms)
+CREATE ASESMEN ERROR: ValidationError: Asesmen validation failed: jenis: `pg` is not a valid enum value for path `jenis`.
+    at model.validate (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\mongoose\lib\document.js:2945:36)
+    at async model.$__save (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\mongoose\lib\model.js:399:7)
+    at async maybeTracedSave (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\mongoose\lib\model.js:676:7)
+    at async model.create (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\mongoose\lib\model.js:2807:5)
+    at async createAsesmen (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\.next\dev\server\chunks\ssr\_20yot__._.js:109:9)
+    at async executeActionAndPrepareForRender (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:168:5395)
+    at async C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:168:2018
+    at async handleAction (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:166:27863)
+    at async renderToHTMLOrFlightImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:173:2883)
+    at async doRender (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\.next\dev\server\chunks\ssr\node_modules_next_dist_1pxx3_b._.js:595:32)
+    at async AppPageRouteModule.handleResponse (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\compiled\next-server\app-page-turbo.runtime.dev.js:216:76101)
+    at async handleResponse (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\.next\dev\server\chunks\ssr\node_modules_next_dist_1pxx3_b._.js:962:36)
+    at async Module.handler (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\.next\dev\server\chunks\ssr\node_modules_next_dist_1pxx3_b._.js:1433:24)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\base-server.js:1537:9)
+    at async DevServer.renderPageComponent (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\base-server.js:1589:24)
+    at async DevServer.renderToResponseImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\base-server.js:1639:32)
+    at async DevServer.pipeImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\base-server.js:1088:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\next-server.js:338:17)
+    at async DevServer.handleRequestImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\base-server.js:979:17)
+    at async C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\dev\next-dev-server.js:426:20
+    at async Span.traceAsyncFn (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\trace\trace.js:164:20)
+    at async DevServer.handleRequest (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\dev\next-dev-server.js:422:24)
+    at async invokeRender (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\lib\router-server.js:306:21)
+    at async handleRequest (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\lib\router-server.js:508:24)
+    at async requestHandlerImpl (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\lib\router-server.js:565:13)
+    at async Server.requestListener (C:\Users\jngzx\lms-smkcn\Lms-12PPLG2-INNOVACODE-\node_modules\next\dist\server\lib\start-server.js:225:13) {
+  errors: {
+    jenis: ValidatorError: `pg` is not a valid enum value for path `jenis`.
+        at ignore-listed frames {
+      properties: [Object],
+      kind: 'enum',
+      path: 'jenis',
+      value: 'pg',
+      reason: undefined,
+      formatMessage: [Function: formatMessage]
+    }
+  },
+  _message: 'Asesmen validation failed'
+}
+ POST /guru/asesmen 200 in 948ms (next.js: 353ms, proxy.ts: 17ms, application-code: 578ms)
+  └─ ƒ createAsesmen({}) in 486ms app/guru/asesmen/actions.ts
+ GET /api/guru/asesmen 200 in 305ms (next.js: 114ms, proxy.ts: 37ms, application-code: 154ms)
+ GET /api/guru/asesmen 200 in 406ms (next.js: 21ms, proxy.ts: 17ms, application-code: 368ms)
