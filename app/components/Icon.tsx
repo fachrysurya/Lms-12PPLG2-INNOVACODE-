@@ -14,6 +14,7 @@ export type IconName =
   | "plus"
   | "tugas"
   | "asesmen"
+  | "nilai"
   | "eye"
   | "download"
   | "check"
@@ -100,6 +101,14 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M8.5 4.2H7c-.8 0-1.5.7-1.5 1.5v13.1c0 .8.7 1.5 1.5 1.5h10c.8 0 1.5-.7 1.5-1.5V5.7c0-.8-.7-1.5-1.5-1.5h-1.5" />
       <rect x="8.5" y="2.8" width="7" height="3" rx="1" />
       <path d="m9 12.6 1.9 1.9 4-4" />
+    </>
+  ),
+
+  nilai: (
+    <>
+      <path d="M4.5 5.5h15c.8 0 1.5.7 1.5 1.5v10c0 .8-.7 1.5-1.5 1.5h-15c-.8 0-1.5-.7-1.5-1.5V7c0-.8.7-1.5 1.5-1.5z" />
+      <path d="m7.5 13.5 3-3 2.2 2.2 3.8-3.8" />
+      <path d="M16.5 8.9h1.5v1.5" />
     </>
   ),
 

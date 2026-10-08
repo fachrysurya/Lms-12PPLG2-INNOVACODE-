@@ -2590,6 +2590,25 @@ textarea {
   cursor: not-allowed;
 }
 
+/* Dua opsi unduh (PDF & Excel) */
+.download-opsi {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.download-opsi .download-button {
+  justify-content: center;
+}
+
+.download-button.excel {
+  background: #1e8e5a;
+}
+
+.download-button.excel:hover {
+  background: #17734a;
+}
+
 /* Pesan status download */
 .download-note {
   margin-top: 20px;
@@ -2606,7 +2625,9 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-}/* =========================================
+}
+
+/* =========================================
    PROFILE (SEMUA ROLE)
    ========================================= */
 
@@ -3436,5 +3457,136 @@ textarea {
   .guru-toolbar {
     flex-direction: column;
     align-items: stretch;
+  }
+}
+/* =========================================
+   GURU — NILAI (TUGAS, ASESMEN, AKHIR)
+   ========================================= */
+
+.nilai-header-aksi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nilai-final-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1e8e5a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nilai-final-btn:hover {
+  background: #17734a;
+}
+
+.nilai-final-btn.kecil {
+  padding: 7px 11px;
+  font-size: 12px;
+}
+
+.nilai-final-btn .icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Tabel nilai */
+.nilai-tabel {
+  margin-top: 0;
+}
+
+.nilai-tabel table {
+  min-width: 1000px;
+}
+
+.nilai-nis {
+  display: block;
+  margin-top: 3px;
+  color: #929cab;
+  font-size: 11px;
+}
+
+/* Kolom nilai tugas & asesmen diberi latar agar terlihat terpisah */
+.nilai-kolom-terpisah {
+  background: #f6f9fd;
+  font-weight: 600;
+  color: #293247;
+}
+
+.nilai-final {
+  color: #1261d6;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.nilai-belum {
+  color: #b6bfcc;
+}
+
+/* Predikat */
+.nilai-predikat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.predikat-A {
+  background: #e9f7ef;
+  color: #1e8e5a;
+}
+
+.predikat-B {
+  background: #e8f0ff;
+  color: #1261d6;
+}
+
+.predikat-C {
+  background: #fdf1e2;
+  color: #b9770e;
+}
+
+.predikat-D {
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.predikat-E {
+  background: #f0f2f6;
+  color: #7b8797;
+}
+
+/* Info pada form saat semester sudah difinalisasi */
+.nilai-info-final {
+  padding: 12px 14px;
+  border: 1px solid #cfe0f7;
+  border-radius: 9px;
+  background: #f2f8ff;
+  color: #1261d6;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+@media (max-width: 650px) {
+  .nilai-header-aksi {
+    width: 100%;
+  }
+
+  .nilai-final-btn,
+  .nilai-header-aksi .add-button {
+    flex: 1;
+    justify-content: center;
   }
 }
