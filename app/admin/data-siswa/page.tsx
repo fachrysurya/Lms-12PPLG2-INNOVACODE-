@@ -264,15 +264,19 @@ export default function DataSiswaPage() {
             </div>
 
             <div className="form-group">
-              <label>NIS</label>
+              <label>NISN</label>
 
               <input
                 type="text"
                 name="nis"
+                inputMode="numeric"
+                maxLength={10}
+                pattern="[0-9]{10}"
+                title="NISN harus terdiri dari 10 angka."
                 defaultValue={
                   editingSiswa?.nis || ""
                 }
-                placeholder="Contoh: 2026001"
+                placeholder="10 digit NISN"
                 required
               />
             </div>
@@ -374,7 +378,7 @@ export default function DataSiswaPage() {
               <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>NIS</th>
+                <th>NISN</th>
                 <th>Jenis Kelamin</th>
                 <th>Kelas</th>
                 <th>Email</th>

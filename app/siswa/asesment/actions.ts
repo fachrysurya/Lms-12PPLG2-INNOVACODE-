@@ -46,19 +46,74 @@ export async function kirimAsesmen(formData: FormData) {
       };
     }
 
-    let jawaban: string[] = [];
+    if (
+      !asesmen.aktif ||
+      asesmen.kelas.trim() !== identitas.kelas.trim()
+    ) {
+      return {
+        success: false,
+        message: "Asesmen ini tidak tersedia untuk kelas Anda.",
+      };
+    }
+
+    const sudahDikerjakan = await HasilAsesmen.exists({
+      asesmenId,
+      siswaId: identitas.siswaId,
+    });
+
+    if (sudahDikerjakan) {
+      return {
+        success: false,
+        message: "Asesmen ini sudah pernah dikerjakan.",
+      };
+    }
+
+    let jawaban: string[];
 
     try {
       const parsed = JSON.parse(bersihkan(formData.get("jawaban")));
 
-      if (Array.isArray(parsed)) {
-        jawaban = parsed.map((item) => String(item ?? ""));
+      if (!Array.isArray(parsed)) {
+        throw new Error("Jawaban harus berupa daftar.");
       }
-    } catch {
-      jawaban = [];
+
+      jawaban = parsed.map((item) => String(item ?? ""));
+    } catch (error) {
+      console.error("PARSE JAWABAN ASESMEN ERROR:", error);
+      return {
+        success: false,
+        message: "Format jawaban tidak valid. Muat ulang halaman lalu coba lagi.",
+      };
     }
 
     const soal = asesmen.soal || [];
+
+    if (
+      jawaban.length !== soal.length ||
+      jawaban.some((item) => !item.trim())
+    ) {
+      return {
+        success: false,
+        message: "Semua soal asesmen wajib dijawab.",
+      };
+    }
+
+    const jawabanPgTidakValid = soal.some((item, index) => {
+      if (!item.opsi?.length) return false;
+      const opsiIndex = Number(jawaban[index]);
+      return (
+        !Number.isInteger(opsiIndex) ||
+        opsiIndex < 0 ||
+        opsiIndex >= item.opsi.length
+      );
+    });
+
+    if (jawabanPgTidakValid) {
+      return {
+        success: false,
+        message: "Pilih jawaban yang tersedia untuk setiap soal pilihan ganda.",
+      };
+    }
 
     // Hitung skor otomatis dari soal pilihan ganda.
     let totalPg = 0;
@@ -76,21 +131,17 @@ export async function kirimAsesmen(formData: FormData) {
 
     const skor = totalPg > 0 ? Math.round((benarPg / totalPg) * 100) : 0;
 
-    await HasilAsesmen.findOneAndUpdate(
-      { asesmenId, siswaId: identitas.siswaId },
-      {
-        asesmenId,
-        siswaId: identitas.siswaId,
-        namaSiswa: identitas.nama,
-        kelas: asesmen.kelas || identitas.kelas,
-        mataPelajaran: asesmen.mataPelajaran,
-        jawaban,
-        skor,
-        // Esai tidak bisa dinilai otomatis -> tunggu guru.
-        dinilai: totalPg > 0 && totalPg === soal.length,
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
+    await HasilAsesmen.create({
+      asesmenId,
+      siswaId: identitas.siswaId,
+      namaSiswa: identitas.nama,
+      kelas: asesmen.kelas || identitas.kelas,
+      mataPelajaran: asesmen.mataPelajaran,
+      jawaban,
+      skor,
+      // Esai tidak bisa dinilai otomatis -> tunggu guru.
+      dinilai: totalPg > 0 && totalPg === soal.length,
+    });
 
     revalidatePath("/siswa/asesment");
     revalidatePath("/siswa/dashboard");

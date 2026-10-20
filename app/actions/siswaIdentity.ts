@@ -58,6 +58,7 @@ export async function getSiswaIdentity(): Promise<SiswaIdentity | null> {
       .lean();
 
     if (siswa) {
+      dasar.nama = siswa.nama;
       dasar.nis = siswa.nis;
       dasar.kelas = siswa.kelas;
       dasar.email = siswa.email || dasar.email;

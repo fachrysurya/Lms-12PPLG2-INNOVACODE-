@@ -340,7 +340,7 @@ export default function GuruNilaiPage() {
           <Icon name="search" />
           <input
             type="text"
-            placeholder="Cari nama siswa, NIS, kelas, atau mapel..."
+            placeholder="Cari nama siswa, NISN, kelas, atau mapel..."
             value={cari}
             onChange={(e) => setCari(e.target.value)}
           />
@@ -433,7 +433,7 @@ export default function GuruNilaiPage() {
             </div>
 
             <div className="form-group">
-              <label>NIS</label>
+              <label>NISN</label>
               <input
                 type="text"
                 name="nis"
@@ -595,7 +595,7 @@ export default function GuruNilaiPage() {
                     <strong>{item.namaSiswa}</strong>
                     {item.nis && (
                       <small className="nilai-nis">
-                        NIS: {item.nis}
+                        NISN: {item.nis}
                       </small>
                     )}
                   </td>

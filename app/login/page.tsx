@@ -21,7 +21,7 @@ const accounts = [
   },
   {
     id: "3",
-    nama: "Siswa Edu Class",
+    nama: "Andi",
     username: "siswa",
     password: "siswa123",
     role: "siswa",

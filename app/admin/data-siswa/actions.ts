@@ -50,12 +50,19 @@ export async function createSiswa(formData: FormData) {
       };
     }
 
+    if (!/^\d{10}$/.test(nis)) {
+      return {
+        success: false,
+        message: "NISN harus terdiri dari 10 angka.",
+      };
+    }
+
     const existingSiswa = await Siswa.findOne({ nis });
 
     if (existingSiswa) {
       return {
         success: false,
-        message: "NIS sudah digunakan.",
+        message: "NISN sudah digunakan.",
       };
     }
 
@@ -132,6 +139,13 @@ export async function updateSiswa(formData: FormData) {
       };
     }
 
+    if (!/^\d{10}$/.test(nis)) {
+      return {
+        success: false,
+        message: "NISN harus terdiri dari 10 angka.",
+      };
+    }
+
     const existingSiswa = await Siswa.findOne({
       nis,
       _id: { $ne: id },
@@ -140,7 +154,7 @@ export async function updateSiswa(formData: FormData) {
     if (existingSiswa) {
       return {
         success: false,
-        message: "NIS sudah digunakan.",
+        message: "NISN sudah digunakan.",
       };
     }
 

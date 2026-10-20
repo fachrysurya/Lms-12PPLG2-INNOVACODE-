@@ -36,7 +36,7 @@ const daftarData: JenisData[] = [
     listKey: "nilai",
     kolom: [
       { key: "namaSiswa", label: "Nama Siswa" },
-      { key: "nis", label: "NIS" },
+      { key: "nis", label: "NISN" },
       { key: "kelas", label: "Kelas" },
       { key: "mataPelajaran", label: "Mata Pelajaran" },
       { key: "semester", label: "Semester" },

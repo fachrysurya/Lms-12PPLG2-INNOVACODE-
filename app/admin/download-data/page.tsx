@@ -27,13 +27,13 @@ const daftarData: JenisData[] = [
     id: "siswa",
     nama: "Data Siswa",
     deskripsi:
-      "Nama, NIS, jenis kelamin, kelas, dan kontak siswa.",
+      "Nama, NISN, jenis kelamin, kelas, dan kontak siswa.",
     icon: "user",
     endpoint: "/api/admin/data-siswa",
     listKey: "siswa",
     kolom: [
       { key: "nama", label: "Nama" },
-      { key: "nis", label: "NIS" },
+      { key: "nis", label: "NISN" },
       {
         key: "jenisKelamin",
         label: "Jenis Kelamin",

@@ -32,7 +32,7 @@ const users = [
     email: "guru@educlass.com",
   },
   {
-    nama: "Siswa Edu Class",
+    nama: "Andi",
     username: "siswa",
     password: "siswa123",
     role: "siswa" as const,

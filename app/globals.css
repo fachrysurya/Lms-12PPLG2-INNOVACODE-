@@ -3943,6 +3943,44 @@ textarea {
   opacity: 0.65;
 }
 
+.siswa-asesmen-options {
+  display: grid;
+  gap: 9px;
+}
+
+.siswa-asesmen-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  color: #344054;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.siswa-asesmen-option input {
+  margin-top: 2px;
+  accent-color: #1261d6;
+}
+
+.siswa-asesmen-question {
+  display: grid;
+  gap: 8px;
+  padding: 13px 15px;
+  border: 1px solid #e4eaf2;
+  border-radius: 9px;
+  color: #344054;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.siswa-asesmen-question p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 850px) {
   .siswa-tugas-grid {
     grid-template-columns: 1fr;
