@@ -46,7 +46,7 @@ export async function GET() {
       siswaId: identitas.siswaId,
       asesmenId: { $in: asesmenIds },
     })
-      .select("asesmenId jawaban skor dinilai umpanBalik createdAt updatedAt")
+      .select("asesmenId jawaban createdAt")
       .lean();
     const hasilPerAsesmen = new Map(
       hasilAsesmen.map((hasil) => [hasil.asesmenId, hasil])
@@ -77,10 +77,7 @@ export async function GET() {
           hasil: hasil
             ? {
                 jawaban: hasil.jawaban,
-                skor: hasil.skor,
-                dinilai: hasil.dinilai,
-                umpanBalik: hasil.umpanBalik,
-                dikerjakanPada: hasil.updatedAt || hasil.createdAt,
+                dikerjakanPada: hasil.createdAt,
               }
             : null,
         };

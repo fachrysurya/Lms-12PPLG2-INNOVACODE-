@@ -8,9 +8,6 @@ type FilterAsesmen = "semua" | "belum" | "dikerjakan";
 
 type HasilAsesmenSiswa = {
   jawaban: string[];
-  skor: number;
-  dinilai: boolean;
-  umpanBalik: string;
   dikerjakanPada?: string;
 };
 
@@ -257,9 +254,7 @@ export default function AsesmenSiswaPage() {
                 >
                   {!item.hasil
                     ? "Belum dikerjakan"
-                    : item.hasil.dinilai
-                      ? "Selesai dinilai"
-                      : "Menunggu penilaian"}
+                    : "Sudah dikerjakan"}
                 </span>
               </div>
               <h2>{item.judul}</h2>
@@ -276,11 +271,6 @@ export default function AsesmenSiswaPage() {
                 <strong>Dibagikan</strong>
                 <span>{formatTanggal(item.createdAt)}</span>
               </div>
-              {item.hasil?.dinilai && (
-                <div className="siswa-tugas-submission-info">
-                  <strong>Nilai: {item.hasil.skor}/100</strong>
-                </div>
-              )}
               <button
                 type="button"
                 className="view-button siswa-tugas-action"
@@ -332,18 +322,11 @@ export default function AsesmenSiswaPage() {
               {selected.hasil ? (
                 <>
                   <div className="siswa-tugas-submission-info">
-                    <strong>
-                      {selected.hasil.dinilai
-                        ? `Nilai: ${selected.hasil.skor}/100`
-                        : "Jawaban sudah dikirim dan menunggu penilaian guru."}
-                    </strong>
+                    <strong>Jawaban sudah dikirim.</strong>
                     {selected.hasil.dikerjakanPada && (
                       <span>
                         Dikerjakan: {formatTanggal(selected.hasil.dikerjakanPada)}
                       </span>
-                    )}
-                    {selected.hasil.umpanBalik && (
-                      <p>Umpan balik guru: {selected.hasil.umpanBalik}</p>
                     )}
                   </div>
                   {selected.soal.map((soal, index) => {

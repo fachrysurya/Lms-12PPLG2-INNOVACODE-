@@ -23,28 +23,48 @@ type JenisData = {
   endpoint: string;
   listKey: string;
   kolom: Kolom[];
+  transform?: (rows: BarisData[]) => BarisData[];
 };
+
+function formatTanggal(value: unknown): string {
+  if (typeof value !== "string" && !(value instanceof Date)) {
+    return "";
+  }
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? ""
+    : new Intl.DateTimeFormat("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+}
 
 const daftarData: JenisData[] = [
   {
     id: "nilai",
     nama: "Data Nilai",
-    deskripsi:
-      "Nilai tugas, asesmen, dan nilai akhir siswa.",
+    deskripsi: "Nilai tugas siswa yang sudah dinilai secara otomatis atau manual.",
     icon: "nilai",
-    endpoint: "/api/guru/nilai",
-    listKey: "nilai",
+    endpoint: "/api/guru/nilai/tugas",
+    listKey: "pengumpulan",
     kolom: [
       { key: "namaSiswa", label: "Nama Siswa" },
-      { key: "nis", label: "NISN" },
       { key: "kelas", label: "Kelas" },
       { key: "mataPelajaran", label: "Mata Pelajaran" },
-      { key: "semester", label: "Semester" },
-      { key: "nilaiTugas", label: "Nilai Tugas" },
-      { key: "nilaiAsesmen", label: "Nilai Asesmen" },
-      { key: "nilaiAkhir", label: "Nilai Akhir" },
-      { key: "semesterSelesai", label: "Status" },
+      { key: "judulTugas", label: "Tugas" },
+      { key: "nilai", label: "Nilai" },
+      { key: "metodePenilaian", label: "Metode Penilaian" },
+      { key: "umpanBalik", label: "Umpan Balik" },
+      { key: "dinilaiPada", label: "Tanggal Dinilai" },
     ],
+    transform: (rows) =>
+      rows
+        .filter((row) => row.dinilai === true)
+        .map((row) => ({
+          ...row,
+          dinilaiPada: formatTanggal(row.dinilaiPada),
+        })),
   },
   {
     id: "tugas",
@@ -63,6 +83,32 @@ const daftarData: JenisData[] = [
       { key: "poin", label: "Poin" },
       { key: "aktif", label: "Status" },
     ],
+  },
+  {
+    id: "nilai-asesmen",
+    nama: "Data Nilai Asesmen",
+    deskripsi:
+      "Hasil dan nilai asesmen siswa yang hanya dapat dilihat guru.",
+    icon: "nilai",
+    endpoint: "/api/guru/nilai/asesmen",
+    listKey: "hasil",
+    kolom: [
+      { key: "namaSiswa", label: "Nama Siswa" },
+      { key: "kelas", label: "Kelas" },
+      { key: "mataPelajaran", label: "Mata Pelajaran" },
+      { key: "judulAsesmen", label: "Asesmen" },
+      { key: "jenis", label: "Jenis Asesmen" },
+      { key: "skor", label: "Nilai" },
+      { key: "statusPenilaian", label: "Status Penilaian" },
+      { key: "umpanBalik", label: "Umpan Balik" },
+      { key: "dikerjakanPada", label: "Tanggal Dikerjakan" },
+    ],
+    transform: (rows) =>
+      rows.map((row) => ({
+        ...row,
+        statusPenilaian: row.dinilai ? "Sudah dinilai" : "Menunggu penilaian",
+        dikerjakanPada: formatTanggal(row.dikerjakanPada),
+      })),
   },
   {
     id: "asesmen",
@@ -101,23 +147,6 @@ const daftarData: JenisData[] = [
   },
 ];
 
-function ambilNilai(
-  baris: BarisData,
-  key: string
-): string {
-  const nilai = baris[key];
-
-  if (nilai === null || nilai === undefined) {
-    return "";
-  }
-
-  if (typeof nilai === "boolean") {
-    return nilai ? "Aktif" : "Nonaktif";
-  }
-
-  return String(nilai);
-}
-
 export default function GuruDownloadPage() {
   const [catatan, setCatatan] = useState("");
   const [sedangProses, setSedangProses] = useState<{
@@ -142,7 +171,11 @@ export default function GuruDownloadPage() {
             const data = await res.json();
 
             hasil[item.id] = data.success
-              ? (data[item.listKey] as BarisData[])?.length ?? 0
+              ? item.transform
+                ? item.transform(
+                    (data[item.listKey] as BarisData[]) ?? []
+                  ).length
+                : (data[item.listKey] as BarisData[])?.length ?? 0
               : null;
           } catch {
             hasil[item.id] = null;
@@ -174,7 +207,8 @@ export default function GuruDownloadPage() {
         return;
       }
 
-      const baris = (data[item.listKey] as BarisData[]) ?? [];
+      const dataBaris = (data[item.listKey] as BarisData[]) ?? [];
+      const baris = item.transform ? item.transform(dataBaris) : dataBaris;
 
       if (baris.length === 0) {
         setCatatan(

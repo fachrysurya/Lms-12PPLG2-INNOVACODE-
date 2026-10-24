@@ -1,263 +1,212 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { nilaiHasilAsesmen, nilaiPengumpulanTugas } from "./actions";
 
-import Icon from "../../components/Icon";
-
-import {
-  createNilai,
-  updateNilai,
-  deleteNilai,
-  finalisasiSemester,
-  bukaFinalisasi,
-} from "./actions";
-
-type SemesterNilai = 1 | 2;
-
-type Nilai = {
+type PengumpulanNilai = {
   _id: string;
-  siswaId: string;
   namaSiswa: string;
-  nis: string;
   kelas: string;
   mataPelajaran: string;
-  semester: SemesterNilai;
-  nilaiTugas: number;
-  nilaiAsesmen: number;
-  semesterSelesai: boolean;
-  nilaiAkhir: number;
-  bobotTugas: number;
-  bobotAsesmen: number;
+  tugasId: string;
+  judulTugas: string;
+  jawaban: { pertanyaan: string; jawaban: string }[];
   catatan: string;
-  guru: string;
-  createdAt?: string;
+  linkJawaban?: string;
+  pdfUrl?: string;
+  pdfNama?: string;
+  dapatDinilaiOtomatis: boolean;
+  dinilai: boolean;
+  nilai: number;
+  metodePenilaian: string;
+  umpanBalik: string;
+  dikumpulkanPada?: string;
 };
 
-function predikat(nilai: number): string {
-  if (nilai >= 90) return "A";
-  if (nilai >= 80) return "B";
-  if (nilai >= 70) return "C";
-  if (nilai >= 60) return "D";
-  return "E";
-}
+type PengumpulanResponse = {
+  success: boolean;
+  message?: string;
+  pengumpulan?: PengumpulanNilai[];
+};
+
+type HasilAsesmenGuru = {
+  _id: string;
+  namaSiswa: string;
+  kelas: string;
+  mataPelajaran: string;
+  asesmenId: string;
+  judulAsesmen: string;
+  jenis: "esai" | "pg";
+  soal: { pertanyaan: string; jawaban: string }[];
+  skor: number;
+  dinilai: boolean;
+  umpanBalik: string;
+  dikerjakanPada?: string;
+};
+
+type HasilAsesmenResponse = {
+  success: boolean;
+  message?: string;
+  hasil?: HasilAsesmenGuru[];
+};
 
 function formatAngka(nilai: number): string {
   return Number.isInteger(nilai) ? String(nilai) : nilai.toFixed(2);
 }
 
+function formatTanggal(value?: string): string {
+  if (!value) return "-";
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? "-"
+    : new Intl.DateTimeFormat("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(date);
+}
+
+function isHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 export default function GuruNilaiPage() {
-  const [daftar, setDaftar] = useState<Nilai[]>([]);
+  const [pengumpulan, setPengumpulan] = useState<PengumpulanNilai[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [gradingId, setGradingId] = useState("");
+  const [hasilAsesmen, setHasilAsesmen] = useState<HasilAsesmenGuru[]>([]);
+  const [loadingAsesmen, setLoadingAsesmen] = useState(true);
+  const [asesmenMessage, setAsesmenMessage] = useState("");
+  const [gradingAsesmenId, setGradingAsesmenId] = useState("");
 
-  const [showForm, setShowForm] = useState(false);
-  const [editing, setEditing] = useState<Nilai | null>(null);
-
-  const [cari, setCari] = useState("");
-  const [filterKelas, setFilterKelas] = useState("semua");
-  const [filterMapel, setFilterMapel] = useState("semua");
-  const [filterSemester, setFilterSemester] = useState("semua");
-
-  async function muat() {
+  async function muatPengumpulan() {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/guru/nilai", {
+      const response = await fetch("/api/guru/nilai/tugas", {
         cache: "no-store",
       });
+      const data: PengumpulanResponse = await response.json();
 
-      const data = await res.json();
-
-      if (data.success) {
-        setDaftar(data.nilai);
-      } else {
-        setMessage(data.message || "Gagal mengambil data nilai.");
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || "Gagal mengambil pengumpulan tugas siswa."
+        );
       }
+
+      setPengumpulan(
+        Array.isArray(data.pengumpulan) ? data.pengumpulan : []
+      );
+      setMessage("");
     } catch (error) {
-      console.error(error);
-      setMessage("Gagal mengambil data nilai.");
+      console.error("GET PENGUMPULAN NILAI GURU ERROR:", error);
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Gagal mengambil pengumpulan tugas siswa."
+      );
     } finally {
       setLoading(false);
     }
   }
 
+  async function muatHasilAsesmen() {
+    try {
+      setLoadingAsesmen(true);
+      const response = await fetch("/api/guru/nilai/asesmen", {
+        cache: "no-store",
+      });
+      const data: HasilAsesmenResponse = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Gagal mengambil hasil asesmen.");
+      }
+
+      setHasilAsesmen(Array.isArray(data.hasil) ? data.hasil : []);
+      setAsesmenMessage("");
+    } catch (error) {
+      console.error("GET HASIL ASESMEN GURU ERROR:", error);
+      setAsesmenMessage(
+        error instanceof Error
+          ? error.message
+          : "Gagal mengambil hasil asesmen."
+      );
+    } finally {
+      setLoadingAsesmen(false);
+    }
+  }
+
   useEffect(() => {
-    muat();
+    void Promise.resolve().then(() => {
+      void muatPengumpulan();
+      void muatHasilAsesmen();
+    });
   }, []);
 
-  const opsiKelas = useMemo(() => {
-    return Array.from(new Set(daftar.map((n) => n.kelas))).sort();
-  }, [daftar]);
-
-  const opsiMapel = useMemo(() => {
-    return Array.from(
-      new Set(daftar.map((n) => n.mataPelajaran))
-    ).sort();
-  }, [daftar]);
-
-  const hasil = useMemo(() => {
-    return daftar.filter((item) => {
-      const cocokCari =
-        item.namaSiswa.toLowerCase().includes(cari.toLowerCase()) ||
-        item.nis.toLowerCase().includes(cari.toLowerCase()) ||
-        item.kelas.toLowerCase().includes(cari.toLowerCase()) ||
-        item.mataPelajaran
-          .toLowerCase()
-          .includes(cari.toLowerCase());
-
-      const cocokKelas =
-        filterKelas === "semua" || item.kelas === filterKelas;
-      const cocokMapel =
-        filterMapel === "semua" ||
-        item.mataPelajaran === filterMapel;
-      const cocokSemester =
-        filterSemester === "semua" ||
-        String(item.semester) === filterSemester;
-
-      return cocokCari && cocokKelas && cocokMapel && cocokSemester;
-    });
-  }, [daftar, cari, filterKelas, filterMapel, filterSemester]);
-
-  const ringkas = useMemo(() => {
-    const total = daftar.length;
-
-    const sudahFinal = daftar.filter(
-      (n) => n.semesterSelesai
-    ).length;
-
-    const belumFinal = total - sudahFinal;
-
-    const sudahAdaAkhir = daftar.filter((n) => n.semesterSelesai);
-
-    const rata =
-      sudahAdaAkhir.length > 0
-        ? sudahAdaAkhir.reduce((a, b) => a + b.nilaiAkhir, 0) /
-          sudahAdaAkhir.length
-        : 0;
-
-    return { total, sudahFinal, belumFinal, rata };
-  }, [daftar]);
-
-  function bukaTambah() {
-    setEditing(null);
-    setShowForm(true);
+  async function simpanPenilaian(
+    formData: FormData,
+    item: PengumpulanNilai,
+    metode: "otomatis" | "manual"
+  ) {
+    setGradingId(item._id);
     setMessage("");
+    formData.set("pengumpulanId", item._id);
+    formData.set("metode", metode);
+
+    try {
+      const result = await nilaiPengumpulanTugas(formData);
+      setMessage(result.message);
+
+      if (result.success) {
+        await muatPengumpulan();
+      }
+    } catch (error) {
+      console.error("SIMPAN PENILAIAN TUGAS ERROR:", error);
+      setMessage("Gagal menyimpan penilaian tugas.");
+    } finally {
+      setGradingId("");
+    }
   }
 
-  function bukaEdit(item: Nilai) {
-    setEditing(item);
-    setShowForm(true);
-    setMessage("");
-  }
-
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
+  async function handleNilaiManual(
+    event: React.FormEvent<HTMLFormElement>,
+    item: PengumpulanNilai
   ) {
     event.preventDefault();
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const result = editing
-      ? await updateNilai(formData)
-      : await createNilai(formData);
-
-    setMessage(result.message);
-
-    if (result.success) {
-      setShowForm(false);
-      setEditing(null);
-      form.reset();
-      await muat();
-    }
+    await simpanPenilaian(
+      new FormData(event.currentTarget),
+      item,
+      "manual"
+    );
   }
 
-  async function handleDelete(id: string) {
-    const yakin = confirm(
-      "Apakah Anda yakin ingin menghapus nilai ini?"
-    );
+  async function handleNilaiAsesmen(
+    event: React.FormEvent<HTMLFormElement>,
+    item: HasilAsesmenGuru
+  ) {
+    event.preventDefault();
+    setGradingAsesmenId(item._id);
+    setAsesmenMessage("");
+    const formData = new FormData(event.currentTarget);
+    formData.set("hasilId", item._id);
 
-    if (!yakin) return;
-
-    const formData = new FormData();
-    formData.append("id", id);
-
-    const result = await deleteNilai(formData);
-
-    setMessage(result.message);
-
-    if (result.success) {
-      await muat();
-    }
-  }
-
-  async function handleFinalisasi(item: Nilai) {
-    const yakin = confirm(
-      `Finalisasi semester ${item.semester} untuk ${item.namaSiswa}? ` +
-        "Nilai tugas & asesmen akan digabung menjadi nilai akhir."
-    );
-
-    if (!yakin) return;
-
-    const formData = new FormData();
-    formData.append("id", item._id);
-
-    const result = await finalisasiSemester(formData);
-
-    setMessage(result.message);
-
-    if (result.success) {
-      await muat();
-    }
-  }
-
-  async function handleFinalisasiSemua() {
-    if (filterKelas === "semua" || filterMapel === "semua") {
-      setMessage(
-        "Pilih Kelas dan Mata Pelajaran dulu untuk finalisasi massal."
-      );
-      return;
-    }
-
-    const semester = filterSemester === "semua" ? "1" : filterSemester;
-
-    const yakin = confirm(
-      `Finalisasi semester ${semester} untuk kelas ${filterKelas} - ${filterMapel}? ` +
-        "Semua nilai siswa pada kelas & mapel ini akan digabung."
-    );
-
-    if (!yakin) return;
-
-    const formData = new FormData();
-    formData.append("kelas", filterKelas);
-    formData.append("mataPelajaran", filterMapel);
-    formData.append("semester", semester);
-
-    const result = await finalisasiSemester(formData);
-
-    setMessage(result.message);
-
-    if (result.success) {
-      await muat();
-    }
-  }
-
-  async function handleBukaFinalisasi(item: Nilai) {
-    const yakin = confirm(
-      `Buka kembali finalisasi untuk ${item.namaSiswa}?`
-    );
-
-    if (!yakin) return;
-
-    const formData = new FormData();
-    formData.append("id", item._id);
-
-    const result = await bukaFinalisasi(formData);
-
-    setMessage(result.message);
-
-    if (result.success) {
-      await muat();
+    try {
+      const result = await nilaiHasilAsesmen(formData);
+      setAsesmenMessage(result.message);
+      if (result.success) {
+        await muatHasilAsesmen();
+      }
+    } catch (error) {
+      console.error("SIMPAN NILAI ASESMEN GURU ERROR:", error);
+      setAsesmenMessage("Gagal menyimpan nilai asesmen.");
+    } finally {
+      setGradingAsesmenId("");
     }
   }
 
@@ -265,429 +214,162 @@ export default function GuruNilaiPage() {
     <div className="management-page">
       <div className="management-header">
         <div>
-          <h1>Nilai Siswa</h1>
+          <h1>Penilaian Tugas</h1>
           <p>
-            Nilai tugas & asesmen dipisah. Saat semester selesai,
-            keduanya digabung otomatis menjadi nilai akhir.
+            Tinjau pengumpulan tugas dan berikan nilai secara otomatis
+            atau manual.
           </p>
         </div>
-
-        <div className="nilai-header-aksi">
-          <button
-            type="button"
-            className="nilai-final-btn"
-            onClick={handleFinalisasiSemua}
-          >
-            <Icon name="check" />
-            Finalisasi Semester
-          </button>
-
-          <button
-            type="button"
-            className="add-button"
-            onClick={bukaTambah}
-          >
-            <Icon name="plus" />
-            Tambah Nilai
-          </button>
-        </div>
-      </div>
-
-      <div className="management-stats">
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="nilai" />
-          </div>
-          <div>
-            <span>Total Data Nilai</span>
-            <strong>{ringkas.total}</strong>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="check" />
-          </div>
-          <div>
-            <span>Sudah Finalisasi</span>
-            <strong>{ringkas.sudahFinal}</strong>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="alert" />
-          </div>
-          <div>
-            <span>Belum Finalisasi</span>
-            <strong>{ringkas.belumFinal}</strong>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <Icon name="nilai" />
-          </div>
-          <div>
-            <span>Rata-rata Nilai Akhir</span>
-            <strong>{formatAngka(ringkas.rata)}</strong>
-          </div>
-        </div>
-      </div>
-
-      <div className="guru-toolbar">
-        <div className="guru-search">
-          <Icon name="search" />
-          <input
-            type="text"
-            placeholder="Cari nama siswa, NISN, kelas, atau mapel..."
-            value={cari}
-            onChange={(e) => setCari(e.target.value)}
-          />
-        </div>
-
-        <select
-          value={filterKelas}
-          onChange={(e) => setFilterKelas(e.target.value)}
+        <button
+          type="button"
+          className="add-button"
+          onClick={muatPengumpulan}
+          disabled={loading}
         >
-          <option value="semua">Semua Kelas</option>
-          {opsiKelas.map((k) => (
-            <option key={k} value={k}>
-              {k}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={filterMapel}
-          onChange={(e) => setFilterMapel(e.target.value)}
-        >
-          <option value="semua">Semua Mapel</option>
-          {opsiMapel.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={filterSemester}
-          onChange={(e) => setFilterSemester(e.target.value)}
-        >
-          <option value="semua">Semua Semester</option>
-          <option value="1">Semester 1</option>
-          <option value="2">Semester 2</option>
-        </select>
+          {loading ? "Memuat..." : "Muat ulang"}
+        </button>
       </div>
 
       {message && (
-        <div className="management-message">{message}</div>
-      )}
-
-      {showForm && (
-        <div className="user-form-card">
-          <div className="form-header">
-            <div className="form-title">
-              <div className="form-icon">
-                <Icon name="nilai" />
-              </div>
-
-              <div>
-                <h2>{editing ? "Edit Nilai" : "Tambah Nilai"}</h2>
-                <p>
-                  Isi nilai tugas dan nilai asesmen secara terpisah.
-                </p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="close-form"
-              onClick={() => {
-                setShowForm(false);
-                setEditing(null);
-              }}
-            >
-              ×
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="user-form">
-            {editing && (
-              <input
-                type="hidden"
-                name="id"
-                value={editing._id}
-              />
-            )}
-
-            <div className="form-group">
-              <label>Nama Siswa</label>
-              <input
-                type="text"
-                name="namaSiswa"
-                defaultValue={editing?.namaSiswa || ""}
-                placeholder="Contoh: Andi Pratama"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>NISN</label>
-              <input
-                type="text"
-                name="nis"
-                defaultValue={editing?.nis || ""}
-                placeholder="Contoh: 12345"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Kelas</label>
-              <input
-                type="text"
-                name="kelas"
-                defaultValue={editing?.kelas || ""}
-                placeholder="Contoh: X RPL 1"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Mata Pelajaran</label>
-              <input
-                type="text"
-                name="mataPelajaran"
-                defaultValue={editing?.mataPelajaran || ""}
-                placeholder="Contoh: Basis Data"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Semester</label>
-              <select
-                name="semester"
-                defaultValue={String(editing?.semester ?? 1)}
-              >
-                <option value="1">Semester 1</option>
-                <option value="2">Semester 2</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Bobot Tugas (%)</label>
-              <input
-                type="number"
-                name="bobotTugas"
-                min={0}
-                max={100}
-                defaultValue={editing?.bobotTugas ?? 40}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Bobot Asesmen (%)</label>
-              <input
-                type="number"
-                name="bobotAsesmen"
-                min={0}
-                max={100}
-                defaultValue={editing?.bobotAsesmen ?? 60}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Nilai Tugas (0-100)</label>
-              <input
-                type="number"
-                name="nilaiTugas"
-                min={0}
-                max={100}
-                step="0.01"
-                defaultValue={editing?.nilaiTugas ?? 0}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Nilai Asesmen (0-100)</label>
-              <input
-                type="number"
-                name="nilaiAsesmen"
-                min={0}
-                max={100}
-                step="0.01"
-                defaultValue={editing?.nilaiAsesmen ?? 0}
-                required
-              />
-            </div>
-
-            <div className="form-group form-group-full">
-              <label>Catatan</label>
-              <textarea
-                name="catatan"
-                rows={2}
-                defaultValue={editing?.catatan || ""}
-                placeholder="Catatan tambahan (opsional)"
-              />
-            </div>
-
-            {editing?.semesterSelesai && (
-              <div className="form-group form-group-full">
-                <div className="nilai-info-final">
-                  Semester ini sudah difinalisasi. Nilai akhir
-                  akan dihitung ulang otomatis saat disimpan.
-                </div>
-              </div>
-            )}
-
-            <div className="form-actions">
-              <button
-                type="button"
-                className="cancel-button"
-                onClick={() => {
-                  setShowForm(false);
-                  setEditing(null);
-                }}
-              >
-                Batal
-              </button>
-
-              <button type="submit" className="save-button">
-                <Icon name="edit" />
-                {editing ? "Simpan Perubahan" : "Simpan Nilai"}
-              </button>
-            </div>
-          </form>
+        <div className="management-message" role="status">
+          {message}
         </div>
       )}
 
       <div className="dashboard-table nilai-tabel">
         {loading ? (
-          <p className="guru-panel-empty">Memuat data...</p>
-        ) : hasil.length === 0 ? (
-          <p className="guru-panel-empty">Belum ada data nilai.</p>
+          <p className="guru-panel-empty">Memuat pengumpulan tugas...</p>
+        ) : pengumpulan.length === 0 ? (
+          <p className="guru-panel-empty">
+            Belum ada tugas yang dikumpulkan siswa untuk tugas Anda.
+          </p>
         ) : (
           <table>
             <thead>
               <tr>
-                <th>No</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>Mapel</th>
-                <th>Smt</th>
-                <th>Nilai Tugas</th>
-                <th>Nilai Asesmen</th>
-                <th>Nilai Akhir</th>
-                <th>Predikat</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
+                <th>Siswa</th>
+                <th>Tugas</th>
+                <th>Hasil Pengerjaan</th>
+                <th>Penilaian</th>
+              </tr>
             </thead>
-
             <tbody>
-              {hasil.map((item, index) => (
+              {pengumpulan.map((item) => (
                 <tr key={item._id}>
-                  <td>{index + 1}</td>
-
                   <td>
                     <strong>{item.namaSiswa}</strong>
-                    {item.nis && (
-                      <small className="nilai-nis">
-                        NISN: {item.nis}
-                      </small>
-                    )}
+                    <small className="nilai-nis">{item.kelas || "-"}</small>
                   </td>
-
-                  <td>{item.kelas}</td>
-                  <td>{item.mataPelajaran}</td>
-                  <td>S{item.semester}</td>
-
-                  <td className="nilai-kolom-terpisah">
-                    {formatAngka(item.nilaiTugas)}
-                  </td>
-
-                  <td className="nilai-kolom-terpisah">
-                    {formatAngka(item.nilaiAsesmen)}
-                  </td>
-
                   <td>
-                    {item.semesterSelesai ? (
-                      <strong className="nilai-final">
-                        {formatAngka(item.nilaiAkhir)}
-                      </strong>
-                    ) : (
-                      <span className="nilai-belum">—</span>
-                    )}
+                    <strong>{item.judulTugas}</strong>
+                    <small className="nilai-nis">
+                      {item.mataPelajaran || "-"}
+                    </small>
+                    <small className="nilai-nis">
+                      Dikumpulkan: {formatTanggal(item.dikumpulkanPada)}
+                    </small>
                   </td>
-
                   <td>
-                    {item.semesterSelesai ? (
-                      <span
-                        className={`nilai-predikat predikat-${predikat(
-                          item.nilaiAkhir
-                        )}`}
-                      >
-                        {predikat(item.nilaiAkhir)}
-                      </span>
-                    ) : (
-                      <span className="nilai-belum">—</span>
+                    {item.jawaban.length > 0 && (
+                      <div>
+                        {item.jawaban.map((jawaban, index) => (
+                          <p key={`${item._id}-jawaban-${index}`}>
+                            <strong>{jawaban.pertanyaan}</strong>
+                            <br />
+                            {jawaban.jawaban || "-"}
+                          </p>
+                        ))}
+                      </div>
                     )}
-                  </td>
-
-                  <td>
-                    {item.semesterSelesai ? (
-                      <span className="guru-status guru-status-aktif">
-                        Selesai
-                      </span>
-                    ) : (
-                      <span className="guru-status guru-status-mendesak">
-                        Dipisah
-                      </span>
-                    )}
-                  </td>
-
-                  <td>
-                    <div className="action-buttons">
-                      {!item.semesterSelesai ? (
-                        <button
-                          type="button"
-                          className="nilai-final-btn kecil"
-                          onClick={() => handleFinalisasi(item)}
+                    {item.catatan && <p>{item.catatan}</p>}
+                    {item.linkJawaban && isHttpUrl(item.linkJawaban) && (
+                      <p>
+                        <a
+                          href={item.linkJawaban}
+                          target="_blank"
+                          rel="noreferrer"
                         >
-                          <Icon name="check" />
-                          Final
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="view-button"
-                          onClick={() => handleBukaFinalisasi(item)}
+                          Buka link jawaban
+                        </a>
+                      </p>
+                    )}
+                    {item.pdfUrl && (
+                      <p>
+                        <a
+                          href={item.pdfUrl}
+                          target="_blank"
+                          rel="noreferrer"
                         >
-                          <Icon name="eye" />
-                          Buka
+                          Lihat PDF {item.pdfNama || "jawaban"}
+                        </a>
+                      </p>
+                    )}
+                    {item.jawaban.length === 0 &&
+                      !item.catatan &&
+                      !item.linkJawaban &&
+                      !item.pdfUrl && <span>-</span>}
+                  </td>
+                  <td>
+                    <form
+                      className="nilai-penilaian-form"
+                      onSubmit={(event) => handleNilaiManual(event, item)}
+                    >
+                      <label>
+                        Nilai manual (0-100)
+                        <input
+                          type="number"
+                          name="nilai"
+                          min={0}
+                          max={100}
+                          step="0.01"
+                          defaultValue={item.dinilai ? item.nilai : ""}
+                          required
+                        />
+                      </label>
+                      <label>
+                        Umpan balik
+                        <textarea
+                          name="umpanBalik"
+                          rows={2}
+                          defaultValue={item.umpanBalik}
+                        />
+                      </label>
+                      <div className="action-buttons">
+                        <button
+                          type="submit"
+                          className="edit-button"
+                          disabled={gradingId === item._id}
+                        >
+                          {gradingId === item._id
+                            ? "Menyimpan..."
+                            : "Simpan manual"}
                         </button>
-                      )}
-
-                      <button
-                        type="button"
-                        className="edit-button"
-                        onClick={() => bukaEdit(item)}
-                      >
-                        <Icon name="edit" />
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        className="delete-button"
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        <Icon name="trash" />
-                        Hapus
-                      </button>
-                    </div>
+                        {item.dapatDinilaiOtomatis && (
+                          <button
+                            type="button"
+                            className="nilai-final-btn kecil"
+                            disabled={gradingId === item._id}
+                            onClick={(event) => {
+                              const form = event.currentTarget.form;
+                              if (form) {
+                                void simpanPenilaian(
+                                  new FormData(form),
+                                  item,
+                                  "otomatis"
+                                );
+                              }
+                            }}
+                          >
+                            Nilai otomatis
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                    <small className="nilai-nis">
+                      {item.dinilai
+                        ? `Sudah dinilai (${item.metodePenilaian || "manual"}): ${formatAngka(item.nilai)}`
+                        : "Belum dinilai"}
+                    </small>
                   </td>
                 </tr>
               ))}
@@ -695,6 +377,129 @@ export default function GuruNilaiPage() {
           </table>
         )}
       </div>
+
+      <section className="dashboard-panel">
+        <div className="dashboard-panel-header">
+          <div>
+            <h2>Hasil Asesmen (Khusus Guru)</h2>
+            <p>
+              Nilai asesmen hanya dapat dilihat dan dikelola oleh guru.
+              Nilai ini tidak ditampilkan pada halaman Nilai siswa.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="add-button"
+            onClick={muatHasilAsesmen}
+            disabled={loadingAsesmen}
+          >
+            {loadingAsesmen ? "Memuat..." : "Muat ulang"}
+          </button>
+        </div>
+
+        {asesmenMessage && (
+          <div className="management-message" role="status">
+            {asesmenMessage}
+          </div>
+        )}
+
+        <div className="dashboard-table nilai-tabel">
+          {loadingAsesmen ? (
+            <p className="guru-panel-empty">Memuat hasil asesmen...</p>
+          ) : hasilAsesmen.length === 0 ? (
+            <p className="guru-panel-empty">
+              Belum ada hasil asesmen dari siswa untuk asesmen Anda.
+            </p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Siswa</th>
+                  <th>Asesmen</th>
+                  <th>Jawaban Siswa</th>
+                  <th>Nilai &amp; Umpan Balik</th>
+                </tr>
+              </thead>
+              <tbody>
+                {hasilAsesmen.map((item) => (
+                  <tr key={item._id}>
+                    <td>
+                      <strong>{item.namaSiswa}</strong>
+                      <small className="nilai-nis">{item.kelas || "-"}</small>
+                    </td>
+                    <td>
+                      <strong>{item.judulAsesmen}</strong>
+                      <small className="nilai-nis">
+                        {item.mataPelajaran || "-"} ·{" "}
+                        {item.jenis === "pg" ? "Pilihan Ganda" : "Esai"}
+                      </small>
+                      <small className="nilai-nis">
+                        Dikerjakan: {formatTanggal(item.dikerjakanPada)}
+                      </small>
+                    </td>
+                    <td>
+                      {item.soal.map((soal, index) => (
+                        <p key={`${item._id}-soal-${index}`}>
+                          <strong>
+                            {index + 1}. {soal.pertanyaan}
+                          </strong>
+                          <br />
+                          {soal.jawaban || "-"}
+                        </p>
+                      ))}
+                    </td>
+                    <td>
+                      <form
+                        className="nilai-penilaian-form"
+                        onSubmit={(event) =>
+                          handleNilaiAsesmen(event, item)
+                        }
+                      >
+                        <small className="nilai-nis">
+                          {item.dinilai
+                            ? `Sudah dinilai: ${formatAngka(item.skor)}/100`
+                            : `Skor sementara pilihan ganda: ${formatAngka(item.skor)}/100 · Menunggu penilaian guru`}
+                        </small>
+                        <label>
+                          Nilai asesmen (0-100)
+                          <input
+                            type="number"
+                            name="nilai"
+                            min={0}
+                            max={100}
+                            step="0.01"
+                            defaultValue={item.dinilai ? item.skor : ""}
+                            required
+                          />
+                        </label>
+                        <label>
+                          Umpan balik
+                          <textarea
+                            name="umpanBalik"
+                            rows={2}
+                            defaultValue={item.umpanBalik}
+                          />
+                        </label>
+                        <button
+                          type="submit"
+                          className="edit-button"
+                          disabled={gradingAsesmenId === item._id}
+                        >
+                          {gradingAsesmenId === item._id
+                            ? "Menyimpan..."
+                            : item.dinilai
+                              ? "Perbarui nilai"
+                              : "Simpan nilai"}
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

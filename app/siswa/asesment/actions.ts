@@ -145,11 +145,11 @@ export async function kirimAsesmen(formData: FormData) {
 
     revalidatePath("/siswa/asesment");
     revalidatePath("/siswa/dashboard");
+    revalidatePath("/guru/nilai");
 
     return {
       success: true,
       message: "Jawaban asesmen berhasil dikirim.",
-      skor,
     };
   } catch (error) {
     console.error("KIRIM ASESMEN ERROR:", error);

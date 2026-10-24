@@ -91,6 +91,20 @@ export async function kumpulkanTugas(formData: FormData) {
       }
     }
 
+    const pengumpulanSebelumnya = await PengumpulanTugas.findOne({
+      tugasId,
+      siswaId: identitas.siswaId,
+    })
+      .select("pdfUrl pdfNama dinilai")
+      .lean();
+
+    if (pengumpulanSebelumnya?.dinilai) {
+      return {
+        success: false,
+        message: "Tugas ini sudah dinilai dan tidak dapat diubah lagi.",
+      };
+    }
+
     const catatan = bersihkan(formData.get("catatan"));
     const linkJawaban = bersihkan(formData.get("linkJawaban"));
     const pdfUrl = bersihkan(formData.get("pdfUrl"));
@@ -139,13 +153,6 @@ export async function kumpulkanTugas(formData: FormData) {
     }
 
     const soal: ISoalIsian[] = tugas.soal || [];
-    const pengumpulanSebelumnya = await PengumpulanTugas.findOne({
-      tugasId,
-      siswaId: identitas.siswaId,
-    })
-      .select("pdfUrl pdfNama")
-      .lean();
-
     if (
       jawabanInput.length < soal.length ||
       soal.some((_, index) => !jawabanInput[index]?.jawaban?.trim())
@@ -222,6 +229,10 @@ export async function kumpulkanTugas(formData: FormData) {
           : pengumpulanSebelumnya?.pdfNama,
         dinilai: false,
         nilai,
+        umpanBalik: "",
+        $unset: {
+          metodePenilaian: "",
+        },
       },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );

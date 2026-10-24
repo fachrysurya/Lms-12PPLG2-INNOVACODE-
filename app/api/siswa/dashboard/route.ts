@@ -5,7 +5,6 @@ import { getSiswaIdentity } from "../../../actions/siswaIdentity";
 import Asesmen from "../../../../models/Asesmen";
 import HasilAsesmen from "../../../../models/HasilAsesmen";
 import Materi from "../../../../models/Materi";
-import Nilai from "../../../../models/Nilai";
 import PengumpulanTugas from "../../../../models/Pengumpulan";
 import Tugas from "../../../../models/Tugas";
 
@@ -50,7 +49,7 @@ export async function GET() {
       });
     }
 
-    const [materi, tugas, asesmen, pengumpulan, hasilAsesmen, nilai] =
+    const [materi, tugas, asesmen, pengumpulan, hasilAsesmen, nilaiTugas] =
       await Promise.all([
         Materi.find({ aktif: true, kelas })
           .sort({ createdAt: -1 })
@@ -71,8 +70,11 @@ export async function GET() {
         HasilAsesmen.find({ siswaId: identitas.siswaId })
           .select("asesmenId")
           .lean(),
-        Nilai.find({ siswaId: identitas.siswaId, semesterSelesai: true })
-          .select("nilaiAkhir")
+        PengumpulanTugas.find({
+          siswaId: identitas.siswaId,
+          dinilai: true,
+        })
+          .select("nilai")
           .lean(),
       ]);
 
@@ -93,8 +95,8 @@ export async function GET() {
       mataPelajaran: item.mataPelajaran,
       selesai: asesmenSelesai.has(item._id.toString()),
     }));
-    const nilaiValid = nilai
-      .map((item) => item.nilaiAkhir)
+    const nilaiValid = nilaiTugas
+      .map((item) => item.nilai)
       .filter((item) => Number.isFinite(item));
 
     return NextResponse.json({

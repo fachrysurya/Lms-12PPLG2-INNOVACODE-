@@ -4055,6 +4055,34 @@ textarea {
   font-size: 11px;
 }
 
+.nilai-penilaian-form {
+  display: grid;
+  min-width: 220px;
+  gap: 8px;
+}
+
+.nilai-penilaian-form label {
+  display: grid;
+  gap: 4px;
+  color: #5f6b7a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nilai-penilaian-form input,
+.nilai-penilaian-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d9e1ec;
+  border-radius: 6px;
+  color: #172033;
+  font-size: 13px;
+}
+
+.nilai-penilaian-form textarea {
+  resize: vertical;
+}
+
 /* Kolom nilai tugas & asesmen diberi latar agar terlihat terpisah */
 .nilai-kolom-terpisah {
   background: #f6f9fd;

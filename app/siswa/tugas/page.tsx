@@ -463,7 +463,11 @@ export default function TugasSiswaPage() {
                 </p>
               )}
 
-              {sudahLewat(selected.tenggat) ? (
+              {selected.pengumpulan?.dinilai ? (
+                <p className="siswa-tugas-closed-note">
+                  Tugas sudah dinilai guru dan pengumpulan tidak dapat diubah.
+                </p>
+              ) : sudahLewat(selected.tenggat) ? (
                 <p className="siswa-tugas-closed-note">
                   Tenggat sudah lewat. Pengumpulan dan perubahan jawaban
                   ditutup.

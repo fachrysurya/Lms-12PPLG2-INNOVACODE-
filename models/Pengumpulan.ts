@@ -31,6 +31,8 @@ export interface IPengumpulanTugas {
   dinilai: boolean;
   /** Nilai yang diberikan guru (0-100) */
   nilai: number;
+  /** Metode penilaian setelah nilai ditetapkan guru */
+  metodePenilaian?: "otomatis" | "manual";
   /** Umpan balik dari guru */
   umpanBalik: string;
   createdAt?: Date;
@@ -129,6 +131,11 @@ const PengumpulanTugasSchema = new Schema<IPengumpulanTugas>(
       default: 0,
       min: 0,
       max: 100,
+    },
+
+    metodePenilaian: {
+      type: String,
+      enum: ["otomatis", "manual"],
     },
 
     umpanBalik: {
