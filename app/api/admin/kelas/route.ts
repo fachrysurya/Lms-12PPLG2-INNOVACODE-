@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../../lib/mongodb";
 import Kelas from "../../../../models/Kelas";
+import Siswa from "../../../../models/Siswa";
 
 export async function GET() {
   try {
@@ -10,12 +11,17 @@ export async function GET() {
       .sort({ createdAt: -1 })
       .lean();
 
-    return NextResponse.json({
-      success: true,
-      kelas: kelas.map((item) => ({
+    const kelasDenganJumlah = await Promise.all(
+      kelas.map(async (item) => ({
         ...item,
         _id: item._id.toString(),
-      })),
+        jumlahSiswa: await Siswa.countDocuments({ kelas: item.namaKelas }),
+      }))
+    );
+
+    return NextResponse.json({
+      success: true,
+      kelas: kelasDenganJumlah,
     });
   } catch (error) {
     console.error("GET KELAS ERROR:", error);

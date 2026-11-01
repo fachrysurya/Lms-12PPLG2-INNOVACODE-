@@ -6,10 +6,6 @@ export default function DataKurikulumPage() {
           <h2>Data Kurikulum</h2>
           <p>Kelola data kurikulum sekolah.</p>
         </div>
-
-        <button className="add-button">
-          + Tambah Kurikulum
-        </button>
       </div>
 
       <div className="dashboard-panel">
@@ -33,10 +29,7 @@ export default function DataKurikulumPage() {
                 <td>2025/2026</td>
                 <td>Kurikulum utama sekolah</td>
                 <td>Aktif</td>
-                <td>
-                  <button className="edit-button">Edit</button>
-                  <button className="delete-button">Hapus</button>
-                </td>
+                <td>-</td>
               </tr>
 
               <tr>
@@ -45,10 +38,7 @@ export default function DataKurikulumPage() {
                 <td>2025/2026</td>
                 <td>Kurikulum jurusan RPL</td>
                 <td>Aktif</td>
-                <td>
-                  <button className="edit-button">Edit</button>
-                  <button className="delete-button">Hapus</button>
-                </td>
+                <td>-</td>
               </tr>
 
               <tr>
@@ -57,10 +47,7 @@ export default function DataKurikulumPage() {
                 <td>2025/2026</td>
                 <td>Kurikulum tingkat XI</td>
                 <td>Aktif</td>
-                <td>
-                  <button className="edit-button">Edit</button>
-                  <button className="delete-button">Hapus</button>
-                </td>
+                <td>-</td>
               </tr>
             </tbody>
           </table>

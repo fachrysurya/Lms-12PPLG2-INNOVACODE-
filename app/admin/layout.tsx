@@ -54,6 +54,10 @@ export default async function AdminLayout({
             Data Guru
           </Link>
 
+          <Link href="/admin/jadwal-pelajaran">
+            Jadwal Pelajaran
+          </Link>
+
           <Link href="/admin/laporan">
             Laporan
           </Link>

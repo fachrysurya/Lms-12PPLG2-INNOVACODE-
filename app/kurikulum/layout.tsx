@@ -34,28 +34,24 @@ export default async function KurikulumLayout({
             Dashboard
           </Link>
 
+          <Link href="/kurikulum/data-guru">
+            Data Guru
+          </Link>
+
+          <Link href="/kurikulum/data-siswa">
+            Data Siswa
+          </Link>
+
+          <Link href="/kurikulum/data-kelas">
+            Data Kelas
+          </Link>
+
           <Link href="/kurikulum/mata-pelajaran">
             Mata Pelajaran
           </Link>
 
-          <Link href="/kurikulum/materi">
-            Materi
-          </Link>
-
           <Link href="/kurikulum/jadwal">
-            Jadwal
-          </Link>
-
-          <Link href="/kurikulum/data-kurikulum">
-            Data Kurikulum
-          </Link>
-
-          <Link href="/kurikulum/monitoring">
-            Monitoring
-          </Link>
-
-          <Link href="/kurikulum/laporan">
-            Laporan
+            Jadwal Pelajaran
           </Link>
 
           <Link href="/kurikulum/profile">
