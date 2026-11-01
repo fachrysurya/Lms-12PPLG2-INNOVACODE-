@@ -38,12 +38,24 @@ export default async function KepalaSekolahLayout({
             Dashboard
           </Link>
 
-          <Link href="/kepala-sekolah/monitoring">
-            Monitoring
+          <Link href="/kepala-sekolah/data-guru">
+            Data Guru
           </Link>
 
-          <Link href="/kepala-sekolah/laporan">
-            Laporan
+          <Link href="/kepala-sekolah/data-siswa">
+            Data Siswa
+          </Link>
+
+          <Link href="/kepala-sekolah/data-kelas">
+            Data Kelas
+          </Link>
+
+          <Link href="/kepala-sekolah/mata-pelajaran">
+            Mata Pelajaran
+          </Link>
+
+          <Link href="/kepala-sekolah/jadwal">
+            Jadwal Pelajaran
           </Link>
 
           <Link href="/kepala-sekolah/profile">

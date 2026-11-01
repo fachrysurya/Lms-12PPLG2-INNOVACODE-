@@ -54,6 +54,10 @@ export default async function KurikulumLayout({
             Jadwal Pelajaran
           </Link>
 
+          <Link href="/kurikulum/laporan-akademik">
+            Laporan Akademik
+          </Link>
+
           <Link href="/kurikulum/profile">
             Profile
           </Link>

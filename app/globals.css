@@ -867,6 +867,14 @@ textarea {
   border-radius: 12px;
 }
 
+button.dashboard-card {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .dashboard-card span {
   display: block;
   margin-bottom: 12px;
@@ -5030,4 +5038,5 @@ textarea {
 .kurikulum-download-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .kurikulum-search { width: 100%; max-width: 420px; padding: 11px 13px; border: 1px solid #dfe5ed; border-radius: 8px; outline: none; }
 .kurikulum-search:focus { border-color: #1261d6; box-shadow: 0 0 0 3px rgba(18,97,214,.08); }
+.akademik-search { margin: 16px 0; }
 @media (max-width: 650px) { .kurikulum-download-actions { width: 100%; } .kurikulum-download-actions button { flex: 1; justify-content: center; } .kurikulum-preview-modal dl div { grid-template-columns: 1fr; gap: 4px; } }

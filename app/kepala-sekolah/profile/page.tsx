@@ -4,15 +4,9 @@ import { useState } from "react";
 
 export default function ProfileKepalaSekolah() {
   const [editing, setEditing] = useState(false);
-
-  const [nama, setNama] =
-    useState("Kepala Sekolah");
-
-  const [username, setUsername] =
-    useState("kepsek");
-
-  const [email, setEmail] =
-    useState("kepsek@educlass.com");
+  const [nama, setNama] = useState("Kepala Sekolah");
+  const [username, setUsername] = useState("kepsek");
+  const [email, setEmail] = useState("kepsek@educlass.com");
 
   return (
     <div className="management-page">
@@ -42,41 +36,17 @@ export default function ProfileKepalaSekolah() {
         <div className="profile-form">
           <div className="profile-field">
             <label>Nama Lengkap</label>
-
-            <input
-              type="text"
-              value={nama}
-              disabled={!editing}
-              onChange={(e) =>
-                setNama(e.target.value)
-              }
-            />
+            <input type="text" value={nama} disabled={!editing} onChange={(event) => setNama(event.target.value)} />
           </div>
 
           <div className="profile-field">
             <label>Username</label>
-
-            <input
-              type="text"
-              value={username}
-              disabled={!editing}
-              onChange={(e) =>
-                setUsername(e.target.value)
-              }
-            />
+            <input type="text" value={username} disabled={!editing} onChange={(event) => setUsername(event.target.value)} />
           </div>
 
           <div className="profile-field">
             <label>Email</label>
-
-            <input
-              type="email"
-              value={email}
-              disabled={!editing}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
-            />
+            <input type="email" value={email} disabled={!editing} onChange={(event) => setEmail(event.target.value)} />
           </div>
 
           <div className="profile-field">
@@ -88,36 +58,17 @@ export default function ProfileKepalaSekolah() {
               disabled
             />
           </div>
-        </div>
 
-        <div className="profile-actions">
-          {!editing ? (
-            <button
-              type="button"
-              className="profile-edit-button"
-              onClick={() => setEditing(true)}
-            >
-              Edit Profile
-            </button>
-          ) : (
-            <>
-              <button
-                type="button"
-                className="profile-cancel-button"
-                onClick={() => setEditing(false)}
-              >
-                Batal
-              </button>
-
-              <button
-                type="button"
-                className="profile-save-button"
-                onClick={() => setEditing(false)}
-              >
-                Simpan Perubahan
-              </button>
-            </>
-          )}
+          <div className="profile-actions">
+            {!editing ? (
+              <button type="button" className="profile-edit-button" onClick={() => setEditing(true)}>Edit Profile</button>
+            ) : (
+              <>
+                <button type="button" className="profile-cancel-button" onClick={() => setEditing(false)}>Batal</button>
+                <button type="button" className="profile-save-button" onClick={() => setEditing(false)}>Simpan Perubahan</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
