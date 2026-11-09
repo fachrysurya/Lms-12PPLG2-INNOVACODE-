@@ -34,8 +34,6 @@ export default function DataSiswaPage() {
 
   async function loadSiswa() {
     try {
-      setLoading(true);
-
       const response = await fetch(
         "/api/admin/data-siswa",
         {
@@ -65,7 +63,7 @@ export default function DataSiswaPage() {
   }
 
   useEffect(() => {
-    loadSiswa();
+    void Promise.resolve().then(loadSiswa);
   }, []);
 
   function openCreateForm() {
@@ -102,6 +100,7 @@ export default function DataSiswaPage() {
 
       form.reset();
 
+      setLoading(true);
       await loadSiswa();
     }
   }
@@ -124,6 +123,7 @@ export default function DataSiswaPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadSiswa();
     }
   }

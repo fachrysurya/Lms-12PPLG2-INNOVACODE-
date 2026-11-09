@@ -18,7 +18,6 @@ export default function JadwalPelajaranAdminPage() {
   const [loading, setLoading] = useState(true);
 
   async function load() {
-    setLoading(true);
     const [jadwalRes, kelasRes, mapelRes, guruRes] = await Promise.all([
       fetch("/api/admin/jadwal", { cache: "no-store" }), fetch("/api/admin/kelas", { cache: "no-store" }),
       fetch("/api/admin/mata-pelajaran", { cache: "no-store" }), fetch("/api/admin/data-guru", { cache: "no-store" }),
@@ -31,7 +30,7 @@ export default function JadwalPelajaranAdminPage() {
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { void Promise.resolve().then(load); }, []);
 
   function bukaTambah() { setEditing(null); setShowForm(true); setMessage(""); }
   function bukaEdit(item: Jadwal) { setEditing(item); setShowForm(true); setMessage(""); }
@@ -47,13 +46,13 @@ export default function JadwalPelajaranAdminPage() {
     const response = await fetch("/api/admin/jadwal", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const data = await response.json();
     setMessage(data.message || "Jadwal tidak berhasil disimpan.");
-    if (data.success) { setShowForm(false); setEditing(null); await load(); }
+    if (data.success) { setShowForm(false); setEditing(null); setLoading(true); await load(); }
   }
 
   async function hapus(item: Jadwal) {
     if (!confirm(`Hapus jadwal ${item.mataPelajaran} pada hari ${item.hari}?`)) return;
     const response = await fetch("/api/admin/jadwal", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: item._id }) });
-    const data = await response.json(); setMessage(data.message); if (data.success) await load();
+    const data = await response.json(); setMessage(data.message); if (data.success) { setLoading(true); await load(); }
   }
 
   return <div className="management-page">

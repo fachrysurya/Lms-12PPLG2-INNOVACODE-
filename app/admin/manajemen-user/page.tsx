@@ -44,8 +44,6 @@ export default function ManajemenUserPage() {
 
   async function loadUsers() {
     try {
-      setLoading(true);
-
       const response = await fetch("/api/admin/users", {
         cache: "no-store",
       });
@@ -64,7 +62,7 @@ export default function ManajemenUserPage() {
   }
 
   useEffect(() => {
-    loadUsers();
+    void Promise.resolve().then(loadUsers);
   }, []);
 
   function openCreateForm() {
@@ -100,6 +98,7 @@ export default function ManajemenUserPage() {
       setEditingUser(null);
       form.reset();
 
+      setLoading(true);
       await loadUsers();
     }
   }
@@ -121,6 +120,7 @@ export default function ManajemenUserPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadUsers();
     }
   }

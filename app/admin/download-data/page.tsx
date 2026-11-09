@@ -117,23 +117,6 @@ const daftarData: JenisData[] = [
   },
 ];
 
-function ambilNilai(
-  baris: BarisData,
-  key: string
-): string {
-  const nilai = baris[key];
-
-  if (nilai === null || nilai === undefined) {
-    return "";
-  }
-
-  if (typeof nilai === "boolean") {
-    return nilai ? "Aktif" : "Nonaktif";
-  }
-
-  return String(nilai);
-}
-
 export default function DownloadDataPage() {
   const [catatan, setCatatan] = useState("");
   const [sedangProses, setSedangProses] =

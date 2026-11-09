@@ -33,8 +33,6 @@ export default function DataGuruPage() {
 
   async function loadGuru() {
     try {
-      setLoading(true);
-
       const response = await fetch(
         "/api/admin/data-guru",
         {
@@ -64,7 +62,7 @@ export default function DataGuruPage() {
   }
 
   useEffect(() => {
-    loadGuru();
+    void Promise.resolve().then(loadGuru);
   }, []);
 
   function openCreateForm() {
@@ -101,6 +99,7 @@ export default function DataGuruPage() {
 
       form.reset();
 
+      setLoading(true);
       await loadGuru();
     }
   }
@@ -123,6 +122,7 @@ export default function DataGuruPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadGuru();
     }
   }

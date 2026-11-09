@@ -32,8 +32,6 @@ export default function ManajemenKelasPage() {
 
   async function loadKelas() {
     try {
-      setLoading(true);
-
       const response = await fetch(
         "/api/admin/kelas",
         {
@@ -63,7 +61,7 @@ export default function ManajemenKelasPage() {
   }
 
   useEffect(() => {
-    loadKelas();
+    void Promise.resolve().then(loadKelas);
   }, []);
 
   function openCreateForm() {
@@ -100,6 +98,7 @@ export default function ManajemenKelasPage() {
 
       form.reset();
 
+      setLoading(true);
       await loadKelas();
     }
   }
@@ -123,6 +122,7 @@ export default function ManajemenKelasPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadKelas();
     }
   }

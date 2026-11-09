@@ -25,58 +25,107 @@ export default function Home() {
       <section className="hero">
         <div className="hero-content">
           <p className="hero-label">
+            <span className="hero-label-dot" />
             LEARNING MANAGEMENT SYSTEM
           </p>
 
           <h1>
             Smart Education
             <br />
-            Management System
+            <span>Management System</span>
           </h1>
 
           <p className="hero-description">
-            Kelola materi, tugas, asesmen, dan nilai dalam satu platform.
+            Satu platform untuk belajar lebih terarah. Kelola materi, tugas,
+            asesmen, dan nilai dengan lebih mudah.
           </p>
 
           <div className="hero-buttons">
             <Link href="/login" className="primary-button">
-              Get Started
+              Mulai Sekarang <span aria-hidden="true">→</span>
             </Link>
 
-            <Link href="/login" className="secondary-button">
-              Login
+            <Link href="#fitur" className="secondary-button">
+              Lihat Fitur
             </Link>
           </div>
 
           <div className="stats">
-            <div>
+            <div className="stat-item">
               <strong>320</strong>
               <span>Siswa</span>
             </div>
 
-            <div>
+            <div className="stat-item">
               <strong>24</strong>
               <span>Guru</span>
             </div>
 
-            <div>
+            <div className="stat-item">
               <strong>18</strong>
               <span>Materi</span>
             </div>
 
-            <div>
+            <div className="stat-item">
               <strong>42</strong>
               <span>Tugas</span>
             </div>
           </div>
         </div>
 
-        {/* GAMBAR LAPTOP EDU CLASS */}
-        <div className="hero-image">
-          <img
-            src="/edu-class-laptop.png"
-            alt="Edu Class"
-          />
+        <div className="hero-visual" aria-hidden="true">
+          <div className="dashboard-preview">
+            <div className="preview-header">
+              <div>
+                <small>EDU CLASS OVERVIEW</small>
+                <h3>Ringkasan Pembelajaran</h3>
+              </div>
+              <div className="avatar" aria-hidden="true">E</div>
+            </div>
+
+            <div className="preview-cards">
+              <div className="preview-card">
+                <span>Materi aktif</span>
+                <strong>18</strong>
+                <small className="preview-trend">Siap dipelajari</small>
+              </div>
+              <div className="preview-card">
+                <span>Tugas berjalan</span>
+                <strong>42</strong>
+                <small className="preview-trend">Tetap terpantau</small>
+              </div>
+            </div>
+
+            <div className="preview-section">
+              <div className="preview-section-heading">
+                <h4 className="section-title">Aktivitas pembelajaran</h4>
+                <span className="preview-period">Minggu ini</span>
+              </div>
+              <div className="preview-progress" aria-hidden="true">
+                <span />
+              </div>
+              <div className="activity">
+                <div className="activity-icon" aria-hidden="true">M</div>
+                <div>
+                  <strong>Materi pembelajaran</strong>
+                  <small>Terorganisir untuk setiap kelas</small>
+                </div>
+                <span className="activity-check">✓</span>
+              </div>
+              <div className="activity">
+                <div className="activity-icon" aria-hidden="true">T</div>
+                <div>
+                  <strong>Tugas &amp; asesmen</strong>
+                  <small>Progres belajar lebih terpantau</small>
+                </div>
+                <span className="activity-check">✓</span>
+              </div>
+            </div>
+          </div>
+          <div className="hero-note">
+            <span className="hero-note-icon" aria-hidden="true">✓</span>
+            Semua kebutuhan belajar, dalam satu tempat
+          </div>
         </div>
       </section>
 
@@ -94,6 +143,29 @@ export default function Home() {
           Edu Class membantu sekolah mengelola proses pembelajaran secara
           terpusat melalui satu sistem.
         </p>
+        <div className="about-points">
+          <div className="about-point">
+            <span className="about-point-icon" aria-hidden="true">01</span>
+            <div>
+              <h3>Terpusat</h3>
+              <p>Data pembelajaran tersusun rapi dalam satu platform.</p>
+            </div>
+          </div>
+          <div className="about-point">
+            <span className="about-point-icon" aria-hidden="true">02</span>
+            <div>
+              <h3>Terhubung</h3>
+              <p>Guru dan siswa mengakses kebutuhan belajar yang sama.</p>
+            </div>
+          </div>
+          <div className="about-point">
+            <span className="about-point-icon" aria-hidden="true">03</span>
+            <div>
+              <h3>Mudah dipantau</h3>
+              <p>Aktivitas dan perkembangan belajar lebih terlihat.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* FITUR */}
@@ -178,6 +250,9 @@ export default function Home() {
         <p>
           Learning Management System untuk kebutuhan sekolah.
         </p>
+        <Link href="/login" className="primary-button contact-button">
+          Masuk ke Edu Class <span aria-hidden="true">→</span>
+        </Link>
       </section>
     </main>
   );

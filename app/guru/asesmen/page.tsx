@@ -63,8 +63,6 @@ export default function GuruAsesmenPage() {
 
   async function muat() {
     try {
-      setLoading(true);
-
       const res = await fetch("/api/guru/asesmen", {
         cache: "no-store",
       });
@@ -87,7 +85,7 @@ export default function GuruAsesmenPage() {
   }
 
   useEffect(() => {
-    muat();
+    void Promise.resolve().then(muat);
   }, []);
 
   const hasil = useMemo(() => {
@@ -281,6 +279,7 @@ export default function GuruAsesmenPage() {
       setJenis("esai");
       setSoal([soalKosong("esai")]);
       form.reset();
+      setLoading(true);
       await muat();
     }
   }
@@ -300,6 +299,7 @@ export default function GuruAsesmenPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await muat();
     }
   }

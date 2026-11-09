@@ -62,8 +62,6 @@ export default function LaporanPage() {
 
   async function loadData() {
     try {
-      setLoading(true);
-
       const [resLaporan, resRingkasan] = await Promise.all([
         fetch("/api/admin/laporan", {
           cache: "no-store",
@@ -97,7 +95,7 @@ export default function LaporanPage() {
   }
 
   useEffect(() => {
-    loadData();
+    void Promise.resolve().then(loadData);
   }, []);
 
   function openCreateForm() {
@@ -134,6 +132,7 @@ export default function LaporanPage() {
 
       form.reset();
 
+      setLoading(true);
       await loadData();
     }
   }
@@ -155,6 +154,7 @@ export default function LaporanPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadData();
     }
   }

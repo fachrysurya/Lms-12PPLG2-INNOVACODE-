@@ -66,8 +66,6 @@ export default function GuruMateriPage() {
 
   async function muat() {
     try {
-      setLoading(true);
-
       const res = await fetch("/api/guru/materi", {
         cache: "no-store",
       });
@@ -88,7 +86,7 @@ export default function GuruMateriPage() {
   }
 
   useEffect(() => {
-    muat();
+    void Promise.resolve().then(muat);
   }, []);
 
   const hasil = useMemo(() => {
@@ -180,6 +178,7 @@ export default function GuruMateriPage() {
       setEditing(null);
       setPdfData(null);
       form.reset();
+      setLoading(true);
       await muat();
     }
   }
@@ -199,6 +198,7 @@ export default function GuruMateriPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await muat();
     }
   }

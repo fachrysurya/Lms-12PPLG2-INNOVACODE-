@@ -32,8 +32,6 @@ export default function MataPelajaranPage() {
 
   async function loadMapel() {
     try {
-      setLoading(true);
-
       const response = await fetch(
         "/api/admin/mata-pelajaran",
         {
@@ -63,7 +61,7 @@ export default function MataPelajaranPage() {
   }
 
   useEffect(() => {
-    loadMapel();
+    void Promise.resolve().then(loadMapel);
   }, []);
 
   function openCreateForm() {
@@ -100,6 +98,7 @@ export default function MataPelajaranPage() {
 
       form.reset();
 
+      setLoading(true);
       await loadMapel();
     }
   }
@@ -122,6 +121,7 @@ export default function MataPelajaranPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await loadMapel();
     }
   }

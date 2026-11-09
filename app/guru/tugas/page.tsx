@@ -37,13 +37,13 @@ type Tugas = {
   createdAt?: string;
 };
 
-function statusTenggat(tenggat?: string) {
+function statusTenggat(tenggat: string | undefined, sekarang: number) {
   if (!tenggat) {
     return { label: "Tanpa Tenggat", kelas: "netral" };
   }
 
   const waktu = new Date(tenggat).getTime();
-  const sisa = waktu - Date.now();
+  const sisa = waktu - sekarang;
 
   if (sisa < 0) {
     return { label: "Selesai", kelas: "selesai" };
@@ -84,11 +84,18 @@ export default function GuruTugasPage() {
   const [filter, setFilter] = useState("semua");
 
   const [detail, setDetail] = useState<Tugas | null>(null);
+  const [sekarang, setSekarang] = useState(() => Date.now());
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setSekarang(Date.now());
+    }, 60_000);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   async function muat() {
     try {
-      setLoading(true);
-
       const res = await fetch("/api/guru/tugas", {
         cache: "no-store",
       });
@@ -109,7 +116,7 @@ export default function GuruTugasPage() {
   }
 
   useEffect(() => {
-    muat();
+    void Promise.resolve().then(muat);
   }, []);
 
   const hasil = useMemo(() => {
@@ -133,16 +140,16 @@ export default function GuruTugasPage() {
     const berjalan = daftar.filter(
       (item) =>
         item.tenggat &&
-        new Date(item.tenggat).getTime() > Date.now()
+        new Date(item.tenggat).getTime() > sekarang
     ).length;
     const selesai = daftar.filter(
       (item) =>
         item.tenggat &&
-        new Date(item.tenggat).getTime() <= Date.now()
+        new Date(item.tenggat).getTime() <= sekarang
     ).length;
 
     return { total, berjalan, selesai };
-  }, [daftar]);
+  }, [daftar, sekarang]);
 
   function bukaTambah() {
     setEditing(null);
@@ -250,6 +257,7 @@ export default function GuruTugasPage() {
       setPdfData(null);
       setSoal([{ ...soalKosong }]);
       form.reset();
+      setLoading(true);
       await muat();
     }
   }
@@ -269,6 +277,7 @@ export default function GuruTugasPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setLoading(true);
       await muat();
     }
   }
@@ -620,7 +629,7 @@ export default function GuruTugasPage() {
           <p className="guru-panel-empty">Belum ada tugas.</p>
         ) : (
           hasil.map((item) => {
-            const st = statusTenggat(item.tenggat);
+            const st = statusTenggat(item.tenggat, sekarang);
 
             return (
               <div className="guru-kartu" key={item._id}>
