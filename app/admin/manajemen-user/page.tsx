@@ -10,6 +10,9 @@ import {
   deleteUser,
 } from "./actions";
 
+const DAFTAR_JURUSAN = ["RPL", "DKV", "MPLB", "TJKT", "BDR"];
+const DAFTAR_TINGKAT = ["X", "XI", "XII"];
+
 type User = {
   _id: string;
   nama: string;
@@ -21,7 +24,16 @@ type User = {
     | "siswa"
     | "kurikulum"
     | "kepala-sekolah";
+  kelas?: string;
+  jurusan?: string;
   aktif: boolean;
+};
+
+type Kelas = {
+  _id: string;
+  namaKelas: string;
+  jurusan: string;
+  tingkat: string;
 };
 
 const roleLabel: Record<User["role"], string> = {
@@ -34,13 +46,26 @@ const roleLabel: Record<User["role"], string> = {
 
 export default function ManajemenUserPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [kelasList, setKelasList] = useState<Kelas[]>([]);
   const [loading, setLoading] = useState(true);
+  const [kelasLoading, setKelasLoading] = useState(true);
 
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] =
     useState<User | null>(null);
+  const [selectedRole, setSelectedRole] =
+    useState<User["role"]>("siswa");
+  const [selectedJurusan, setSelectedJurusan] = useState("");
+  const [selectedTingkat, setSelectedTingkat] = useState("");
+  const [selectedKelasId, setSelectedKelasId] = useState("");
 
   const [message, setMessage] = useState("");
+
+  const kelasTersedia = kelasList.filter(
+    (item) =>
+      item.jurusan === selectedJurusan &&
+      item.tingkat === selectedTingkat
+  );
 
   async function loadUsers() {
     try {
@@ -61,18 +86,51 @@ export default function ManajemenUserPage() {
     }
   }
 
+  async function loadKelas() {
+    try {
+      const response = await fetch("/api/admin/kelas", {
+        cache: "no-store",
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setKelasList(data.kelas);
+      } else {
+        setMessage(data.message || "Gagal mengambil data kelas.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Gagal mengambil data kelas.");
+    } finally {
+      setKelasLoading(false);
+    }
+  }
+
   useEffect(() => {
-    void Promise.resolve().then(loadUsers);
+    void Promise.resolve().then(loadKelas).then(loadUsers);
   }, []);
 
   function openCreateForm() {
     setEditingUser(null);
+    setSelectedRole("siswa");
+    setSelectedJurusan("");
+    setSelectedTingkat("");
+    setSelectedKelasId("");
     setShowForm(true);
     setMessage("");
   }
 
   function openEditForm(user: User) {
     setEditingUser(user);
+    setSelectedRole(user.role);
+    setSelectedJurusan(user.jurusan || "");
+    const kelasUser = kelasList.find(
+      (item) =>
+        item.namaKelas === user.kelas &&
+        item.jurusan === user.jurusan
+    );
+    setSelectedTingkat(kelasUser?.tingkat || "");
+    setSelectedKelasId(kelasUser?._id || "");
     setShowForm(true);
     setMessage("");
   }
@@ -305,9 +363,16 @@ export default function ManajemenUserPage() {
 
               <select
                 name="role"
-                defaultValue={
-                  editingUser?.role || "siswa"
-                }
+                value={selectedRole}
+                onChange={(event) => {
+                  const role = event.target.value as User["role"];
+                  setSelectedRole(role);
+                  if (role !== "siswa") {
+                    setSelectedJurusan("");
+                    setSelectedTingkat("");
+                    setSelectedKelasId("");
+                  }
+                }}
                 required
               >
                 <option value="admin">Admin</option>
@@ -321,6 +386,86 @@ export default function ManajemenUserPage() {
                 </option>
               </select>
             </div>
+
+            {selectedRole === "siswa" && (
+              <>
+                <div className="form-group">
+                  <label htmlFor="user-jurusan">Jurusan</label>
+                  <select
+                    id="user-jurusan"
+                    name="jurusan"
+                    value={selectedJurusan}
+                    onChange={(event) => {
+                      setSelectedJurusan(event.target.value);
+                      setSelectedTingkat("");
+                      setSelectedKelasId("");
+                    }}
+                    required
+                    disabled={kelasLoading}
+                  >
+                    <option value="">Pilih Jurusan</option>
+                    {DAFTAR_JURUSAN.map((jurusan) => (
+                      <option key={`jurusan-${jurusan}`} value={jurusan}>
+                        {jurusan}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="user-tingkat">Tingkat Kelas</label>
+                  <select
+                    id="user-tingkat"
+                    name="tingkat"
+                    value={selectedTingkat}
+                    onChange={(event) => {
+                      setSelectedTingkat(event.target.value);
+                      setSelectedKelasId("");
+                    }}
+                    required
+                    disabled={!selectedJurusan}
+                  >
+                    <option value="">
+                      {selectedJurusan
+                        ? "Pilih Tingkat"
+                        : "Pilih jurusan terlebih dahulu"}
+                    </option>
+                    {DAFTAR_TINGKAT.map((tingkat) => (
+                      <option key={`tingkat-${tingkat}`} value={tingkat}>
+                        {tingkat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="user-kelas">Nama Kelas</label>
+                  <select
+                    id="user-kelas"
+                    name="kelasId"
+                    value={selectedKelasId}
+                    onChange={(event) =>
+                      setSelectedKelasId(event.target.value)
+                    }
+                    required
+                    disabled={!selectedJurusan || !selectedTingkat || kelasLoading}
+                  >
+                    <option value="">
+                      {!selectedJurusan || !selectedTingkat
+                        ? "Pilih jurusan dan tingkat terlebih dahulu"
+                        : kelasTersedia.length
+                          ? "Pilih Nama Kelas"
+                          : "Belum ada kelas untuk jurusan dan tingkat ini"}
+                    </option>
+                    {kelasTersedia.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.namaKelas}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
 
             <div className="form-actions">
               <button
@@ -358,6 +503,8 @@ export default function ManajemenUserPage() {
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Jurusan</th>
+                <th>Kelas</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -367,7 +514,7 @@ export default function ManajemenUserPage() {
               {loading ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={9}
                     className="empty-table"
                   >
                     Memuat data...
@@ -376,7 +523,7 @@ export default function ManajemenUserPage() {
               ) : users.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={9}
                     className="empty-table"
                   >
                     Belum ada data user.
@@ -400,6 +547,10 @@ export default function ManajemenUserPage() {
                         {roleLabel[user.role]}
                       </span>
                     </td>
+
+                    <td>{user.jurusan || "-"}</td>
+
+                    <td>{user.kelas || "-"}</td>
 
                     <td>
                       <span

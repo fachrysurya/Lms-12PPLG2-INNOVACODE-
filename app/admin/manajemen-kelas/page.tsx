@@ -10,6 +10,9 @@ import {
   deleteKelas,
 } from "./actions";
 
+const DAFTAR_JURUSAN = ["RPL", "DKV", "MPLB", "TJKT", "BDR"];
+const DAFTAR_TINGKAT = ["X", "XI", "XII"];
+
 type Kelas = {
   _id: string;
   namaKelas: string;
@@ -22,6 +25,11 @@ type Kelas = {
 export default function ManajemenKelasPage() {
   const [kelas, setKelas] = useState<Kelas[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJurusan, setSelectedJurusan] = useState("");
+  const [selectedTingkat, setSelectedTingkat] = useState("");
+  const [selectedKelasId, setSelectedKelasId] = useState("");
+  const [siswaKelas, setSiswaKelas] = useState<string[]>([]);
+  const [loadingSiswa, setLoadingSiswa] = useState(false);
 
   const [showForm, setShowForm] = useState(false);
 
@@ -57,6 +65,30 @@ export default function ManajemenKelasPage() {
       );
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function loadSiswaKelas(kelasId: string) {
+    setLoadingSiswa(true);
+    setSiswaKelas([]);
+
+    try {
+      const response = await fetch(
+        `/api/admin/kelas?kelasId=${encodeURIComponent(kelasId)}`,
+        { cache: "no-store" }
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        setSiswaKelas(data.siswa);
+      } else {
+        setMessage(data.message || "Gagal mengambil daftar siswa.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Gagal mengambil daftar siswa.");
+    } finally {
+      setLoadingSiswa(false);
     }
   }
 
@@ -98,6 +130,10 @@ export default function ManajemenKelasPage() {
 
       form.reset();
 
+      setSelectedJurusan("");
+      setSelectedTingkat("");
+      setSelectedKelasId("");
+      setSiswaKelas([]);
       setLoading(true);
       await loadKelas();
     }
@@ -122,10 +158,20 @@ export default function ManajemenKelasPage() {
     setMessage(result.message);
 
     if (result.success) {
+      setSelectedJurusan("");
+      setSelectedTingkat("");
+      setSelectedKelasId("");
+      setSiswaKelas([]);
       setLoading(true);
       await loadKelas();
     }
   }
+
+  const kelasTersedia = kelas.filter(
+    (item) =>
+      item.jurusan === selectedJurusan &&
+      item.tingkat === selectedTingkat
+  );
 
   return (
     <div className="management-page">
@@ -200,6 +246,130 @@ export default function ManajemenKelasPage() {
           {message}
         </div>
       )}
+
+      <div className="management-card" style={{ marginBottom: 25 }}>
+        <div className="management-header" style={{ marginTop: 0 }}>
+          <div>
+            <h2>Daftar Siswa per Kelas</h2>
+            <p>Pilih jurusan dan tingkat kelas untuk melihat nama siswa.</p>
+          </div>
+        </div>
+
+        <div className="user-form">
+          <div className="form-group">
+            <label htmlFor="filter-jurusan">Jurusan</label>
+            <select
+              id="filter-jurusan"
+              value={selectedJurusan}
+              onChange={(event) => {
+                setSelectedJurusan(event.target.value);
+                setSelectedTingkat("");
+                setSelectedKelasId("");
+                setSiswaKelas([]);
+              }}
+            >
+              <option value="">Pilih Jurusan</option>
+              {DAFTAR_JURUSAN.map((jurusan) => (
+                <option key={`jurusan-${jurusan}`} value={jurusan}>
+                  {jurusan}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="filter-kelas">Kelas</label>
+            <select
+              id="filter-kelas"
+              value={selectedTingkat}
+              onChange={(event) => {
+                const tingkat = event.target.value;
+                setSelectedTingkat(tingkat);
+                setSelectedKelasId("");
+                setSiswaKelas([]);
+              }}
+              disabled={!selectedJurusan}
+            >
+              <option value="">
+                {selectedJurusan
+                  ? "Pilih Tingkat"
+                  : "Pilih jurusan terlebih dahulu"}
+              </option>
+              {DAFTAR_TINGKAT.map((tingkat) => (
+                <option key={`tingkat-${tingkat}`} value={tingkat}>
+                  {tingkat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="filter-nama-kelas">Nama Kelas</label>
+            <select
+              id="filter-nama-kelas"
+              value={selectedKelasId}
+              onChange={(event) => {
+                const kelasId = event.target.value;
+                setSelectedKelasId(kelasId);
+                if (kelasId) {
+                  void loadSiswaKelas(kelasId);
+                } else {
+                  setSiswaKelas([]);
+                }
+              }}
+              disabled={!selectedJurusan || !selectedTingkat}
+            >
+              <option value="">
+                {!selectedJurusan || !selectedTingkat
+                  ? "Pilih jurusan dan tingkat terlebih dahulu"
+                  : kelasTersedia.length
+                    ? "Pilih Nama Kelas"
+                    : "Belum ada kelas untuk jurusan dan tingkat ini"}
+              </option>
+              {kelasTersedia.map((item) => (
+                <option key={item._id} value={item._id}>
+                  {item.namaKelas}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {selectedKelasId && (
+          <div className="table-wrapper" style={{ marginTop: 20 }}>
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Siswa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loadingSiswa ? (
+                  <tr>
+                    <td colSpan={2} className="empty-table">
+                      Memuat data siswa...
+                    </td>
+                  </tr>
+                ) : siswaKelas.length === 0 ? (
+                  <tr>
+                    <td colSpan={2} className="empty-table">
+                      Belum ada siswa di kelas ini.
+                    </td>
+                  </tr>
+                ) : (
+                  siswaKelas.map((nama, index) => (
+                    <tr key={`${nama}-${index}`}>
+                      <td>{index + 1}</td>
+                      <td>{nama}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {showForm && (
         <div className="user-form-card">

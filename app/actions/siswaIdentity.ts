@@ -42,13 +42,14 @@ export async function getSiswaIdentity(): Promise<SiswaIdentity | null> {
     const user = await User.findOne({
       username: session.username,
     })
-      .select("_id nama username email")
+      .select("_id nama username email kelas")
       .lean();
 
     if (user) {
       dasar.siswaId = user._id.toString();
       dasar.nama = user.nama || dasar.nama;
       dasar.email = user.email ?? "";
+      dasar.kelas = user.kelas || dasar.kelas;
     }
 
     const siswa = await Siswa.findOne({

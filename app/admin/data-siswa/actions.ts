@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { connectDB } from "../../../lib/mongodb";
+import Kelas from "../../../models/Kelas";
 import Siswa from "../../../models/Siswa";
 
 type SiswaData = {
   nama: string;
   nis: string;
   jenisKelamin: string;
+  jurusan: string;
   kelas: string;
   email?: string;
   noTelepon?: string;
@@ -29,9 +31,9 @@ export async function createSiswa(formData: FormData) {
       formData.get("jenisKelamin") || ""
     ).trim();
 
-    const kelas = String(
-      formData.get("kelas") || ""
-    ).trim();
+    const jurusan = String(formData.get("jurusan") || "").trim();
+    const tingkat = String(formData.get("tingkat") || "").trim();
+    const kelasId = String(formData.get("kelasId") || "").trim();
 
     const email = String(
       formData.get("email") || ""
@@ -43,10 +45,23 @@ export async function createSiswa(formData: FormData) {
       formData.get("noTelepon") || ""
     ).trim();
 
-    if (!nama || !nis || !jenisKelamin || !kelas) {
+    if (!nama || !nis || !jenisKelamin || !jurusan || !tingkat || !kelasId) {
       return {
         success: false,
         message: "Semua data wajib diisi.",
+      };
+    }
+
+    const kelas = await Kelas.findOne({
+      _id: kelasId,
+      jurusan,
+      tingkat,
+    });
+
+    if (!kelas) {
+      return {
+        success: false,
+        message: "Pilih kelas yang sesuai dengan jurusan dan tingkat.",
       };
     }
 
@@ -70,13 +85,15 @@ export async function createSiswa(formData: FormData) {
       nama,
       nis,
       jenisKelamin,
-      kelas,
+      jurusan,
+      kelas: kelas.namaKelas,
       email: email || undefined,
       noTelepon,
       aktif: true,
     });
 
     revalidatePath("/admin/data-siswa");
+    revalidatePath("/admin/manajemen-kelas");
 
     return {
       success: true,
@@ -112,9 +129,9 @@ export async function updateSiswa(formData: FormData) {
       formData.get("jenisKelamin") || ""
     ).trim();
 
-    const kelas = String(
-      formData.get("kelas") || ""
-    ).trim();
+    const jurusan = String(formData.get("jurusan") || "").trim();
+    const tingkat = String(formData.get("tingkat") || "").trim();
+    const kelasId = String(formData.get("kelasId") || "").trim();
 
     const email = String(
       formData.get("email") || ""
@@ -131,11 +148,26 @@ export async function updateSiswa(formData: FormData) {
       !nama ||
       !nis ||
       !jenisKelamin ||
-      !kelas
+      !jurusan ||
+      !tingkat ||
+      !kelasId
     ) {
       return {
         success: false,
         message: "Semua data wajib diisi.",
+      };
+    }
+
+    const kelas = await Kelas.findOne({
+      _id: kelasId,
+      jurusan,
+      tingkat,
+    });
+
+    if (!kelas) {
+      return {
+        success: false,
+        message: "Pilih kelas yang sesuai dengan jurusan dan tingkat.",
       };
     }
 
@@ -162,7 +194,8 @@ export async function updateSiswa(formData: FormData) {
       nama,
       nis,
       jenisKelamin,
-      kelas,
+      jurusan,
+      kelas: kelas.namaKelas,
       email: email || undefined,
       noTelepon,
     };
@@ -183,6 +216,7 @@ export async function updateSiswa(formData: FormData) {
     }
 
     revalidatePath("/admin/data-siswa");
+    revalidatePath("/admin/manajemen-kelas");
 
     return {
       success: true,

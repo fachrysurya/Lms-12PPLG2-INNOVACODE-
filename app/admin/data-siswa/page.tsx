@@ -10,27 +10,50 @@ import {
   deleteSiswa,
 } from "./actions";
 
+const DAFTAR_JURUSAN = ["RPL", "DKV", "MPLB", "TJKT", "BDR"];
+const DAFTAR_TINGKAT = ["X", "XI", "XII"];
+
 type Siswa = {
   _id: string;
   nama: string;
   nis: string;
   jenisKelamin: string;
+  jurusan?: string;
   kelas: string;
   email?: string;
   noTelepon?: string;
   aktif: boolean;
 };
 
+type Kelas = {
+  _id: string;
+  namaKelas: string;
+  jurusan: string;
+  tingkat: string;
+};
+
 export default function DataSiswaPage() {
   const [siswa, setSiswa] = useState<Siswa[]>([]);
+  const [kelasList, setKelasList] = useState<Kelas[]>([]);
   const [loading, setLoading] = useState(true);
+  const [kelasLoading, setKelasLoading] = useState(true);
 
   const [showForm, setShowForm] = useState(false);
 
   const [editingSiswa, setEditingSiswa] =
     useState<Siswa | null>(null);
 
+  const [selectedJurusan, setSelectedJurusan] = useState("");
+  const [selectedTingkat, setSelectedTingkat] = useState("");
+  const [selectedKelasId, setSelectedKelasId] = useState("");
+
   const [message, setMessage] = useState("");
+
+  const kelasTersedia = kelasList.filter(
+    (item) =>
+      item.jurusan === selectedJurusan &&
+      item.tingkat === selectedTingkat
+  );
 
   async function loadSiswa() {
     try {
@@ -62,18 +85,49 @@ export default function DataSiswaPage() {
     }
   }
 
+  async function loadKelas() {
+    try {
+      const response = await fetch("/api/admin/kelas", {
+        cache: "no-store",
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setKelasList(data.kelas);
+      } else {
+        setMessage(data.message || "Gagal mengambil data kelas.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Gagal mengambil data kelas.");
+    } finally {
+      setKelasLoading(false);
+    }
+  }
+
   useEffect(() => {
-    void Promise.resolve().then(loadSiswa);
+    void Promise.resolve().then(loadKelas).then(loadSiswa);
   }, []);
 
   function openCreateForm() {
     setEditingSiswa(null);
+    setSelectedJurusan("");
+    setSelectedTingkat("");
+    setSelectedKelasId("");
     setShowForm(true);
     setMessage("");
   }
 
   function openEditForm(item: Siswa) {
     setEditingSiswa(item);
+    const kelasSiswa = kelasList.find(
+      (kelas) =>
+        kelas.namaKelas === item.kelas &&
+        kelas.jurusan === item.jurusan
+    ) || kelasList.find((kelas) => kelas.namaKelas === item.kelas);
+    setSelectedJurusan(item.jurusan || kelasSiswa?.jurusan || "");
+    setSelectedTingkat(kelasSiswa?.tingkat || "");
+    setSelectedKelasId(kelasSiswa?._id || "");
     setShowForm(true);
     setMessage("");
   }
@@ -97,6 +151,9 @@ export default function DataSiswaPage() {
     if (result.success) {
       setShowForm(false);
       setEditingSiswa(null);
+      setSelectedJurusan("");
+      setSelectedTingkat("");
+      setSelectedKelasId("");
 
       form.reset();
 
@@ -306,17 +363,79 @@ export default function DataSiswaPage() {
             </div>
 
             <div className="form-group">
-              <label>Kelas</label>
-
-              <input
-                type="text"
-                name="kelas"
-                defaultValue={
-                  editingSiswa?.kelas || ""
-                }
-                placeholder="Contoh: X RPL 1"
+              <label htmlFor="siswa-jurusan">Jurusan</label>
+              <select
+                id="siswa-jurusan"
+                name="jurusan"
+                value={selectedJurusan}
+                onChange={(event) => {
+                  setSelectedJurusan(event.target.value);
+                  setSelectedTingkat("");
+                  setSelectedKelasId("");
+                }}
                 required
-              />
+                disabled={kelasLoading}
+              >
+                <option value="">Pilih Jurusan</option>
+                {DAFTAR_JURUSAN.map((jurusan) => (
+                  <option key={`jurusan-${jurusan}`} value={jurusan}>
+                    {jurusan}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="siswa-tingkat">Tingkat Kelas</label>
+              <select
+                id="siswa-tingkat"
+                name="tingkat"
+                value={selectedTingkat}
+                onChange={(event) => {
+                  setSelectedTingkat(event.target.value);
+                  setSelectedKelasId("");
+                }}
+                required
+                disabled={!selectedJurusan}
+              >
+                <option value="">
+                  {selectedJurusan
+                    ? "Pilih Tingkat"
+                    : "Pilih jurusan terlebih dahulu"}
+                </option>
+                {DAFTAR_TINGKAT.map((tingkat) => (
+                  <option key={`tingkat-${tingkat}`} value={tingkat}>
+                    {tingkat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="siswa-kelas">Nama Kelas</label>
+              <select
+                id="siswa-kelas"
+                name="kelasId"
+                value={selectedKelasId}
+                onChange={(event) =>
+                  setSelectedKelasId(event.target.value)
+                }
+                required
+                disabled={!selectedJurusan || !selectedTingkat || kelasLoading}
+              >
+                <option value="">
+                  {!selectedJurusan || !selectedTingkat
+                    ? "Pilih jurusan dan tingkat terlebih dahulu"
+                    : kelasTersedia.length
+                      ? "Pilih Nama Kelas"
+                      : "Belum ada kelas untuk jurusan dan tingkat ini"}
+                </option>
+                {kelasTersedia.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.namaKelas}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">

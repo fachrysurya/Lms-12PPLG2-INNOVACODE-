@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { connectDB } from "../../../lib/mongodb";
 import Kelas from "../../../models/Kelas";
+import Siswa from "../../../models/Siswa";
+import User from "../../../models/User";
 
 export async function createKelas(formData: FormData) {
   try {
@@ -120,19 +122,24 @@ export async function updateKelas(formData: FormData) {
       };
     }
 
-    const updatedKelas =
-      await Kelas.findByIdAndUpdate(
-        id,
-        {
-          namaKelas,
-          tingkat,
-          jurusan,
-          waliKelas,
-        },
-        {
-          new: true,
-        }
-      );
+    const kelasSebelumnya = await Kelas.findById(id).lean();
+    if (!kelasSebelumnya) {
+      return {
+        success: false,
+        message: "Data kelas tidak ditemukan.",
+      };
+    }
+
+    const updatedKelas = await Kelas.findByIdAndUpdate(
+      id,
+      {
+        namaKelas,
+        tingkat,
+        jurusan,
+        waliKelas,
+      },
+      { new: true }
+    );
 
     if (!updatedKelas) {
       return {
@@ -141,7 +148,30 @@ export async function updateKelas(formData: FormData) {
       };
     }
 
+    if (
+      kelasSebelumnya &&
+      (kelasSebelumnya.namaKelas !== namaKelas ||
+        kelasSebelumnya.jurusan !== jurusan)
+    ) {
+      await User.updateMany(
+        {
+          role: "siswa",
+          kelas: kelasSebelumnya.namaKelas,
+          jurusan: kelasSebelumnya.jurusan,
+        },
+        { $set: { kelas: namaKelas, jurusan } }
+      );
+
+      if (kelasSebelumnya.namaKelas !== namaKelas) {
+        await Siswa.updateMany(
+          { kelas: kelasSebelumnya.namaKelas },
+          { $set: { kelas: namaKelas } }
+        );
+      }
+    }
+
     revalidatePath("/admin/manajemen-kelas");
+    revalidatePath("/admin/manajemen-user");
 
     return {
       success: true,
@@ -172,6 +202,30 @@ export async function deleteKelas(formData: FormData) {
       };
     }
 
+    const kelas = await Kelas.findById(id);
+    if (!kelas) {
+      return {
+        success: false,
+        message: "Data kelas tidak ditemukan.",
+      };
+    }
+
+    const [jumlahAkunSiswa, jumlahDataSiswa] = await Promise.all([
+      User.countDocuments({
+        role: "siswa",
+        kelas: kelas.namaKelas,
+        jurusan: kelas.jurusan,
+      }),
+      Siswa.countDocuments({ kelas: kelas.namaKelas }),
+    ]);
+
+    if (jumlahAkunSiswa > 0 || jumlahDataSiswa > 0) {
+      return {
+        success: false,
+        message: "Kelas masih memiliki siswa. Pindahkan siswa terlebih dahulu.",
+      };
+    }
+
     const deletedKelas =
       await Kelas.findByIdAndDelete(id);
 
@@ -183,6 +237,7 @@ export async function deleteKelas(formData: FormData) {
     }
 
     revalidatePath("/admin/manajemen-kelas");
+    revalidatePath("/admin/manajemen-user");
 
     return {
       success: true,

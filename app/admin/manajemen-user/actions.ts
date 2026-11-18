@@ -3,6 +3,7 @@
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { connectDB } from "../../../lib/mongodb";
+import Kelas from "../../../models/Kelas";
 import User from "../../../models/User";
 
 type UserRole =
@@ -21,11 +22,26 @@ export async function createUser(formData: FormData) {
     const password = String(formData.get("password") || "");
     const email = String(formData.get("email") || "").trim();
     const role = String(formData.get("role") || "") as UserRole;
+    const jurusan = String(formData.get("jurusan") || "").trim();
+    const tingkat = String(formData.get("tingkat") || "").trim();
+    const kelasId = String(formData.get("kelasId") || "").trim();
 
     if (!nama || !username || !password || !role) {
       return {
         success: false,
         message: "Data wajib diisi.",
+      };
+    }
+
+    const kelas =
+      role === "siswa" && kelasId && jurusan && tingkat
+        ? await Kelas.findOne({ _id: kelasId, jurusan, tingkat })
+        : null;
+
+    if (role === "siswa" && !kelas) {
+      return {
+        success: false,
+        message: "Pilih kelas yang sesuai dengan jurusan dan tingkat.",
       };
     }
 
@@ -46,10 +62,15 @@ export async function createUser(formData: FormData) {
       password: hashedPassword,
       email: email || undefined,
       role,
+      ...(kelas && {
+        kelas: kelas.namaKelas,
+        jurusan: kelas.jurusan,
+      }),
       aktif: true,
     });
 
     revalidatePath("/admin/manajemen-user");
+    revalidatePath("/admin/manajemen-kelas");
 
     return {
       success: true,
@@ -75,11 +96,26 @@ export async function updateUser(formData: FormData) {
     const password = String(formData.get("password") || "");
     const email = String(formData.get("email") || "").trim();
     const role = String(formData.get("role") || "") as UserRole;
+    const jurusan = String(formData.get("jurusan") || "").trim();
+    const tingkat = String(formData.get("tingkat") || "").trim();
+    const kelasId = String(formData.get("kelasId") || "").trim();
 
     if (!id || !nama || !username || !role) {
       return {
         success: false,
         message: "Data wajib diisi.",
+      };
+    }
+
+    const kelas =
+      role === "siswa" && kelasId && jurusan && tingkat
+        ? await Kelas.findOne({ _id: kelasId, jurusan, tingkat })
+        : null;
+
+    if (role === "siswa" && !kelas) {
+      return {
+        success: false,
+        message: "Pilih kelas yang sesuai dengan jurusan dan tingkat.",
       };
     }
 
@@ -112,9 +148,23 @@ export async function updateUser(formData: FormData) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
+    const updateOperation =
+      role === "siswa" && kelas
+        ? {
+            $set: {
+              ...updateData,
+              kelas: kelas.namaKelas,
+              jurusan: kelas.jurusan,
+            },
+          }
+        : {
+            $set: updateData,
+            $unset: { kelas: 1, jurusan: 1 },
+          };
+
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      updateData,
+      updateOperation,
       { new: true }
     );
 
@@ -126,6 +176,7 @@ export async function updateUser(formData: FormData) {
     }
 
     revalidatePath("/admin/manajemen-user");
+    revalidatePath("/admin/manajemen-kelas");
 
     return {
       success: true,

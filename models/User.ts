@@ -13,6 +13,8 @@ export interface IUser {
   password: string;
   role: UserRole;
   email?: string;
+  kelas?: string;
+  jurusan?: string;
   aktif: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -55,6 +57,16 @@ const UserSchema = new Schema<IUser>(
       trim: true,
       lowercase: true,
       sparse: true,
+    },
+
+    kelas: {
+      type: String,
+      trim: true,
+    },
+
+    jurusan: {
+      type: String,
+      trim: true,
     },
 
     aktif: {

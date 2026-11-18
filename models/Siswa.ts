@@ -4,6 +4,7 @@ export interface ISiswa {
   nama: string;
   nis: string;
   jenisKelamin: string;
+  jurusan?: string;
   kelas: string;
   email?: string;
   noTelepon?: string;
@@ -30,6 +31,11 @@ const SiswaSchema = new Schema<ISiswa>(
     jenisKelamin: {
       type: String,
       required: true,
+      trim: true,
+    },
+
+    jurusan: {
+      type: String,
       trim: true,
     },
 
