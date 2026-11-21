@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const session = await getSession();
 
-  if (!session || session.role !== "kurikulum") {
+  if (!session || !["kurikulum", "kepala-sekolah"].includes(session.role)) {
     return NextResponse.json(
       { success: false, message: "Akses ditolak." },
       { status: 403 }

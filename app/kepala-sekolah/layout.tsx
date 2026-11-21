@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/auth";
+import KepalaSekolahSidebar from "./components/KepalaSekolahSidebar";
 
 export default async function KepalaSekolahLayout({
   children,
@@ -22,57 +23,7 @@ export default async function KepalaSekolahLayout({
     <div className="kepsek-layout">
 
       {/* SIDEBAR */}
-      <aside className="kepsek-sidebar">
-
-        <div className="kepsek-logo">
-          Edu<span>Class</span>
-        </div>
-
-        <div className="kepsek-role">
-          KEPALA SEKOLAH
-        </div>
-
-        <nav className="kepsek-sidebar-menu">
-
-          <Link href="/kepala-sekolah/dashboard">
-            Dashboard
-          </Link>
-
-          <Link href="/kepala-sekolah/data-guru">
-            Data Guru
-          </Link>
-
-          <Link href="/kepala-sekolah/data-siswa">
-            Data Siswa
-          </Link>
-
-          <Link href="/kepala-sekolah/data-kelas">
-            Data Kelas
-          </Link>
-
-          <Link href="/kepala-sekolah/mata-pelajaran">
-            Mata Pelajaran
-          </Link>
-
-          <Link href="/kepala-sekolah/jadwal">
-            Jadwal Pelajaran
-          </Link>
-
-          <Link href="/kepala-sekolah/profile">
-            Profile
-          </Link>
-
-        </nav>
-
-        <div className="kepsek-sidebar-bottom">
-
-          <Link href="/login">
-            Logout
-          </Link>
-
-        </div>
-
-      </aside>
+      <KepalaSekolahSidebar />
 
 
       {/* CONTENT */}

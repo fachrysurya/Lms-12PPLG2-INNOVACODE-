@@ -939,6 +939,95 @@ textarea {
   color: #1261d6;
 }
 
+.kepsek-sidebar-menu a.active,
+.kepsek-sidebar-menu a.active {
+  background: #eef5ff;
+  color: #1261d6;
+}
+
+.data-sekolah-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.data-sekolah-card {
+  min-height: 150px;
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border: 1px solid #e7edf5;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(36, 51, 74, 0.04);
+  transition: 0.2s ease;
+}
+
+.data-sekolah-card:hover {
+  border-color: #bdd4f5;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(18, 97, 214, 0.09);
+}
+
+.data-sekolah-card-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eaf2ff;
+  color: #1261d6;
+  font-size: 20px;
+}
+
+.data-sekolah-card h2 {
+  margin: 2px 0 8px;
+  color: #172033;
+  font-size: 16px;
+}
+
+.data-sekolah-card p {
+  color: #778398;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.data-sekolah-card-arrow {
+  margin-left: auto;
+  align-self: flex-end;
+  color: #1261d6;
+  font-size: 18px;
+}
+
+.data-sekolah-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.data-sekolah-back {
+  width: fit-content;
+  min-height: 38px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #dce5f1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1261d6;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.data-sekolah-back:hover {
+  border-color: #1261d6;
+  background: #eef5ff;
+}
+
 
 /* =========================================================
    SIDEBAR BOTTOM
@@ -1710,7 +1799,7 @@ button.dashboard-card {
 
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -1767,6 +1856,88 @@ button.dashboard-card {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+}
+
+.incoming-report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.incoming-report-card {
+  min-height: 260px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5ebf2;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.04);
+}
+
+.incoming-report-card-header {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.incoming-report-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #eaf3ff;
+  color: #1261d6;
+  font-size: 18px;
+}
+
+.incoming-report-type,
+.incoming-report-meta span {
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: #f3f7fb;
+  color: #66758a;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.incoming-report-card h3 {
+  margin-bottom: 8px;
+  color: #172033;
+  font-size: 17px;
+}
+
+.incoming-report-card > p {
+  flex: 1;
+  color: #718096;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.incoming-report-meta {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.incoming-report-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .incoming-report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .incoming-report-actions {
+    flex-direction: column;
+  }
 }
 
 .report-preview-button,
@@ -2338,6 +2509,98 @@ button.dashboard-card {
     min-height: auto;
   }
 }
+@media (max-width: 900px) {
+ .data-sekolah-grid {
+   grid-template-columns: 1fr;
+ }
+}
+
+.kurikulum-data-sekolah-heading {
+ padding: 20px 22px;
+ border: 1px solid #e7edf5;
+ border-radius: 14px;
+ background: linear-gradient(135deg, #ffffff 0%, #f3f7fd 100%);
+}
+
+.kurikulum-data-sekolah-grid {
+ display: grid;
+ grid-template-columns: repeat(3, minmax(0, 1fr));
+ gap: 20px;
+}
+
+.kurikulum-data-sekolah-card {
+ min-height: 210px;
+ padding: 22px;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+ border: 1px solid #dde7f3;
+ border-radius: 8px;
+ background: #ffffff;
+ box-shadow: 0 10px 28px rgba(23, 32, 51, 0.055);
+ transition: 0.2s ease;
+}
+
+.kurikulum-data-sekolah-card:hover {
+ border-color: #1261d6;
+ background: #f8fbff;
+ transform: translateY(-4px);
+ box-shadow: 0 16px 32px rgba(18, 97, 214, 0.12);
+}
+
+.kurikulum-data-sekolah-card-top {
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
+}
+
+.kurikulum-data-sekolah-card-icon {
+ width: 58px;
+ height: 58px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: 1px solid #d2e2f8;
+ border-radius: 8px;
+ background: #eef5ff;
+ font-size: 26px;
+}
+
+.kurikulum-data-sekolah-card-arrow {
+ width: 34px;
+ height: 34px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border-radius: 50%;
+ background: #172033;
+ color: #ffffff;
+ font-size: 16px;
+}
+
+.kurikulum-data-sekolah-card-content {
+ padding-top: 20px;
+ border-top: 1px solid #edf1f6;
+}
+
+.kurikulum-data-sekolah-card-content h2 {
+ margin-bottom: 8px;
+ color: #172033;
+ font-size: 18px;
+}
+
+.kurikulum-data-sekolah-card-content p {
+ color: #778398;
+ font-size: 13px;
+ line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+ .kurikulum-data-sekolah-grid {
+   grid-template-columns: 1fr;
+ }
+}
+
 .login-error {
   padding: 11px 13px;
   border: 1px solid #ffcaca;

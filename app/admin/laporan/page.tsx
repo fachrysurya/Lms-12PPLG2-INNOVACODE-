@@ -21,20 +21,12 @@ type Laporan = {
   createdAt?: string;
 };
 
-type Ringkasan = {
-  totalSiswa: number;
-  totalGuru: number;
-  totalKelas: number;
-  totalMapel: number;
-  totalUser: number;
-};
-
 const jenisList = [
-  "Akademik",
-  "Data Siswa",
-  "Data Guru",
-  "Data Kelas",
-  "Mata Pelajaran",
+  "Pemberitahuan",
+  "Pengumuman",
+  "Update Akademik",
+  "Evaluasi",
+  "Kegiatan",
   "Umum",
 ];
 
@@ -47,9 +39,6 @@ const periodeList = [
 
 export default function LaporanPage() {
   const [laporan, setLaporan] = useState<Laporan[]>([]);
-  const [ringkasan, setRingkasan] =
-    useState<Ringkasan | null>(null);
-
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Laporan | null>(
@@ -62,18 +51,10 @@ export default function LaporanPage() {
 
   async function loadData() {
     try {
-      const [resLaporan, resRingkasan] = await Promise.all([
-        fetch("/api/admin/laporan", {
-          cache: "no-store",
-        }),
-        fetch("/api/admin/ringkasan", {
-          cache: "no-store",
-        }),
-      ]);
-
+      const resLaporan = await fetch("/api/admin/laporan", {
+        cache: "no-store",
+      });
       const dataLaporan = await resLaporan.json();
-      const dataRingkasan = await resRingkasan.json();
-
       if (dataLaporan.success) {
         setLaporan(dataLaporan.laporan);
       } else {
@@ -83,9 +64,6 @@ export default function LaporanPage() {
         );
       }
 
-      if (dataRingkasan.success) {
-        setRingkasan(dataRingkasan.ringkasan);
-      }
     } catch (error) {
       console.error(error);
       setMessage("Gagal mengambil data laporan.");
@@ -160,8 +138,6 @@ export default function LaporanPage() {
   }
 
   function unduhTeks(item: Laporan) {
-    const r = ringkasan;
-
     const isi = [
       "========================================",
       "           EDU CLASS",
@@ -174,17 +150,7 @@ export default function LaporanPage() {
       `Dibuat Oleh   : ${item.dibuatOleh}`,
       "",
       "----------------------------------------",
-      "RINGKASAN DATA SEKOLAH",
-      "----------------------------------------",
-      "",
-      `Total Siswa      : ${r?.totalSiswa ?? 0}`,
-      `Total Guru       : ${r?.totalGuru ?? 0}`,
-      `Total Kelas      : ${r?.totalKelas ?? 0}`,
-      `Mata Pelajaran   : ${r?.totalMapel ?? 0}`,
-      `Total User       : ${r?.totalUser ?? 0}`,
-      "",
-      "----------------------------------------",
-      "DESKRIPSI",
+      "ISI LAPORAN",
       "----------------------------------------",
       "",
       item.deskripsi || "-",
@@ -219,19 +185,19 @@ export default function LaporanPage() {
 
   const kartu = [
     {
-      icon: "user" as const,
-      label: "Laporan Siswa",
-      nilai: ringkasan?.totalSiswa ?? 0,
+      icon: "tugas" as const,
+      label: "Pemberitahuan",
+      nilai: laporan.filter((item) => item.jenis === "Pemberitahuan").length,
     },
     {
-      icon: "guru" as const,
-      label: "Laporan Guru",
-      nilai: ringkasan?.totalGuru ?? 0,
+      icon: "nilai" as const,
+      label: "Pengumuman",
+      nilai: laporan.filter((item) => item.jenis === "Pengumuman").length,
     },
     {
       icon: "kelas" as const,
-      label: "Laporan Kelas",
-      nilai: ringkasan?.totalKelas ?? 0,
+      label: "Update Akademik",
+      nilai: laporan.filter((item) => item.jenis === "Update Akademik").length,
     },
     {
       icon: "tugas" as const,
@@ -247,7 +213,7 @@ export default function LaporanPage() {
           <h1>Laporan</h1>
 
           <p>
-            Buat, kelola, dan unduh laporan sistem.
+            Buat, kelola, preview, dan unduh laporan akademik sekolah.
           </p>
         </div>
 
@@ -333,7 +299,7 @@ export default function LaporanPage() {
                 type="text"
                 name="judul"
                 defaultValue={editing?.judul || ""}
-                placeholder="Contoh: Laporan Akademik"
+                placeholder="Contoh: Laporan Akademik Semester Ganjil"
                 required
               />
             </div>
@@ -568,36 +534,6 @@ export default function LaporanPage() {
                 <h3>Deskripsi</h3>
 
                 <p>{preview.deskripsi || "-"}</p>
-              </div>
-
-              <div className="report-summary">
-                <div>
-                  <span>Total Siswa</span>
-                  <strong>
-                    {ringkasan?.totalSiswa ?? 0}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Total Guru</span>
-                  <strong>
-                    {ringkasan?.totalGuru ?? 0}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Total Kelas</span>
-                  <strong>
-                    {ringkasan?.totalKelas ?? 0}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Mata Pelajaran</span>
-                  <strong>
-                    {ringkasan?.totalMapel ?? 0}
-                  </strong>
-                </div>
               </div>
 
               <div className="report-document-section">
