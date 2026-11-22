@@ -241,7 +241,7 @@ export default function SiswaDashboard() {
               ? "Tidak ada tugas atau asesmen yang menunggu."
               : filter === "selesai"
                 ? "Belum ada aktivitas yang selesai."
-                : "Belum ada tugas atau asesmen untuk kelasmu."}
+                : "Belum ada tugas atau asesmen yang tersedia."}
           </p>
         ) : (
           <div className="siswa-dashboard-activity-list">
@@ -282,7 +282,7 @@ export default function SiswaDashboard() {
         <div className="siswa-dashboard-panel-heading">
           <div>
             <h2>Materi terbaru</h2>
-            <p>Materi terbaru yang dibagikan untuk kelasmu.</p>
+            <p>Materi terbaru yang tersedia untuk semua siswa.</p>
           </div>
           <Link className="siswa-dashboard-text-link" href="/siswa/materi">
             Lihat semua →
@@ -295,7 +295,7 @@ export default function SiswaDashboard() {
           </p>
         ) : !data?.materiTerbaru.length ? (
           <p className="siswa-dashboard-empty">
-            Belum ada materi yang tersedia untuk kelasmu.
+            Belum ada materi yang tersedia.
           </p>
         ) : (
           <div className="siswa-dashboard-material-list">

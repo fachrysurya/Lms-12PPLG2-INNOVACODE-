@@ -42,7 +42,7 @@ export async function getSiswaIdentity(): Promise<SiswaIdentity | null> {
     const user = await User.findOne({
       username: session.username,
     })
-      .select("_id nama username email kelas")
+      .select("_id nama username email kelas nisn")
       .lean();
 
     if (user) {
@@ -52,9 +52,9 @@ export async function getSiswaIdentity(): Promise<SiswaIdentity | null> {
       dasar.kelas = user.kelas || dasar.kelas;
     }
 
-    const siswa = await Siswa.findOne({
-      nama: session.nama,
-    })
+    const siswa = await Siswa.findOne(
+      user?.nisn ? { nis: user.nisn } : { nama: session.nama }
+    )
       .select("nama nis kelas email")
       .lean();
 

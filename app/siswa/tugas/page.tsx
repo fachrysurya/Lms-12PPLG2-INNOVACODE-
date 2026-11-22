@@ -28,7 +28,6 @@ type TugasSiswa = {
   judul: string;
   deskripsi: string;
   mataPelajaran: string;
-  kelas: string;
   jenis: JenisTugas;
   pdfUrl?: string;
   pdfNama?: string;
@@ -45,7 +44,6 @@ type TugasSiswa = {
 type TugasResponse = {
   success: boolean;
   message?: string;
-  kelas?: string;
   tugas?: TugasSiswa[];
 };
 
@@ -73,7 +71,6 @@ function sudahLewat(value?: string): boolean {
 
 export default function TugasSiswaPage() {
   const [daftar, setDaftar] = useState<TugasSiswa[]>([]);
-  const [kelas, setKelas] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -102,7 +99,6 @@ export default function TugasSiswaPage() {
         }
         if (controller.signal.aborted) return;
         setDaftar(Array.isArray(data.tugas) ? data.tugas : []);
-        setKelas(data.kelas || "");
         setInfo(data.message || "");
         setError("");
       })
@@ -227,8 +223,8 @@ export default function TugasSiswaPage() {
         <div>
           <h1>Tugas &amp; Pengumpulan</h1>
           <p>
-            Tugas dari guru untuk kelas {kelas || "Anda"}. Baca instruksi dan
-            kumpulkan jawaban sebelum tenggat.
+            Tugas aktif dari guru tersedia untuk semua siswa. Baca instruksi
+            dan kumpulkan jawaban sebelum tenggat.
           </p>
         </div>
         <button
@@ -314,7 +310,7 @@ export default function TugasSiswaPage() {
           <div className="siswa-tugas-empty">
             {daftar.length
               ? "Tidak ada tugas yang cocok dengan filter."
-              : "Belum ada tugas yang dibagikan untuk kelas Anda."}
+              : "Belum ada tugas yang tersedia."}
           </div>
         ) : (
           hasil.map((item) => {
@@ -352,7 +348,6 @@ export default function TugasSiswaPage() {
                 </p>
                 <div className="siswa-tugas-meta">
                   <span>{item.mataPelajaran}</span>
-                  <span>{item.kelas}</span>
                   <span>{item.poin} poin</span>
                   <span>{item.soal.length} soal</span>
                 </div>
@@ -389,7 +384,7 @@ export default function TugasSiswaPage() {
               <div>
                 <h2 id="siswa-tugas-title">{selected.judul}</h2>
                 <small>
-                  {selected.mataPelajaran} · {selected.kelas} ·{" "}
+                  {selected.mataPelajaran} ·{" "}
                   {selected.guru || "Guru"}
                 </small>
               </div>

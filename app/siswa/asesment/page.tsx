@@ -16,7 +16,6 @@ type AsesmenSiswa = {
   judul: string;
   deskripsi: string;
   mataPelajaran: string;
-  kelas: string;
   jenis: JenisAsesmen;
   durasi: number;
   poin: number;
@@ -29,7 +28,6 @@ type AsesmenSiswa = {
 type AsesmenResponse = {
   success: boolean;
   message?: string;
-  kelas?: string;
   asesmen?: AsesmenSiswa[];
 };
 
@@ -43,7 +41,6 @@ function formatTanggal(value?: string): string {
 
 export default function AsesmenSiswaPage() {
   const [daftar, setDaftar] = useState<AsesmenSiswa[]>([]);
-  const [kelas, setKelas] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -69,7 +66,6 @@ export default function AsesmenSiswaPage() {
         }
         if (controller.signal.aborted) return;
         setDaftar(Array.isArray(data.asesmen) ? data.asesmen : []);
-        setKelas(data.kelas || "");
         setInfo(data.message || "");
         setError("");
       })
@@ -146,8 +142,8 @@ export default function AsesmenSiswaPage() {
         <div>
           <h1>Asesmen</h1>
           <p>
-            Asesmen dari guru untuk kelas {kelas || "Anda"}. Kerjakan setiap
-            asesmen satu kali.
+            Asesmen aktif dari guru tersedia untuk semua siswa. Kerjakan
+            setiap asesmen satu kali.
           </p>
         </div>
         <button
@@ -238,7 +234,7 @@ export default function AsesmenSiswaPage() {
           <div className="siswa-tugas-empty">
             {daftar.length
               ? "Tidak ada asesmen yang cocok dengan filter."
-              : "Belum ada asesmen yang dibagikan untuk kelas Anda."}
+              : "Belum ada asesmen yang tersedia."}
           </div>
         ) : (
           hasilFilter.map((item) => (
@@ -263,7 +259,6 @@ export default function AsesmenSiswaPage() {
               </p>
               <div className="siswa-tugas-meta">
                 <span>{item.mataPelajaran}</span>
-                <span>{item.kelas}</span>
                 <span>{item.durasi} menit</span>
                 <span>{item.soal.length} soal</span>
               </div>
@@ -299,7 +294,7 @@ export default function AsesmenSiswaPage() {
               <div>
                 <h2 id="siswa-asesmen-title">{selected.judul}</h2>
                 <small>
-                  {selected.mataPelajaran} · {selected.kelas} ·{" "}
+                  {selected.mataPelajaran} ·{" "}
                   {selected.guru || "Guru"}
                 </small>
               </div>

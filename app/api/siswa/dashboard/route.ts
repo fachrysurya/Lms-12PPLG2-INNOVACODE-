@@ -28,39 +28,27 @@ export async function GET() {
     const identitas = await getSiswaIdentity();
     const kelas = identitas?.kelas.trim() || "";
 
-    if (!kelas || !identitas) {
+    if (!identitas) {
       return NextResponse.json({
-        success: true,
-        nama: identitas?.nama || session.nama,
+        success: false,
+        nama: session.nama,
         kelas,
-        message:
-          "Data kelas akun siswa belum tersedia. Hubungi administrator untuk memperbarui data kelas.",
-        ringkasan: {
-          totalMateri: 0,
-          totalTugas: 0,
-          tugasBelumDikerjakan: 0,
-          totalAsesmen: 0,
-          asesmenBelumDikerjakan: 0,
-          nilaiRataRata: null,
-        },
-        materiTerbaru: [],
-        tugasAktif: [],
-        asesmenAktif: [],
+        message: "Identitas akun siswa belum tersedia.",
       });
     }
 
     const [materi, tugas, asesmen, pengumpulan, hasilAsesmen, nilaiTugas] =
       await Promise.all([
-        Materi.find({ aktif: true, kelas })
+        Materi.find({ aktif: true })
           .sort({ createdAt: -1 })
           .limit(5)
           .select("judul mataPelajaran tipe createdAt")
           .lean(),
-        Tugas.find({ aktif: true, kelas })
+        Tugas.find({ aktif: true })
           .sort({ tenggat: 1, createdAt: -1 })
           .select("judul mataPelajaran tenggat")
           .lean(),
-        Asesmen.find({ aktif: true, kelas })
+        Asesmen.find({ aktif: true })
           .sort({ createdAt: -1 })
           .select("judul mataPelajaran createdAt")
           .lean(),
@@ -104,7 +92,7 @@ export async function GET() {
       nama: identitas.nama,
       kelas,
       ringkasan: {
-        totalMateri: await Materi.countDocuments({ aktif: true, kelas }),
+        totalMateri: await Materi.countDocuments({ aktif: true }),
         totalTugas: tugas.length,
         tugasBelumDikerjakan: tugasAktif.filter((item) => !item.selesai).length,
         totalAsesmen: asesmen.length,

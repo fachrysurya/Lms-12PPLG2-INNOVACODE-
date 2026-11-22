@@ -1,78 +1,93 @@
 "use server";
 
+import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { connectDB } from "../../lib/mongodb";
 import {
   getDashboardByRole,
   type Role,
 } from "../../lib/auth";
+import User from "../../models/User";
 
 type LoginState = {
   error?: string;
 };
 
-const DEMO_USERS = [
-  {
-    nama: "Administrator",
-    username: "admin",
-    password: "admin123",
-    role: "admin" as Role,
-  },
-  {
-    nama: "Guru Edu Class",
-    username: "guru",
-    password: "guru123",
-    role: "guru" as Role,
-  },
-  {
-    nama: "Andi",
-    username: "siswa",
-    password: "siswa123",
-    role: "siswa" as Role,
-  },
-  {
-    nama: "Kurikulum Edu Class",
-    username: "kurikulum",
-    password: "kurikulum123",
-    role: "kurikulum" as Role,
-  },
-  {
-    nama: "Kepala Sekolah",
-    username: "kepsek",
-    password: "kepsek123",
-    role: "kepsek" as Role,
-  },
-];
-
 export async function loginAction(
-  previousState: LoginState,
+  _previousState: LoginState,
   formData: FormData
 ): Promise<LoginState> {
-  const username = String(formData.get("username") || "").trim();
+  const identifier = String(formData.get("identifier") || "").trim();
   const password = String(formData.get("password") || "");
 
-  if (!username || !password) {
+  if (!identifier || !password) {
     return {
-      error: "Username dan password wajib diisi.",
+      error: "Identitas login dan password wajib diisi.",
     };
   }
 
-  const user = DEMO_USERS.find(
-    (item) =>
-      item.username === username &&
-      item.password === password
-  );
+  let authenticatedUser: {
+    id: string;
+    nama: string;
+    username: string;
+    role: Role;
+  } | null = null;
 
-  if (!user) {
+  try {
+    await connectDB();
+
+    const users = await User.find({
+      aktif: true,
+      $or: [
+        { role: "admin", username: identifier },
+        { role: "guru", email: identifier.toLowerCase() },
+        { role: "kurikulum", email: identifier.toLowerCase() },
+        { role: "siswa", nisn: identifier },
+        { role: "kepala-sekolah", nip: identifier },
+      ],
+    }).select("nama username password role");
+
+    const matchingUsers: typeof users = [];
+
+    for (const user of users) {
+      if (await bcrypt.compare(password, user.password)) {
+        matchingUsers.push(user);
+      }
+    }
+
+    if (matchingUsers.length !== 1) {
+      return {
+        error: "Identitas login atau password salah.",
+      };
+    }
+
+    const user = matchingUsers[0];
+    authenticatedUser = {
+      id: user._id.toString(),
+      nama: user.nama,
+      username: user.username,
+      role: user.role,
+    };
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
     return {
-      error: "Username atau password salah.",
+      error: "Login tidak dapat diproses saat ini. Silakan coba lagi.",
+    };
+  }
+
+  if (!authenticatedUser) {
+    return {
+      error: "Identitas login atau password salah.",
     };
   }
 
   const session = {
-    nama: user.nama,
-    username: user.username,
-    role: user.role,
+    id: authenticatedUser.id,
+    nama: authenticatedUser.nama,
+    username: authenticatedUser.username,
+    role: authenticatedUser.role,
   };
 
   const cookieStore = await cookies();
@@ -89,5 +104,13 @@ export async function loginAction(
     }
   );
 
-  redirect(getDashboardByRole(user.role));
+  const requestedRedirect = String(formData.get("redirect") || "");
+  const redirectPath =
+    requestedRedirect.startsWith("/") &&
+    !requestedRedirect.startsWith("//") &&
+    !requestedRedirect.includes("\\")
+      ? requestedRedirect
+      : getDashboardByRole(authenticatedUser.role);
+
+  redirect(redirectPath);
 }

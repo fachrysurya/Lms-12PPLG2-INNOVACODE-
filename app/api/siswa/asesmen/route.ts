@@ -24,21 +24,18 @@ export async function GET() {
     await connectDB();
 
     const identitas = await getSiswaIdentity();
-    const kelas = identitas?.kelas.trim() || "";
 
-    if (!identitas || !kelas) {
+    if (!identitas) {
       return NextResponse.json({
         success: true,
-        kelas,
         asesmen: [],
-        message:
-          "Data kelas akun siswa belum tersedia. Hubungi administrator untuk memperbarui data kelas.",
+        message: "Identitas akun siswa belum tersedia.",
       });
     }
 
-    const asesmen = await Asesmen.find({ aktif: true, kelas })
+    const asesmen = await Asesmen.find({ aktif: true })
       .sort({ createdAt: -1 })
-      .select("judul deskripsi mataPelajaran kelas jenis durasi poin soal.pertanyaan soal.opsi guru createdAt")
+      .select("judul deskripsi mataPelajaran jenis durasi poin soal.pertanyaan soal.opsi guru createdAt")
       .lean();
 
     const asesmenIds = asesmen.map((item) => item._id.toString());
@@ -54,7 +51,6 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      kelas,
       asesmen: asesmen.map((item) => {
         const id = item._id.toString();
         const hasil = hasilPerAsesmen.get(id);
@@ -64,7 +60,6 @@ export async function GET() {
           judul: item.judul,
           deskripsi: item.deskripsi,
           mataPelajaran: item.mataPelajaran,
-          kelas: item.kelas,
           jenis: item.jenis,
           durasi: item.durasi,
           poin: item.poin,

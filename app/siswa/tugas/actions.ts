@@ -74,10 +74,10 @@ export async function kumpulkanTugas(formData: FormData) {
       };
     }
 
-    if (!tugas.aktif || tugas.kelas.trim() !== identitas.kelas.trim()) {
+    if (!tugas.aktif) {
       return {
         success: false,
-        message: "Tugas ini tidak tersedia untuk kelas Anda.",
+        message: "Tugas ini tidak tersedia.",
       };
     }
 

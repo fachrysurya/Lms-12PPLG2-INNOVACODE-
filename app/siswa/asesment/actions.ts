@@ -46,13 +46,10 @@ export async function kirimAsesmen(formData: FormData) {
       };
     }
 
-    if (
-      !asesmen.aktif ||
-      asesmen.kelas.trim() !== identitas.kelas.trim()
-    ) {
+    if (!asesmen.aktif) {
       return {
         success: false,
-        message: "Asesmen ini tidak tersedia untuk kelas Anda.",
+        message: "Asesmen ini tidak tersedia.",
       };
     }
 

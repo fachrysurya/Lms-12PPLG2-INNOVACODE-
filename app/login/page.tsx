@@ -1,94 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-
-const accounts = [
-  {
-    id: "1",
-    nama: "Administrator",
-    username: "admin",
-    password: "admin123",
-    role: "admin",
-  },
-  {
-    id: "2",
-    nama: "Guru Edu Class",
-    username: "guru",
-    password: "guru123",
-    role: "guru",
-  },
-  {
-    id: "3",
-    nama: "Andi",
-    username: "siswa",
-    password: "siswa123",
-    role: "siswa",
-  },
-  {
-    id: "4",
-    nama: "Kurikulum Edu Class",
-    username: "kurikulum",
-    password: "kurikulum123",
-    role: "kurikulum",
-  },
-  {
-    id: "5",
-    nama: "Kepala Sekolah",
-    username: "kepalasekolah",
-    password: "kepalasekolah123",
-    role: "kepala-sekolah",
-  },
-];
+import { Suspense, useActionState } from "react";
+import { useSearchParams } from "next/navigation";
+import { loginAction } from "../actions/auth";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  function handleLogin(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setError("");
-    setLoading(true);
-
-    const account = accounts.find(
-      (item) =>
-        item.username === username &&
-        item.password === password
-    );
-
-    if (!account) {
-      setError("Username atau password salah.");
-      setLoading(false);
-      return;
-    }
-
-    const session = {
-      id: account.id,
-      nama: account.nama,
-      username: account.username,
-      role: account.role,
-    };
-
-    document.cookie =
-      `edu_class_session=${encodeURIComponent(
-        JSON.stringify(session)
-      )}; path=/; max-age=86400; samesite=lax`;
-
-    const redirectPath = searchParams.get("redirect");
-
-    router.push(
-      redirectPath || `/${account.role}/dashboard`
-    );
-
-    router.refresh();
-  }
+  const [state, formAction, isPending] = useActionState(loginAction, {});
 
   return (
     <main className="login-page">
@@ -139,57 +58,36 @@ function LoginForm() {
           </div>
 
 
-          <form
-            className="login-form"
-            onSubmit={handleLogin}
-          >
+          <form className="login-form" action={formAction}>
+            <input
+              type="hidden"
+              name="redirect"
+              value={searchParams.get("redirect") || ""}
+            />
 
-            {/* USERNAME */}
             <div className="form-group">
-
-              <label htmlFor="username">
-                Username
-              </label>
-
+              <label htmlFor="identifier">Identitas Login</label>
               <input
-                id="username"
-                name="username"
+                id="identifier"
+                name="identifier"
                 type="text"
-                placeholder="Masukkan username"
-                value={username}
-                onChange={(event) =>
-                  setUsername(event.target.value)
-                }
+                placeholder="Masukkan NISN, email, NIP, atau username"
                 required
               />
-
             </div>
 
-
-            {/* PASSWORD */}
             <div className="form-group">
-
-              <label htmlFor="password">
-                Password
-              </label>
-
+              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 placeholder="Masukkan password"
-                value={password}
-                onChange={(event) =>
-                  setPassword(event.target.value)
-                }
                 required
               />
-
             </div>
 
-
-            {/* ERROR */}
-            {error && (
+            {state.error && (
               <p
                 style={{
                   margin: "0",
@@ -197,20 +95,16 @@ function LoginForm() {
                   fontSize: "13px",
                 }}
               >
-                {error}
+                {state.error}
               </p>
             )}
 
-
-            {/* LOGIN */}
             <button
               type="submit"
               className="login-submit"
-              disabled={loading}
+              disabled={isPending}
             >
-              {loading
-                ? "Memproses..."
-                : "Login"}
+              {isPending ? "Memproses..." : "Login"}
             </button>
 
           </form>

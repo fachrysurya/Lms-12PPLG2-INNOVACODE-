@@ -9,7 +9,6 @@ type Materi = {
   judul: string;
   deskripsi: string;
   mataPelajaran: string;
-  kelas: string;
   tipe: TipeMateri;
   pdfUrl?: string;
   pdfNama?: string;
@@ -22,7 +21,6 @@ type Materi = {
 type MateriResponse = {
   success: boolean;
   message?: string;
-  kelas?: string;
   materi?: Materi[];
 };
 
@@ -64,7 +62,6 @@ function tanggalMateri(value?: string): string {
 
 export default function MateriSiswaPage() {
   const [daftar, setDaftar] = useState<Materi[]>([]);
-  const [kelas, setKelas] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -87,7 +84,6 @@ export default function MateriSiswaPage() {
 
         if (controller.signal.aborted) return;
         setDaftar(Array.isArray(data.materi) ? data.materi : []);
-        setKelas(data.kelas || "");
         setInfo(data.message || "");
       })
       .catch((fetchError: unknown) => {
@@ -130,7 +126,7 @@ export default function MateriSiswaPage() {
         <div>
           <h1>Materi Pembelajaran</h1>
           <p>
-            Materi dari guru untuk kelas {kelas || "Anda"}.
+            Materi aktif dari guru tersedia untuk semua siswa.
           </p>
         </div>
       </div>
@@ -202,7 +198,7 @@ export default function MateriSiswaPage() {
                   <td colSpan={7} className="empty-table">
                     {daftar.length > 0
                       ? "Materi yang cocok tidak ditemukan."
-                      : "Belum ada materi untuk kelas Anda."}
+                      : "Belum ada materi yang tersedia."}
                   </td>
                 </tr>
               ) : (
@@ -258,7 +254,7 @@ export default function MateriSiswaPage() {
               <div>
                 <h2 id="materi-preview-title">{preview.judul}</h2>
                 <small>
-                  {preview.mataPelajaran} • {preview.kelas} •{" "}
+                  {preview.mataPelajaran} •{" "}
                   {preview.guru || "Guru"}
                 </small>
               </div>

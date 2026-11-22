@@ -746,7 +746,8 @@ textarea {
   font-weight: 600;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   width: 100%;
   height: 46px;
   padding: 0 14px;
@@ -762,7 +763,8 @@ textarea {
   color: #a0a9b7;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   border-color: #1261d6;
   box-shadow: 0 0 0 3px rgba(18, 97, 214, 0.08);
 }

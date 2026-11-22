@@ -20,6 +20,19 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## User Accounts
+
+Login credentials are read from MongoDB. User passwords are hashed with bcrypt.
+To create the first administrator, set `INITIAL_ADMIN_USERNAME` and
+`INITIAL_ADMIN_PASSWORD` in `.env.local`, then run `npm run seed`. The seed
+creates an administrator only when one does not already exist and does not
+delete existing users.
+
+After signing in, create accounts in **Admin > Manajemen User**. Login
+identifiers are the admin username, student NISN, teacher/kurikulum email, and
+headmaster NIP. Keep `username` populated for each account because the
+application uses it as the internal account key.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

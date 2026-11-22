@@ -23,22 +23,19 @@ export async function GET() {
 
     await connectDB();
     const identitas = await getSiswaIdentity();
-    const kelas = identitas?.kelas.trim() || "";
 
-    if (!identitas || !kelas) {
+    if (!identitas) {
       return NextResponse.json({
         success: true,
-        kelas,
         tugas: [],
-        message:
-          "Data kelas akun siswa belum tersedia. Hubungi administrator untuk memperbarui data kelas.",
+        message: "Identitas akun siswa belum tersedia.",
       });
     }
 
-    const tugas = await Tugas.find({ aktif: true, kelas })
+    const tugas = await Tugas.find({ aktif: true })
       .sort({ createdAt: -1 })
       .select(
-        "judul deskripsi mataPelajaran kelas jenis pdfUrl pdfNama linkUrl konten tenggat poin soal.pertanyaan guru createdAt"
+        "judul deskripsi mataPelajaran jenis pdfUrl pdfNama linkUrl konten tenggat poin soal.pertanyaan guru createdAt"
       )
       .lean();
 
@@ -57,7 +54,6 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      kelas,
       tugas: tugas.map((item) => {
         const id = item._id.toString();
         const hasil = pengumpulanPerTugas.get(id);
@@ -67,7 +63,6 @@ export async function GET() {
           judul: item.judul,
           deskripsi: item.deskripsi,
           mataPelajaran: item.mataPelajaran,
-          kelas: item.kelas,
           jenis: item.jenis,
           pdfUrl: item.pdfUrl,
           pdfNama: item.pdfNama,

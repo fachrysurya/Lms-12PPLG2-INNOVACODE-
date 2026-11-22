@@ -18,6 +18,8 @@ type User = {
   nama: string;
   username: string;
   email?: string;
+  nisn?: string;
+  nip?: string;
   role:
     | "admin"
     | "guru"
@@ -355,8 +357,43 @@ export default function ManajemenUserPage() {
                   editingUser?.email || ""
                 }
                 placeholder="Masukkan email"
+                required={
+                  selectedRole === "guru" ||
+                  selectedRole === "kurikulum"
+                }
               />
             </div>
+
+            {selectedRole === "siswa" && (
+              <div className="form-group">
+                <label htmlFor="user-nisn">NISN</label>
+                <input
+                  id="user-nisn"
+                  type="text"
+                  name="nisn"
+                  inputMode="numeric"
+                  pattern="[0-9]{10}"
+                  maxLength={10}
+                  defaultValue={editingUser?.nisn || ""}
+                  placeholder="Masukkan 10 digit NISN"
+                  required
+                />
+              </div>
+            )}
+
+            {selectedRole === "kepala-sekolah" && (
+              <div className="form-group">
+                <label htmlFor="user-nip">NIP</label>
+                <input
+                  id="user-nip"
+                  type="text"
+                  name="nip"
+                  defaultValue={editingUser?.nip || ""}
+                  placeholder="Masukkan NIP"
+                  required
+                />
+              </div>
+            )}
 
             <div className="form-group">
               <label>Role</label>
@@ -502,6 +539,8 @@ export default function ManajemenUserPage() {
                 <th>Nama</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>NISN</th>
+                <th>NIP</th>
                 <th>Role</th>
                 <th>Jurusan</th>
                 <th>Kelas</th>
@@ -514,7 +553,7 @@ export default function ManajemenUserPage() {
               {loading ? (
                 <tr>
                   <td
-                    colSpan={9}
+                    colSpan={11}
                     className="empty-table"
                   >
                     Memuat data...
@@ -523,7 +562,7 @@ export default function ManajemenUserPage() {
               ) : users.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={9}
+                    colSpan={11}
                     className="empty-table"
                   >
                     Belum ada data user.
@@ -541,6 +580,10 @@ export default function ManajemenUserPage() {
                     <td>
                       {user.email || "-"}
                     </td>
+
+                    <td>{user.nisn || "-"}</td>
+
+                    <td>{user.nip || "-"}</td>
 
                     <td>
                       <span className="role-badge">
