@@ -1,13 +1,5 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI: string = process.env.MONGODB_URI ?? "";
-
-if (!MONGODB_URI) {
-  throw new Error(
-    "MONGODB_URI belum diatur di file .env.local"
-  );
-}
-
 type MongooseCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
@@ -27,6 +19,14 @@ if (!global.mongooseCache) {
 }
 
 export async function connectDB() {
+  const MONGODB_URI: string = process.env.MONGODB_URI ?? "";
+
+  if (!MONGODB_URI) {
+    throw new Error(
+      "MONGODB_URI belum diatur di file .env.local atau environment variable Vercel"
+    );
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
