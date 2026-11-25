@@ -863,11 +863,164 @@ textarea {
   z-index: 100;
   width: 250px;
   height: 100vh;
+  height: 100dvh;
   padding: 25px 18px;
+  padding-top: max(25px, env(safe-area-inset-top));
+  padding-bottom: max(18px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   background: #ffffff;
   border-right: 1px solid #e8edf4;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar,
+.guru-sidebar::-webkit-scrollbar,
+.siswa-sidebar::-webkit-scrollbar,
+.kurikulum-sidebar::-webkit-scrollbar,
+.kepsek-sidebar::-webkit-scrollbar,
+.admin-sidebar-menu::-webkit-scrollbar,
+.guru-sidebar-menu::-webkit-scrollbar,
+.siswa-sidebar-menu::-webkit-scrollbar,
+.kurikulum-sidebar-menu::-webkit-scrollbar,
+.kepsek-sidebar-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track,
+.guru-sidebar::-webkit-scrollbar-track,
+.siswa-sidebar::-webkit-scrollbar-track,
+.kurikulum-sidebar::-webkit-scrollbar-track,
+.kepsek-sidebar::-webkit-scrollbar-track,
+.admin-sidebar-menu::-webkit-scrollbar-track,
+.guru-sidebar-menu::-webkit-scrollbar-track,
+.siswa-sidebar-menu::-webkit-scrollbar-track,
+.kurikulum-sidebar-menu::-webkit-scrollbar-track,
+.kepsek-sidebar-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb,
+.guru-sidebar::-webkit-scrollbar-thumb,
+.siswa-sidebar::-webkit-scrollbar-thumb,
+.kurikulum-sidebar::-webkit-scrollbar-thumb,
+.kepsek-sidebar::-webkit-scrollbar-thumb,
+.admin-sidebar-menu::-webkit-scrollbar-thumb,
+.guru-sidebar-menu::-webkit-scrollbar-thumb,
+.siswa-sidebar-menu::-webkit-scrollbar-thumb,
+.kurikulum-sidebar-menu::-webkit-scrollbar-thumb,
+.kepsek-sidebar-menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover,
+.guru-sidebar::-webkit-scrollbar-thumb:hover,
+.siswa-sidebar::-webkit-scrollbar-thumb:hover,
+.kurikulum-sidebar::-webkit-scrollbar-thumb:hover,
+.kepsek-sidebar::-webkit-scrollbar-thumb:hover,
+.admin-sidebar-menu::-webkit-scrollbar-thumb:hover,
+.guru-sidebar-menu::-webkit-scrollbar-thumb:hover,
+.siswa-sidebar-menu::-webkit-scrollbar-thumb:hover,
+.kurikulum-sidebar-menu::-webkit-scrollbar-thumb:hover,
+.kepsek-sidebar-menu::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.sidebar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sidebar-close-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+
+.sidebar-close-btn:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.sidebar-toggle-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background: #eef5ff;
+  color: #1261d6;
+  border-color: #bdd4f5;
+}
+
+.sidebar-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+.role-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.role-header-titles {
+  min-width: 0;
+}
+
+.role-user-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .admin-logo,
@@ -914,6 +1067,16 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
+  margin-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
 .admin-sidebar-menu a,
@@ -925,6 +1088,7 @@ textarea {
   padding: 0 13px;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   border-radius: 9px;
   color: #596579;
   font-size: 14px;
@@ -941,10 +1105,14 @@ textarea {
   color: #1261d6;
 }
 
-.kepsek-sidebar-menu a.active,
+.admin-sidebar-menu a.active,
+.guru-sidebar-menu a.active,
+.siswa-sidebar-menu a.active,
+.kurikulum-sidebar-menu a.active,
 .kepsek-sidebar-menu a.active {
   background: #eef5ff;
   color: #1261d6;
+  font-weight: 600;
 }
 
 .data-sekolah-grid {
@@ -1041,9 +1209,10 @@ textarea {
 .kurikulum-sidebar-bottom,
 .kepsek-sidebar-bottom {
   margin-top: auto;
-  margin-bottom: 72px;
-  padding-top: 20px;
+  margin-bottom: 0;
+  padding-top: 16px;
   border-top: 1px solid #edf0f4;
+  flex-shrink: 0;
 }
 
 .admin-sidebar-bottom a,
@@ -2267,16 +2436,47 @@ button.dashboard-card {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
+  body.sidebar-open-locked {
+    overflow: hidden;
+  }
+
+  .sidebar-toggle-btn {
+    display: inline-flex;
+  }
+
+  .sidebar-close-btn {
+    display: inline-flex;
+  }
+
   .admin-sidebar,
   .guru-sidebar,
   .siswa-sidebar,
   .kurikulum-sidebar,
   .kepsek-sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    min-height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: none;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .admin-sidebar.open,
+  .guru-sidebar.open,
+  .siswa-sidebar.open,
+  .kurikulum-sidebar.open,
+  .kepsek-sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.22);
   }
 
   .admin-content,
@@ -2285,6 +2485,7 @@ button.dashboard-card {
   .kurikulum-content,
   .kepsek-content {
     margin-left: 0;
+    width: 100%;
   }
 
   .admin-sidebar-menu,
@@ -2292,7 +2493,7 @@ button.dashboard-card {
   .siswa-sidebar-menu,
   .kurikulum-sidebar-menu,
   .kepsek-sidebar-menu {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .admin-header,
@@ -2300,7 +2501,26 @@ button.dashboard-card {
   .siswa-header,
   .kurikulum-header,
   .kepsek-header {
-    padding: 18px 22px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    min-height: 70px;
+    padding: 14px 18px;
+    padding-top: max(14px, env(safe-area-inset-top));
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .admin-header h1,
+  .guru-header h1,
+  .siswa-header h1,
+  .kurikulum-header h1,
+  .kepsek-header h1 {
+    font-size: clamp(16px, 4vw, 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .admin-main,
@@ -2308,9 +2528,11 @@ button.dashboard-card {
   .siswa-main,
   .kurikulum-main,
   .kepsek-main {
-    padding: 25px 22px;
+    padding: 20px 16px;
   }
+}
 
+@media (max-width: 800px) {
   .login-container {
     max-width: 600px;
     grid-template-columns: 1fr;
@@ -2490,8 +2712,15 @@ button.dashboard-card {
   .siswa-header,
   .kurikulum-header,
   .kepsek-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    padding: 12px 14px;
+    min-height: 64px;
+  }
+
+  .role-user-text {
+    display: none;
   }
 
   .admin-user,
@@ -2499,7 +2728,8 @@ button.dashboard-card {
   .siswa-user,
   .kurikulum-user,
   .kepsek-user {
-    width: 100%;
+    width: auto;
+    flex-shrink: 0;
   }
 
   .login-info {

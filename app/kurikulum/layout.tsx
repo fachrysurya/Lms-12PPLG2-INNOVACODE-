@@ -1,6 +1,24 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/auth";
+import RoleLayout, { MenuItem } from "../components/RoleLayout";
+
+const KURIKULUM_MENU: MenuItem[] = [
+  { href: "/kurikulum/dashboard", label: "Dashboard" },
+  {
+    href: "/kurikulum/data-sekolah",
+    label: "Data Sekolah",
+    extraMatchPrefixes: [
+      "/kurikulum/data-siswa",
+      "/kurikulum/data-guru",
+      "/kurikulum/data-kelas",
+      "/kurikulum/data-kurikulum",
+    ],
+  },
+  { href: "/kurikulum/mata-pelajaran", label: "Mata Pelajaran" },
+  { href: "/kurikulum/jadwal", label: "Jadwal Pelajaran" },
+  { href: "/kurikulum/laporan", label: "Laporan" },
+  { href: "/kurikulum/profile", label: "Profile" },
+];
 
 export default async function KurikulumLayout({
   children,
@@ -18,78 +36,19 @@ export default async function KurikulumLayout({
   }
 
   return (
-    <div className="kurikulum-layout">
-      {/* SIDEBAR KURIKULUM */}
-      <aside className="kurikulum-sidebar">
-        <div className="kurikulum-logo">
-          Edu<span>Class</span>
-        </div>
-
-        <div className="kurikulum-role">
-          KURIKULUM
-        </div>
-
-        <nav className="kurikulum-sidebar-menu">
-          <Link href="/kurikulum/dashboard">
-            Dashboard
-          </Link>
-
-          <Link href="/kurikulum/data-sekolah">
-            Data Sekolah
-          </Link>
-
-          <Link href="/kurikulum/mata-pelajaran">
-            Mata Pelajaran
-          </Link>
-
-          <Link href="/kurikulum/jadwal">
-            Jadwal Pelajaran
-          </Link>
-
-          <Link href="/kurikulum/laporan">
-            Laporan
-          </Link>
-
-          <Link href="/kurikulum/profile">
-            Profile
-          </Link>
-        </nav>
-
-        <div className="kurikulum-sidebar-bottom">
-          <Link href="/login">
-            Logout
-          </Link>
-        </div>
-      </aside>
-
-      {/* CONTENT */}
-      <div className="kurikulum-content">
-        {/* HEADER KURIKULUM */}
-        <header className="kurikulum-header">
-          <div>
-            <p className="kurikulum-header-label">
-              LEARNING MANAGEMENT SYSTEM
-            </p>
-
-            <h1>Dashboard Kurikulum</h1>
-          </div>
-
-          <div className="kurikulum-user">
-            <div className="kurikulum-user-avatar">
-              {session.nama.charAt(0).toUpperCase()}
-            </div>
-
-            <div>
-              <strong>{session.nama}</strong>
-              <span>Kurikulum</span>
-            </div>
-          </div>
-        </header>
-
-        <main className="kurikulum-main">
-          {children}
-        </main>
-      </div>
-    </div>
+    <RoleLayout
+      role="kurikulum"
+      rolePrefix="kurikulum"
+      roleBadge="KURIKULUM"
+      headerLabel="LEARNING MANAGEMENT SYSTEM"
+      headerTitle="Dashboard Kurikulum"
+      user={{
+        nama: session.nama,
+        roleLabel: "Kurikulum",
+      }}
+      menuItems={KURIKULUM_MENU}
+    >
+      {children}
+    </RoleLayout>
   );
 }

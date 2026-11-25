@@ -24,7 +24,10 @@ export type IconName =
   | "file"
   | "upload"
   | "search"
-  | "close";
+  | "close"
+  | "dots-vertical"
+  | "dots-horizontal"
+  | "menu";
 
 const paths: Record<IconName, React.ReactNode> = {
   user: (
@@ -181,6 +184,30 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <path d="m6.5 6.5 11 11" />
       <path d="m17.5 6.5-11 11" />
+    </>
+  ),
+
+  "dots-vertical": (
+    <>
+      <circle cx="12" cy="5" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="19" r="1.8" fill="currentColor" stroke="none" />
+    </>
+  ),
+
+  "dots-horizontal": (
+    <>
+      <circle cx="5" cy="12" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="19" cy="12" r="1.8" fill="currentColor" stroke="none" />
+    </>
+  ),
+
+  menu: (
+    <>
+      <path d="M4 6h16" />
+      <path d="M4 12h16" />
+      <path d="M4 18h16" />
     </>
   ),
 };

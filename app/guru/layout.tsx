@@ -1,6 +1,16 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/auth";
+import RoleLayout, { MenuItem } from "../components/RoleLayout";
+
+const GURU_MENU: MenuItem[] = [
+  { href: "/guru/dashboard", label: "Dashboard" },
+  { href: "/guru/materi", label: "Materi Pembelajaran" },
+  { href: "/guru/tugas", label: "Tugas" },
+  { href: "/guru/asesmen", label: "Asesmen" },
+  { href: "/guru/nilai", label: "Nilai" },
+  { href: "/guru/download-data", label: "Download Data" },
+  { href: "/guru/profile", label: "Profile" },
+];
 
 export default async function GuruLayout({
   children,
@@ -18,82 +28,19 @@ export default async function GuruLayout({
   }
 
   return (
-    <div className="guru-layout">
-      {/* SIDEBAR GURU */}
-      <aside className="guru-sidebar">
-        <div className="guru-logo">
-          Edu<span>Class</span>
-        </div>
-
-        <div className="guru-role">
-          GURU
-        </div>
-
-        <nav className="guru-sidebar-menu">
-          <Link href="/guru/dashboard">
-            Dashboard
-          </Link>
-
-          <Link href="/guru/materi">
-            Materi Pembelajaran
-          </Link>
-
-          <Link href="/guru/tugas">
-            Tugas
-          </Link>
-
-          <Link href="/guru/asesmen">
-            Asesmen
-          </Link>
-
-          <Link href="/guru/nilai">
-            Nilai
-          </Link>
-
-          <Link href="/guru/download-data">
-            Download Data
-          </Link>
-
-          <Link href="/guru/profile">
-            Profile
-          </Link>
-        </nav>
-
-        <div className="guru-sidebar-bottom">
-          <Link href="/login">
-            Logout
-          </Link>
-        </div>
-      </aside>
-
-      {/* CONTENT */}
-      <div className="guru-content">
-        {/* HEADER GURU */}
-        <header className="guru-header">
-          <div>
-            <p className="guru-header-label">
-              LEARNING MANAGEMENT SYSTEM
-            </p>
-
-            <h1>Dashboard Guru</h1>
-          </div>
-
-          <div className="guru-user">
-            <div className="guru-user-avatar">
-              {session.nama.charAt(0).toUpperCase()}
-            </div>
-
-            <div>
-              <strong>{session.nama}</strong>
-              <span>Guru</span>
-            </div>
-          </div>
-        </header>
-
-        <main className="guru-main">
-          {children}
-        </main>
-      </div>
-    </div>
+    <RoleLayout
+      role="guru"
+      rolePrefix="guru"
+      roleBadge="GURU"
+      headerLabel="LEARNING MANAGEMENT SYSTEM"
+      headerTitle="Dashboard Guru"
+      user={{
+        nama: session.nama,
+        roleLabel: "Guru",
+      }}
+      menuItems={GURU_MENU}
+    >
+      {children}
+    </RoleLayout>
   );
 }

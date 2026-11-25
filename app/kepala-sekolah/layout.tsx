@@ -1,6 +1,23 @@
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/auth";
-import KepalaSekolahSidebar from "./components/KepalaSekolahSidebar";
+import RoleLayout, { MenuItem } from "../components/RoleLayout";
+
+const KEPSEK_MENU: MenuItem[] = [
+  { href: "/kepala-sekolah/dashboard", label: "Dashboard" },
+  {
+    href: "/kepala-sekolah/data-sekolah",
+    label: "Data Sekolah",
+    extraMatchPrefixes: [
+      "/kepala-sekolah/data-siswa",
+      "/kepala-sekolah/data-guru",
+      "/kepala-sekolah/data-kelas",
+    ],
+  },
+  { href: "/kepala-sekolah/mata-pelajaran", label: "Mata Pelajaran" },
+  { href: "/kepala-sekolah/jadwal", label: "Jadwal Pelajaran" },
+  { href: "/kepala-sekolah/laporan", label: "Laporan" },
+  { href: "/kepala-sekolah/profile", label: "Profile" },
+];
 
 export default async function KepalaSekolahLayout({
   children,
@@ -13,67 +30,24 @@ export default async function KepalaSekolahLayout({
     redirect("/login");
   }
 
-  // ROLE KEPALA SEKOLAH
   if (session.role !== "kepala-sekolah") {
     redirect(`/${session.role}/dashboard`);
   }
 
   return (
-    <div className="kepsek-layout">
-
-      {/* SIDEBAR */}
-      <KepalaSekolahSidebar />
-
-
-      {/* CONTENT */}
-      <div className="kepsek-content">
-
-        {/* HEADER */}
-        <header className="kepsek-header">
-
-          <div>
-
-            <p className="kepsek-header-label">
-              LEARNING MANAGEMENT SYSTEM
-            </p>
-
-            <h1>
-              Dashboard Kepala Sekolah
-            </h1>
-
-          </div>
-
-
-          <div className="kepsek-user">
-
-            <div className="kepsek-user-avatar">
-              {session.nama.charAt(0).toUpperCase()}
-            </div>
-
-            <div>
-
-              <strong>
-                {session.nama}
-              </strong>
-
-              <span>
-                Kepala Sekolah
-              </span>
-
-            </div>
-
-          </div>
-
-        </header>
-
-
-        {/* ISI HALAMAN */}
-        <main className="kepsek-main">
-          {children}
-        </main>
-
-      </div>
-
-    </div>
+    <RoleLayout
+      role="kepala-sekolah"
+      rolePrefix="kepsek"
+      roleBadge="KEPALA SEKOLAH"
+      headerLabel="LEARNING MANAGEMENT SYSTEM"
+      headerTitle="Dashboard Kepala Sekolah"
+      user={{
+        nama: session.nama,
+        roleLabel: "Kepala Sekolah",
+      }}
+      menuItems={KEPSEK_MENU}
+    >
+      {children}
+    </RoleLayout>
   );
 }
